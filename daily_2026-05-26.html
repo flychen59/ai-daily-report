@@ -1,478 +1,767 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GitHub 每日高星日报 | 2026-05-26</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
-    background: #0d1117;
-    color: #e6edf3;
-    line-height: 1.6;
-  }
-  .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开源日报 | 2026-05-26</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans SC', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #1c2128;
+            --border-subtle: #21262d;
+            --border-hover: #30363d;
+            --text-primary: #e6edf3;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-orange: #f97316;
+            --accent-blue: #58a6ff;
+            --accent-purple: #a371f7;
+            --accent-green: #3fb950;
+            --accent-pink: #f778ba;
+        }
 
-  /* Header */
-  .header {
-    text-align: center;
-    padding: 40px 20px;
-    background: linear-gradient(135deg, #1a1e2e 0%, #0d1117 50%, #161b22 100%);
-    border-bottom: 1px solid #30363d;
-    margin: -20px -20px 30px -20px;
-  }
-  .header h1 { font-size: 28px; margin-bottom: 8px; }
-  .header h1 span { color: #f0883e; }
-  .header .date { color: #8b949e; font-size: 14px; }
-  .header .editors-note {
-    margin-top: 16px;
-    padding: 12px 20px;
-    background: #161b22;
-    border-left: 3px solid #f0883e;
-    border-radius: 0 6px 6px 0;
-    font-size: 14px;
-    color: #c9d1d9;
-    text-align: left;
-  }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  /* Agent badges */
-  .agents {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    margin: 16px 0;
-    flex-wrap: wrap;
-  }
-  .agent-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
-  }
-  .agent-badge.researcher { background: #1f3a5f; color: #58a6ff; }
-  .agent-badge.editor { background: #2d1f4e; color: #bc8cff; }
-  .agent-badge.analyst { background: #1a3a2a; color: #3fb950; }
-  .agent-badge.reviewer { background: #3a2a1a; color: #f0883e; }
+        html {
+            scroll-behavior: smooth;
+        }
 
-  /* Section */
-  .section { margin-bottom: 36px; }
-  .section-title {
-    font-size: 20px;
-    margin-bottom: 16px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #21262d;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+        body {
+            font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
 
-  /* Project cards */
-  .project-grid { display: grid; gap: 12px; }
-  .project-card {
-    background: #161b22;
-    border: 1px solid #30363d;
-    border-radius: 10px;
-    padding: 16px 20px;
-    display: grid;
-    grid-template-columns: 36px 1fr auto;
-    gap: 12px;
-    align-items: center;
-    transition: border-color 0.2s;
-  }
-  .project-card:hover { border-color: #58a6ff; }
-  .project-rank {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 14px;
-  }
-  .rank-1 { background: linear-gradient(135deg, #f0883e, #d47616); color: #fff; }
-  .rank-2 { background: linear-gradient(135deg, #8b949e, #6e7681); color: #fff; }
-  .rank-3 { background: linear-gradient(135deg, #7c5a2a, #5a3f1a); color: #e6b87a; }
-  .rank-other { background: #21262d; color: #8b949e; }
-  .project-info h3 { font-size: 15px; margin-bottom: 4px; }
-  .project-info h3 a { color: #58a6ff; text-decoration: none; }
-  .project-info h3 a:hover { text-decoration: underline; }
-  .project-info p { font-size: 13px; color: #8b949e; }
-  .project-meta { text-align: right; white-space: nowrap; }
-  .project-stars { font-size: 16px; font-weight: 600; color: #f0883e; }
-  .project-lang { font-size: 12px; color: #8b949e; margin-top: 2px; }
-  .project-tag {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 11px;
-    margin-top: 4px;
-    background: #21262d;
-    color: #c9d1d9;
-  }
+        /* ===== Scrollbar ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-hover);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
 
-  /* News */
-  .news-item {
-    padding: 12px 16px;
-    background: #161b22;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    border-left: 3px solid #30363d;
-  }
-  .news-item strong { color: #58a6ff; }
-  .news-item p { font-size: 14px; color: #c9d1d9; margin-top: 4px; }
+        /* ===== Animations ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(249, 115, 22, 0.15); }
+            50% { box-shadow: 0 0 40px rgba(249, 115, 22, 0.3); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        @keyframes barGrow {
+            from { width: 0; }
+        }
+        @keyframes countUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-  /* Language chart */
-  .lang-chart { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .lang-bar-group { margin-bottom: 12px; }
-  .lang-bar-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
-  .lang-bar-label span:first-child { font-weight: 500; }
-  .lang-bar-label span:last-child { color: #8b949e; }
-  .lang-bar { height: 8px; background: #21262d; border-radius: 4px; overflow: hidden; }
-  .lang-bar-fill { height: 100%; border-radius: 4px; }
-  .fill-python { background: linear-gradient(90deg, #3572A5, #4a8ad4); }
-  .fill-ts { background: linear-gradient(90deg, #3178c6, #5a9cf0); }
-  .fill-js { background: linear-gradient(90deg, #f1e05a, #e8d44d); }
-  .fill-config { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
-  .fill-jupyter { background: linear-gradient(90deg, #DA5B0B, #f0883e); }
-  .fill-swift { background: linear-gradient(90deg, #F05138, #ff7060); }
-  .fill-shell { background: linear-gradient(90deg, #89e051, #6fbf40); }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease forwards;
+            opacity: 0;
+        }
+        .animate-slide-in {
+            animation: slideInLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
 
-  /* Trends */
-  .trend-card {
-    background: #161b22;
-    border: 1px solid #30363d;
-    border-radius: 10px;
-    padding: 16px 20px;
-    margin-bottom: 12px;
-  }
-  .trend-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .trend-name { font-weight: 600; font-size: 15px; }
-  .trend-heat { font-size: 14px; }
-  .trend-evidence { font-size: 13px; color: #8b949e; }
+        /* ===== Header ===== */
+        .hero-header {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0c1a3a 0%, #1a0f2e 50%, #0d1117 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 15s ease infinite;
+        }
+        .hero-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(88, 166, 255, 0.12), transparent),
+                        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(163, 113, 247, 0.08), transparent);
+            pointer-events: none;
+        }
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(88, 166, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(88, 166, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent);
+            -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent);
+        }
 
-  /* Suggestions */
-  .suggestion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .suggestion-card {
-    background: #161b22;
-    border: 1px solid #30363d;
-    border-radius: 10px;
-    padding: 16px;
-  }
-  .suggestion-card h4 { font-size: 14px; color: #f0883e; margin-bottom: 8px; }
-  .suggestion-card p { font-size: 13px; color: #c9d1d9; }
+        /* ===== Cards ===== */
+        .project-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+        }
+        .project-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-hover);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(88, 166, 255, 0.1);
+        }
+        .project-card:hover .card-glow {
+            opacity: 1;
+        }
+        .card-glow {
+            position: absolute;
+            inset: -1px;
+            border-radius: 14px;
+            background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(88, 166, 255, 0.08), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 0;
+        }
 
-  /* Footer */
-  .footer {
-    text-align: center;
-    padding: 24px;
-    color: #484f58;
-    font-size: 12px;
-    border-top: 1px solid #21262d;
-    margin-top: 40px;
-  }
-  .footer a { color: #58a6ff; text-decoration: none; }
+        /* ===== Rank Badges ===== */
+        .rank-gold {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 50%, #b45309 100%);
+            box-shadow: 0 4px 20px rgba(251, 191, 36, 0.25), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+        .rank-silver {
+            background: linear-gradient(135deg, #e5e7eb 0%, #9ca3af 50%, #6b7280 100%);
+            box-shadow: 0 4px 20px rgba(156, 163, 175, 0.2), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+        .rank-bronze {
+            background: linear-gradient(135deg, #fdba74 0%, #ea580c 50%, #c2410c 100%);
+            box-shadow: 0 4px 20px rgba(234, 88, 12, 0.2), inset 0 1px 0 rgba(255,255,255,0.15);
+        }
+        .rank-normal {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-hover);
+        }
 
-  /* Responsive */
-  @media (max-width: 600px) {
-    .lang-chart, .suggestion-grid { grid-template-columns: 1fr; }
-    .project-card { grid-template-columns: 30px 1fr; }
-    .project-meta { grid-column: 2; text-align: left; }
-  }
-</style>
+        /* ===== Stars ===== */
+        .star-count {
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(135deg, #fb923c, #ea580c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            filter: drop-shadow(0 0 12px rgba(249, 115, 22, 0.25));
+        }
+
+        /* ===== Progress Bars ===== */
+        .lang-bar {
+            height: 8px;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+        .lang-bar::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            animation: shimmer 2.5s infinite;
+        }
+
+        /* ===== Trend Cards ===== */
+        .trend-card {
+            background: linear-gradient(145deg, rgba(220, 38, 38, 0.08), rgba(185, 28, 28, 0.03));
+            border: 1px solid rgba(220, 38, 38, 0.15);
+            border-radius: 14px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .trend-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(220, 38, 38, 0.06) 0%, transparent 60%);
+            animation: float 6s ease-in-out infinite;
+        }
+        .trend-card:hover {
+            border-color: rgba(220, 38, 38, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 16px 48px rgba(220, 38, 38, 0.12);
+        }
+
+        /* ===== Agent Badges ===== */
+        .badge-researcher {
+            background: rgba(59, 130, 246, 0.12);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        .badge-editor {
+            background: rgba(168, 85, 247, 0.12);
+            color: #c084fc;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+        }
+        .badge-analyst {
+            background: rgba(34, 197, 94, 0.12);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+        .badge-designer {
+            background: rgba(236, 72, 153, 0.12);
+            color: #f472b6;
+            border: 1px solid rgba(236, 72, 153, 0.2);
+        }
+        .badge-reviewer {
+            background: rgba(249, 115, 22, 0.12);
+            color: #fb923c;
+            border: 1px solid rgba(249, 115, 22, 0.2);
+        }
+
+        /* ===== Section Divider ===== */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-hover), transparent);
+        }
+
+        /* ===== Table ===== */
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        .data-table th {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .data-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: background 0.2s;
+        }
+        .data-table tbody tr {
+            transition: all 0.2s;
+        }
+        .data-table tbody tr:hover {
+            background: rgba(88, 166, 255, 0.03);
+        }
+        .data-table tbody tr:hover td {
+            color: var(--text-primary);
+        }
+
+        /* ===== Misc ===== */
+        .glass-pill {
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        .tag-pill {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+        }
+        .link-hover {
+            transition: all 0.2s;
+        }
+        .link-hover:hover {
+            color: var(--accent-blue);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 1.75rem !important;
+            }
+            .hero-subtitle {
+                font-size: 0.875rem !important;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="container">
 
-  <!-- Header -->
-  <div class="header">
-    <h1>🔥 GitHub <span>每日高星</span>日报</h1>
-    <div class="date">2026-05-26 · 由 AI 一人公司自动生成</div>
-    <div class="agents">
-      <span class="agent-badge researcher">🔍 研究员</span>
-      <span class="agent-badge editor">✍️ 编辑</span>
-      <span class="agent-badge analyst">📊 分析师</span>
-      <span class="agent-badge reviewer">👁️ 审查员</span>
-    </div>
-    <div class="editors-note">
-      今日榜单 AI 开发工具占据绝对主导，围绕 Claude Code 生态的技能文件、Agent 优化与工作流配置项目霸榜前三。代码知识图谱、金融 AI 模型等垂直赛道表现亮眼。
-    </div>
-  </div>
+    <!-- ===== HERO HEADER ===== -->
+    <header class="hero-header relative">
+        <div class="hero-grid"></div>
+        
+        <!-- Decorative orbs -->
+        <div class="absolute top-10 left-[10%] w-64 h-64 rounded-full bg-blue-500/5 blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 right-[15%] w-80 h-80 rounded-full bg-purple-500/5 blur-3xl pointer-events-none"></div>
 
-  <!-- Top Projects -->
-  <div class="section">
-    <h2 class="section-title">📊 今日热门项目</h2>
-    <div class="project-grid">
+        <div class="relative z-10 max-w-6xl mx-auto px-5 sm:px-8 pt-16 pb-20 md:pt-24 md:pb-28">
+            <!-- Top bar -->
+            <div class="flex flex-wrap items-center gap-3 mb-8 animate-fade-in" style="animation-delay: 0.1s;">
+                <span class="glass-pill text-xs font-mono text-blue-300 px-3 py-1.5 rounded-full">
+                    <span class="inline-block w-1.5 h-1.5 rounded-full bg-blue-400 mr-2 animate-pulse"></span>
+                    2026-05-26
+                </span>
+                <span class="tag-pill badge-researcher">研究员</span>
+                <span class="tag-pill badge-editor">编辑</span>
+                <span class="tag-pill badge-analyst">分析师</span>
+                <span class="tag-pill badge-designer">设计师</span>
+                <span class="tag-pill badge-reviewer">审查员</span>
+            </div>
 
-      <div class="project-card">
-        <div class="project-rank rank-1">1</div>
-        <div class="project-info">
-          <h3><a href="https://github.com/affaan-m/ECC">affaan-m/ECC</a></h3>
-          <p>Agent 性能优化系统 — 技能、记忆、安全、研发增强，支持 Claude Code / Codex / Cursor</p>
-          <span class="project-tag">AI Agent优化</span>
-        </div>
-        <div class="project-meta">
-          <div class="project-stars">⭐ 192,057</div>
-          <div class="project-lang">JavaScript</div>
-        </div>
-      </div>
+            <!-- Title -->
+            <h1 class="hero-title text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight mb-5 animate-fade-in-up" style="animation-delay: 0.15s;">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-200 via-white to-purple-200">
+                    开源日报
+                </span>
+                <span class="text-white/30 mx-2 font-light">|</span>
+                <span class="text-white/90">AI Agent开发配置持续升温</span>
+            </h1>
+            <p class="hero-subtitle text-base sm:text-lg text-slate-400 max-w-3xl leading-relaxed animate-fade-in-up" style="animation-delay: 0.25s;">
+                金融与代码可视化工具崛起，开源社区正从"基础能力搭建"向"专业化、精细化、审美化"深度演进
+            </p>
 
-      <div class="project-card">
-        <div class="project-rank rank-2">2</div>
-        <div class="project-info">
-          <h3><a href="https://github.com/multica-ai/andrej-karpathy-skills">multica-ai/andrej-karpathy-skills</a></h3>
-          <p>基于 Karpathy 对 LLM 编码陷阱的观察，单文件 CLAUDE.md 优化 Claude Code 行为</p>
-          <span class="project-tag">AI编程助手</span>
+            <!-- Editor's Note -->
+            <div class="mt-10 max-w-3xl animate-fade-in-up" style="animation-delay: 0.35s;">
+                <div class="relative rounded-2xl border border-white/5 bg-white/[0.02] backdrop-blur-sm p-6 sm:p-8">
+                    <div class="absolute top-0 left-8 -translate-y-1/2">
+                        <span class="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-lg shadow-blue-500/20">
+                            编者按
+                        </span>
+                    </div>
+                    <p class="text-slate-300 leading-relaxed text-sm sm:text-base mt-2">
+                        今日GitHub热榜显示，<strong class="text-white">AI Agent开发配置与性能优化</strong>已成为开发者最关注的焦点，前三甲均被相关工具包揽，累计星标超过<strong class="text-orange-400">45万</strong>。与此同时，金融AI垂直模型、代码知识图谱与AI内容质量优化工具增长迅猛，反映出开源社区正从"基础能力搭建"向"专业化、精细化、审美化"深度演进。
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="project-meta">
-          <div class="project-stars">⭐ 154,340</div>
-          <div class="project-lang">配置文件</div>
-        </div>
-      </div>
 
-      <div class="project-card">
-        <div class="project-rank rank-3">3</div>
-        <div class="project-info">
-          <h3><a href="https://github.com/garrytan/gstack">garrytan/gstack</a></h3>
-          <p>Garry Tan 的 Claude Code 配置：23 个工具角色 — CEO、设计师、工程经理、QA 等</p>
-          <span class="project-tag">AI开发工作流</span>
-        </div>
-        <div class="project-meta">
-          <div class="project-stars">⭐ 102,228</div>
-          <div class="project-lang">TypeScript</div>
-        </div>
-      </div>
+        <!-- Bottom fade -->
+        <div class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0d1117] to-transparent pointer-events-none"></div>
+    </header>
 
-      <div class="project-card">
-        <div class="project-rank rank-other">4</div>
-        <div class="project-info">
-          <h3><a href="https://github.com/anthropics/claude-cookbooks">anthropics/claude-cookbooks</a></h3>
-          <p>Claude 趣味高效用法的笔记本文档与示例食谱合集</p>
-          <span class="project-tag">AI应用示例</span>
-        </div>
-        <div class="project-meta">
-          <div class="project-stars">⭐ 43,914</div>
-          <div class="project-lang">Jupyter Notebook</div>
-        </div>
-      </div>
+    <main class="max-w-6xl mx-auto px-5 sm:px-8 pb-24">
 
-      <div class="project-card">
-        <div class="project-rank rank-other">5</div>
-        <div class="project-info">
-          <h3><a href="https://github.com/paperless-ngx/paperless-ngx">paperless-ngx/paperless-ngx</a></h3>
-          <p>社区支持的文档管理系统 — 扫描、索引、归档所有文档</p>
-          <span class="project-tag">文档管理</span>
-        </div>
-        <div class="project-meta">
-          <div class="project-stars">⭐ 41,224</div>
-          <div class="project-lang">Python</div>
-        </div>
-      </div>
+        <!-- ===== TOP 3 PODIUM ===== -->
+        <section class="mb-16 animate-fade-in-up" style="animation-delay: 0.4s;">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/20 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                </div>
+                <h2 class="text-xl font-bold text-white">今日三甲</h2>
+                <div class="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent ml-4"></div>
+            </div>
 
-      <div class="project-card">
-        <div class="project-rank rank-other">6</div>
-        <div class="project-info">
-          <h3><a href="https://github.com/moeru-ai/airi">moeru-ai/airi</a></h3>
-          <p>自托管虚拟伴侣 — 实时语音、Minecraft、Factorio，跨平台运行</p>
-          <span class="project-tag">AI虚拟伴侣</span>
-        </div>
-        <div class="project-meta">
-          <div class="project-stars">⭐ 39,619</div>
-          <div class="project-lang">TypeScript</div>
-        </div>
-      </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5" id="top3-container"></div>
+        </section>
 
-      <div class="project-card">
-        <div class="project-rank rank-other">7</div>
-        <div class="project-info">
-          <h3><a href="https://github.com/Lum1104/Understand-Anything">Lum1104/Understand-Anything</a></h3>
-          <p>把代码转为可交互知识图谱，兼容 Claude Code / Codex / Cursor 等</p>
-          <span class="project-tag">代码知识图谱</span>
-        </div>
-        <div class="project-meta">
-          <div class="project-stars">⭐ 30,167</div>
-          <div class="project-lang">TypeScript</div>
-        </div>
-      </div>
+        <!-- ===== FULL PROJECT TABLE ===== -->
+        <section class="mb-16 animate-fade-in-up" style="animation-delay: 0.5s;">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/20 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                </div>
+                <h2 class="text-xl font-bold text-white">完整榜单</h2>
+                <span class="text-xs text-slate-500 font-mono ml-2">17 projects</span>
+                <div class="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent ml-4"></div>
+            </div>
 
-      <div class="project-card">
-        <div class="project-rank rank-other">8</div>
-        <div class="project-info">
-          <h3><a href="https://github.com/shiyu-coder/Kronos">shiyu-coder/Kronos</a></h3>
-          <p>面向金融市场语言的 Foundation Model</p>
-          <span class="project-tag">金融AI模型</span>
-        </div>
-        <div class="project-meta">
-          <div class="project-stars">⭐ 25,972</div>
-          <div class="project-lang">Python</div>
-        </div>
-      </div>
+            <div class="rounded-2xl border border-white/5 overflow-hidden bg-[#111820]/50 backdrop-blur-sm">
+                <div class="overflow-x-auto">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th class="w-16 text-center">排名</th>
+                                <th>项目</th>
+                                <th class="hidden lg:table-cell">简介</th>
+                                <th class="w-24 text-center">语言</th>
+                                <th class="w-28 text-right">Stars</th>
+                                <th class="w-32 hidden sm:table-cell">分类</th>
+                            </tr>
+                        </thead>
+                        <tbody id="project-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
 
-      <div class="project-card">
-        <div class="project-rank rank-other">9</div>
-        <div class="project-info">
-          <h3><a href="https://github.com/colbymchenry/codegraph">colbymchenry/codegraph</a></h3>
-          <p>预索引代码知识图谱 — 更少 Token、更少工具调用、100% 本地运行</p>
-          <span class="project-tag">代码知识图谱</span>
-        </div>
-        <div class="project-meta">
-          <div class="project-stars">⭐ 24,533</div>
-          <div class="project-lang">TypeScript</div>
-        </div>
-      </div>
+        <!-- ===== LANGUAGE DISTRIBUTION ===== -->
+        <section class="mb-16 animate-fade-in-up" style="animation-delay: 0.6s;">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/20 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
+                </div>
+                <h2 class="text-xl font-bold text-white">语言分布</h2>
+                <div class="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent ml-4"></div>
+            </div>
 
-      <div class="project-card">
-        <div class="project-rank rank-other">10</div>
-        <div class="project-info">
-          <h3><a href="https://github.com/Fincept-Corporation/FinceptTerminal">Fincept-Corporation/FinceptTerminal</a></h3>
-          <p>现代金融终端 — 市场分析、投资研究、经济数据工具</p>
-          <span class="project-tag">金融终端</span>
-        </div>
-        <div class="project-meta">
-          <div class="project-stars">⭐ 23,773</div>
-          <div class="project-lang">Python</div>
-        </div>
-      </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5" id="lang-cards"></div>
+        </section>
 
-    </div>
-  </div>
+        <!-- ===== TREND ANALYSIS ===== -->
+        <section class="mb-16 animate-fade-in-up" style="animation-delay: 0.7s;">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-red-500/20 to-orange-500/20 border border-red-500/20 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-red-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"/></svg>
+                </div>
+                <h2 class="text-xl font-bold text-white">趋势分析</h2>
+                <div class="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent ml-4"></div>
+            </div>
 
-  <!-- News -->
-  <div class="section">
-    <h2 class="section-title">📰 相关动态</h2>
-    <div class="news-item">
-      <strong>Claude Code 生态霸榜</strong>
-      <p>前三甲均为 Claude Code 相关优化项目，从 Agent 性能优化（ECC）、Karpathy 经验沉淀的 CLAUDE.md 技能文件，到 Garry Tan 的 23 角色工作流配置，AI 编码助手的基础设施正在快速专业化。</p>
-    </div>
-    <div class="news-item">
-      <strong>代码知识图谱成新热点</strong>
-      <p>Understand-Anything 与 codegraph 双双进入前十，分别主打"交互式知识图谱"与"预索引本地优先"，解决大模型代码理解中的 Token 消耗与工具调用效率问题。</p>
-    </div>
-    <div class="news-item">
-      <strong>金融 AI 垂直赛道升温</strong>
-      <p>金融语言基础模型 Kronos 与数据终端 FinceptTerminal 同时上榜，资本市场对领域专用 AI 与交互式投研工具需求增长。</p>
-    </div>
-    <div class="news-item">
-      <strong>AI 内容质量受关注</strong>
-      <p>taste-skill 与 stop-slop 聚焦消除 AI 生成内容的"机械感"与"AI味"，反映开发者对输出质量精细化的追求。</p>
-    </div>
-  </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="trend-cards"></div>
+        </section>
 
-  <!-- Language Distribution -->
-  <div class="section">
-    <h2 class="section-title">📈 语言分布</h2>
-    <div class="lang-chart">
-      <div>
-        <div class="lang-bar-group">
-          <div class="lang-bar-label"><span>TypeScript</span><span>25.6% Stars · 4 项目</span></div>
-          <div class="lang-bar"><div class="lang-bar-fill fill-ts" style="width:51.2%"></div></div>
-        </div>
-        <div class="lang-bar-group">
-          <div class="lang-bar-label"><span>JavaScript</span><span>25.6% Stars · 2 项目</span></div>
-          <div class="lang-bar"><div class="lang-bar-fill fill-js" style="width:51.2%"></div></div>
-        </div>
-        <div class="lang-bar-group">
-          <div class="lang-bar-label"><span>配置/无语言</span><span>20.7% Stars · 2 项目</span></div>
-          <div class="lang-bar"><div class="lang-bar-fill fill-config" style="width:41.4%"></div></div>
-        </div>
-        <div class="lang-bar-group">
-          <div class="lang-bar-label"><span>Python</span><span>17.3% Stars · 6 项目</span></div>
-          <div class="lang-bar"><div class="lang-bar-fill fill-python" style="width:34.6%"></div></div>
-        </div>
-      </div>
-      <div>
-        <div class="lang-bar-group">
-          <div class="lang-bar-label"><span>Jupyter Notebook</span><span>5.7% Stars · 1 项目</span></div>
-          <div class="lang-bar"><div class="lang-bar-fill fill-jupyter" style="width:11.4%"></div></div>
-        </div>
-        <div class="lang-bar-group">
-          <div class="lang-bar-label"><span>Swift</span><span>2.5% Stars · 1 项目</span></div>
-          <div class="lang-bar"><div class="lang-bar-fill fill-swift" style="width:5%"></div></div>
-        </div>
-        <div class="lang-bar-group">
-          <div class="lang-bar-label"><span>Shell</span><span>2.5% Stars · 1 项目</span></div>
-          <div class="lang-bar"><div class="lang-bar-fill fill-shell" style="width:5%"></div></div>
-        </div>
-        <div style="margin-top:12px; padding:12px; background:#161b22; border-radius:8px; font-size:13px; color:#8b949e;">
-          💡 <strong style="color:#c9d1d9">关键发现：</strong>TS+JS 合占 51.2% Star 量主导应用层；Python 项目数最多（35.3%）覆盖垂直领域；配置类项目占 20.7% 成为新型高价值资产。
-        </div>
-      </div>
-    </div>
-  </div>
+        <!-- ===== RECOMMENDATIONS ===== -->
+        <section class="animate-fade-in-up" style="animation-delay: 0.8s;">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-500/20 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <h2 class="text-xl font-bold text-white">策略建议</h2>
+                <div class="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent ml-4"></div>
+            </div>
 
-  <!-- Trends -->
-  <div class="section">
-    <h2 class="section-title">🔥 趋势分析</h2>
-    <div class="trend-card">
-      <div class="trend-header">
-        <span class="trend-name">AI IDE 生态垄断头部</span>
-        <span class="trend-heat">🔥🔥🔥</span>
-      </div>
-      <div class="trend-evidence">前 3 名均为 Claude Code 优化项目，合计 <strong style="color:#f0883e">448,625 Stars</strong>（占 Top17 的 58.5%）</div>
-    </div>
-    <div class="trend-card">
-      <div class="trend-header">
-        <span class="trend-name">代码知识图谱工具化</span>
-        <span class="trend-heat">🔥🔥</span>
-      </div>
-      <div class="trend-evidence">2 个项目进入前十，主打"交互式可视化"与"预索引本地优先"</div>
-    </div>
-    <div class="trend-card">
-      <div class="trend-header">
-        <span class="trend-name">金融 AI 垂直化</span>
-        <span class="trend-heat">🔥🔥</span>
-      </div>
-      <div class="trend-evidence">金融基础模型（Kronos）+ 投研终端（FinceptTerminal）同时上榜</div>
-    </div>
-    <div class="trend-card">
-      <div class="trend-header">
-        <span class="trend-name">AI 内容去同质化</span>
-        <span class="trend-heat">🔥🔥</span>
-      </div>
-      <div class="trend-evidence">taste-skill、stop-slop 聚焦消除"AI味"，合计 23,644 Stars</div>
-    </div>
-    <div class="trend-card">
-      <div class="trend-header">
-        <span class="trend-name">配置即代码</span>
-        <span class="trend-heat">🔥🔥</span>
-      </div>
-      <div class="trend-evidence">CLAUDE.md、skill files、角色工作流等非代码资产获得顶级流量</div>
-    </div>
-  </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="recommend-cards"></div>
+        </section>
 
-  <!-- Suggestions -->
-  <div class="section">
-    <h2 class="section-title">💡 给开发者的建议</h2>
-    <div class="suggestion-grid">
-      <div class="suggestion-card">
-        <h4>🎯 卡位 AI IDE 生态</h4>
-        <p>为 Claude Code、Cursor 等开发 Agent 性能优化、角色工作流、技能文件插件，当前处于流量红利期。</p>
-      </div>
-      <div class="suggestion-card">
-        <h4>🗺️ 代码知识图谱</h4>
-        <p>面向企业场景，提供预索引、低 Token 消耗、本地部署的代码理解基础设施。</p>
-      </div>
-      <div class="suggestion-card">
-        <h4>🏦 垂直领域 Agent</h4>
-        <p>金融、网络安全、文档管理等领域专用工具需求明确，模型层与应用层存在整合机会。</p>
-      </div>
-      <div class="suggestion-card">
-        <h4>✨ AI 内容品味层</h4>
-        <p>开发"去AI化"、风格注入、输出质量精细化的中间件，解决生成内容同质化痛点。</p>
-      </div>
-    </div>
-  </div>
+        <!-- Footer -->
+        <footer class="mt-20 pt-10 border-t border-white/5 text-center">
+            <p class="text-slate-600 text-sm font-mono">开源日报 · 2026-05-26 · Generated with care</p>
+        </footer>
+    </main>
 
-  <!-- Footer -->
-  <div class="footer">
-    <p>数据来源：<a href="https://github.com/trending">GitHub Trending</a> · 由 <a href="https://github.com/flychen59/ai-company">AI 一人公司</a> 自动生成</p>
-    <p style="margin-top:4px;">4 Agent 全链路协作：研究员 → 编辑 → 分析师 → 审查员</p>
-  </div>
+    <script>
+        // ===== DATA =====
+        const projects = [
+            { rank: 1, name: 'affaan-m/ECC', desc: 'The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.', lang: 'JavaScript', stars: 192068, category: 'AI Agent优化' },
+            { rank: 2, name: 'multica-ai/andrej-karpathy-skills', desc: 'A single CLAUDE.md file to improve Claude Code behavior, derived from Andrej Karpathy\'s observations on LLM coding pitfalls.', lang: '-', stars: 154372, category: 'AI开发配置' },
+            { rank: 3, name: 'garrytan/gstack', desc: 'Use Garry Tan\'s exact Claude Code setup: 23 opinionated tools that serve as CEO, Designer, Eng Manager, Release Manager, Doc Engineer, and QA.', lang: 'TypeScript', stars: 102233, category: 'AI开发配置' },
+            { rank: 4, name: 'anthropics/claude-cookbooks', desc: 'A collection of notebooks/recipes showcasing some fun and effective ways of using Claude.', lang: 'Jupyter Notebook', stars: 43917, category: 'AI示例教程' },
+            { rank: 5, name: 'paperless-ngx/paperless-ngx', desc: 'A community-supported supercharged document management system: scan, index and archive all your documents.', lang: 'Python', stars: 41230, category: '文档管理' },
+            { rank: 6, name: 'moeru-ai/airi', desc: 'Self hosted, you-owned Grok Companion, a container of souls of waifu... Capable of realtime voice chat, Minecraft, Factorio playing.', lang: 'TypeScript', stars: 39620, category: 'AI虚拟伴侣' },
+            { rank: 7, name: 'Lum1104/Understand-Anything', desc: 'Graphs that teach > graphs that impress. Turn any code into an interactive knowledge graph you can explore, search, and ask questions about.', lang: 'TypeScript', stars: 30202, category: '代码可视化' },
+            { rank: 8, name: 'shiyu-coder/Kronos', desc: 'Kronos: A Foundation Model for the Language of Financial Markets.', lang: 'Python', stars: 25975, category: '金融AI模型' },
+            { rank: 9, name: 'colbymchenry/codegraph', desc: 'Pre-indexed code knowledge graph for Claude Code, Codex, Cursor... fewer tokens, fewer tool calls, 100% local.', lang: 'TypeScript', stars: 24544, category: '代码知识图谱' },
+            { rank: 10, name: 'Fincept-Corporation/FinceptTerminal', desc: 'Modern finance application offering advanced market analytics, investment research, and economic data tools.', lang: 'Python', stars: 23780, category: '金融终端' },
+            { rank: 11, name: 'manaflow-ai/cmux', desc: 'Ghostty-based macOS terminal with vertical tabs and notifications for AI coding agents.', lang: 'Swift', stars: 19392, category: '终端工具' },
+            { rank: 12, name: 'Leonxlnx/taste-skill', desc: 'Taste-Skill - gives your AI good taste. stops the AI from generating boring, generic slop.', lang: 'Shell', stars: 19389, category: 'AI内容优化' },
+            { rank: 13, name: 'rohitg00/ai-engineering-from-scratch', desc: 'Learn it. Build it. Ship it for others.', lang: 'Python', stars: 18110, category: 'AI工程教育' },
+            { rank: 14, name: 'anthropics/knowledge-work-plugins', desc: 'Open source repository of plugins primarily intended for knowledge workers to use in Claude Cowork.', lang: 'Python', stars: 15017, category: 'AI办公插件' },
+            { rank: 15, name: 'mukul975/Anthropic-Cybersecurity-Skills', desc: '754 structured cybersecurity skills for AI agents mapped to 5 frameworks, works with 20+ platforms.', lang: 'Python', stars: 9009, category: '网络安全' },
+            { rank: 16, name: 'Axorax/awesome-free-apps', desc: 'Curated list of the best free apps for PC and mobile.', lang: 'JavaScript', stars: 4329, category: '软件资源合集' },
+            { rank: 17, name: 'hardikpandya/stop-slop', desc: 'A skill file for removing AI tells from prose.', lang: '-', stars: 4273, category: 'AI写作优化' },
+        ];
 
-</div>
+        const langData = [
+            { lang: 'TypeScript', count: 4, pct: 23.5, stars: 196599, starPct: 25.6, color: '#3178c6', desc: 'AI开发配置、代码可视化、虚拟伴侣' },
+            { lang: 'JavaScript', count: 2, pct: 11.8, stars: 196397, starPct: 25.6, color: '#f7df1e', desc: 'Agent性能优化、软件资源合集' },
+            { lang: 'Python', count: 6, pct: 35.3, stars: 133121, starPct: 17.3, color: '#3572A5', desc: '金融模型、文档管理、网络安全、教育' },
+            { lang: '无/纯配置', count: 2, pct: 11.8, stars: 158645, starPct: 20.7, color: '#8b949e', desc: 'Skills文件、写作优化规则' },
+            { lang: 'Jupyter Notebook', count: 1, pct: 5.9, stars: 43917, starPct: 5.7, color: '#DA5B0B', desc: '官方示例教程' },
+            { lang: 'Swift', count: 1, pct: 5.9, stars: 19392, starPct: 2.5, color: '#F05138', desc: '终端工具' },
+            { lang: 'Shell', count: 1, pct: 5.9, stars: 19389, starPct: 2.5, color: '#89e051', desc: 'AI内容审美优化' },
+        ];
+
+        const trends = [
+            { title: 'AI Agent配置层爆发', intensity: 5, desc: '前3名均为Agent系统级配置与优化，累计 448,673 Stars，占总榜 58.5%。社区焦点已从"调用模型"转向"编排系统提示、技能文件与工具链"，"配置即基础设施"成为主导范式。' },
+            { title: '代码知识图谱成为AI编程新标配', intensity: 4, desc: 'Understand-Anything + codegraph 合计 54,746 Stars。通过预索引代码库为知识图谱，显著降低Token消耗与工具调用次数，"图增强生成（GraphRAG）"正成为传统RAG之后的演进方向。' },
+            { title: '金融AI垂直化替代通用模型', intensity: 3, desc: 'Kronos（金融市场语言模型）+ FinceptTerminal（金融终端）合计 49,755 Stars。开源社区正针对高频、高专业度领域构建专用AI基础设施，而非依赖通用大模型。' },
+            { title: '反"AI Slop"运动兴起', intensity: 3, desc: 'taste-skill + stop-slop 合计 23,662 Stars。开发者关注点从生成效率转向输出品质与审美，消除AI同质化痕迹成为新刚需。' },
+        ];
+
+        const recommendations = [
+            { title: '技术栈选择', icon: '💻', content: 'AI应用层与工具链优先 <strong>TypeScript/JavaScript</strong>；模型训练、金融量化与数据管道继续深耕 <strong>Python</strong>；同时重视 <strong>Markdown/Skills文件</strong>作为新型配置语言的工程化管理。' },
+            { title: '产品方向', icon: '🚀', content: '1. <strong>Agent配置基础设施</strong>：开发可插拔的Skills市场、System Prompt版本管理与性能评测工具<br>2. <strong>垂直领域知识图谱</strong>：针对代码、金融、法律等高专业场景构建预索引图谱服务<br>3. <strong>AI内容后处理</strong>：布局去AI化、审美优化与风格注入工具，切入反Slop赛道' },
+            { title: '架构策略', icon: '🏗️', content: '将系统提示编排、工具链路由与记忆管理视为<strong>核心基础设施</strong>进行版本控制；评估以<strong>预计算知识图谱</strong>替代传统向量RAG，降低长上下文Token成本。' },
+            { title: '生态卡位', icon: '🎯', content: '紧跟Claude Code/Cursor等主流Agent平台的插件规范，早期进入其Skills/Plugin市场；金融终端与代码可视化是当前Stars转化率最高的两大细分入口。' },
+        ];
+
+        // ===== HELPERS =====
+        function formatStars(n) {
+            if (n >= 10000) return (n / 1000).toFixed(n % 1000 === 0 ? 0 : 1) + 'k';
+            return n.toLocaleString();
+        }
+
+        function getRankClass(rank) {
+            if (rank === 1) return 'rank-gold';
+            if (rank === 2) return 'rank-silver';
+            if (rank === 3) return 'rank-bronze';
+            return 'rank-normal';
+        }
+
+        function getLangColor(lang) {
+            const map = {
+                'JavaScript': '#f7df1e',
+                'TypeScript': '#3178c6',
+                'Python': '#3572A5',
+                'Swift': '#F05138',
+                'Shell': '#89e051',
+                'Jupyter Notebook': '#DA5B0B',
+            };
+            return map[lang] || '#8b949e';
+        }
+
+        function getLangDot(lang) {
+            const color = getLangColor(lang);
+            return `<span class="inline-block w-2.5 h-2.5 rounded-full mr-2" style="background:${color};box-shadow:0 0 6px ${color}66;"></span>`;
+        }
+
+        // ===== RENDER TOP 3 =====
+        const top3 = projects.slice(0, 3);
+        const top3Container = document.getElementById('top3-container');
+        top3.forEach((p, i) => {
+            const medal = ['🥇', '🥈', '🥉'][i];
+            const card = document.createElement('div');
+            card.className = 'project-card p-6 flex flex-col h-full';
+            card.style.animationDelay = `${0.5 + i * 0.1}s`;
+            card.innerHTML = `
+                <div class="card-glow"></div>
+                <div class="relative z-10 flex flex-col h-full">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="${getRankClass(p.rank)} w-10 h-10 rounded-xl flex items-center justify-center text-sm font-black text-white shadow-lg">
+                                ${p.rank}
+                            </div>
+                            <span class="text-2xl">${medal}</span>
+                        </div>
+                        <span class="tag-pill text-xs" style="background:rgba(255,255,255,0.05);color:var(--text-muted);border:1px solid var(--border-subtle);">${p.category}</span>
+                    </div>
+                    <a href="https://github.com/${p.name}" target="_blank" class="text-base font-bold text-white hover:text-blue-400 transition-colors mb-2 link-hover break-all">${p.name}</a>
+                    <p class="text-sm text-slate-400 leading-relaxed mb-5 flex-1 line-clamp-3">${p.desc}</p>
+                    <div class="flex items-center justify-between pt-4 border-t border-white/5">
+                        <div class="flex items-center gap-2">
+                            ${p.lang !== '-' ? getLangDot(p.lang) : ''}
+                            <span class="text-xs text-slate-500 font-mono">${p.lang}</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <svg class="w-4 h-4 text-orange-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <span class="star-count text-lg font-bold">${formatStars(p.stars)}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            top3Container.appendChild(card);
+        });
+
+        // ===== RENDER TABLE =====
+        const tbody = document.getElementById('project-table-body');
+        projects.forEach((p, i) => {
+            const tr = document.createElement('tr');
+            tr.style.animationDelay = `${0.6 + i * 0.03}s`;
+            tr.className = 'animate-fade-in';
+            tr.innerHTML = `
+                <td class="text-center">
+                    <span class="${getRankClass(p.rank)} inline-flex items-center justify-center w-7 h-7 rounded-lg text-xs font-bold text-white">
+                        ${p.rank}
+                    </span>
+                </td>
+                <td>
+                    <a href="https://github.com/${p.name}" target="_blank" class="font-semibold text-sm link-hover break-all">${p.name}</a>
+                </td>
+                <td class="hidden lg:table-cell text-slate-400 max-w-md">${p.desc}</td>
+                <td class="text-center">
+                    <div class="flex items-center justify-center">
+                        ${p.lang !== '-' ? getLangDot(p.lang) : '<span class="w-2.5 h-2.5 rounded-full bg-slate-600 mr-2 inline-block"></span>'}
+                        <span class="text-xs text-slate-500 font-mono">${p.lang}</span>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="flex items-center justify-end gap-1.5">
+                        <svg class="w-3.5 h-3.5 text-orange-500/70" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <span class="star-count font-bold text-sm">${formatStars(p.stars)}</span>
+                    </div>
+                </td>
+                <td class="hidden sm:table-cell">
+                    <span class="tag-pill text-xs" style="background:rgba(255,255,255,0.04);color:var(--text-secondary);border:1px solid var(--border-subtle);">${p.category}</span>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // ===== RENDER LANGUAGE CARDS =====
+        const langContainer = document.getElementById('lang-cards');
+        langData.forEach((l, i) => {
+            const card = document.createElement('div');
+            card.className = 'project-card p-5';
+            card.style.animationDelay = `${0.7 + i * 0.08}s`;
+            card.innerHTML = `
+                <div class="card-glow"></div>
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <span class="inline-block w-3 h-3 rounded-full" style="background:${l.color};box-shadow:0 0 10px ${l.color}80;"></span>
+                            <span class="font-bold text-white">${l.lang}</span>
+                        </div>
+                        <span class="text-xs font-mono text-slate-500">${l.count} 项目</span>
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex justify-between text-xs mb-2">
+                            <span class="text-slate-500">项目占比</span>
+                            <span class="text-white font-mono font-semibold">${l.pct}%</span>
+                        </div>
+                        <div class="w-full bg-white/5 rounded-full h-2 overflow-hidden">
+                            <div class="lang-bar h-2 rounded-full" style="width: ${l.pct}%; background: linear-gradient(90deg, ${l.color}88, ${l.color}); animation: barGrow 1s cubic-bezier(0.16,1,0.3,1) ${0.8 + i * 0.1}s both;"></div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex justify-between text-xs mb-2">
+                            <span class="text-slate-500">Stars 占比</span>
+                            <span class="text-orange-400 font-mono font-semibold">${l.starPct}%</span>
+                        </div>
+                        <div class="w-full bg-white/5 rounded-full h-2 overflow-hidden">
+                            <div class="lang-bar h-2 rounded-full" style="width: ${l.starPct}%; background: linear-gradient(90deg, #fb923c88, #ea580c); animation: barGrow 1s cubic-bezier(0.16,1,0.3,1) ${1 + i * 0.1}s both;"></div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-500 leading-relaxed">${l.desc}</p>
+                </div>
+            `;
+            langContainer.appendChild(card);
+        });
+
+        // ===== RENDER TREND CARDS =====
+        const trendContainer = document.getElementById('trend-cards');
+        trends.forEach((t, i) => {
+            const fires = '🔥'.repeat(t.intensity);
+            const card = document.createElement('div');
+            card.className = 'trend-card p-6';
+            card.style.animationDelay = `${0.8 + i * 0.1}s`;
+            card.innerHTML = `
+                <div class="relative z-10">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-bold text-white text-sm leading-snug pr-4">${t.title}</h3>
+                        <span class="text-lg tracking-tight" title="热度: ${t.intensity}/5">${fires}</span>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">${t.desc}</p>
+                </div>
+            `;
+            trendContainer.appendChild(card);
+        });
+
+        // ===== RENDER RECOMMENDATIONS =====
+        const recContainer = document.getElementById('recommend-cards');
+        recommendations.forEach((r, i) => {
+            const card = document.createElement('div');
+            card.className = 'project-card p-6';
+            card.style.animationDelay = `${0.9 + i * 0.1}s`;
+            card.innerHTML = `
+                <div class="card-glow"></div>
+                <div class="relative z-10">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="text-2xl">${r.icon}</span>
+                        <h3 class="font-bold text-white">${r.title}</h3>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">${r.content}</p>
+                </div>
+            `;
+            recContainer.appendChild(card);
+        });
+
+        // ===== MOUSE GLOW EFFECT =====
+        document.querySelectorAll('.project-card, .trend-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty('--mouse-x', `${x}%`);
+                card.style.setProperty('--mouse-y', `${y}%`);
+            });
+        });
+
+        // ===== INTERSECTION OBSERVER for scroll animations =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.animate-fade-in-up, .animate-fade-in').forEach(el => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+        
+        // Trigger initial visible elements
+        setTimeout(() => {
+            document.querySelectorAll('.animate-fade-in-up, .animate-fade-in').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight) {
+                    el.style.animationPlayState = 'running';
+                }
+            });
+        }, 100);
+    </script>
 </body>
 </html>
