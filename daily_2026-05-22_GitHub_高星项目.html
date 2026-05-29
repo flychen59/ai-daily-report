@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开源日报 | 2026-05-22</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border-color: #30363d;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-purple: #a371f7;
+            --accent-orange: #f0883e;
+            --accent-red: #f85149;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-color);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(88, 166, 255, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(88, 166, 255, 0.6); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+
+        /* Card Styles */
+        .repo-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .repo-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .repo-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-blue);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .repo-card:hover::before {
+            transform: translateX(100%);
+            transition: transform 1s ease;
+        }
+
+        /* Language Colors */
+        .lang-python { color: #3572A5; }
+        .lang-js { color: #f1e05a; }
+        .lang-ts { color: #3178c6; }
+        .lang-html { color: #e34c26; }
+        .lang-shell { color: #89e051; }
+        .lang-md { color: #083fa1; }
+
+        /* Grid Background */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+        }
+
+        /* Glitch Text Effect */
+        .glitch-text {
+            position: relative;
+        }
+        
+        .glass-panel {
+            background: rgba(22, 27, 34, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(48, 54, 61, 0.5);
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* Matrix Canvas */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- Background Animation -->
+    <div id="canvas-container"></div>
+    <div class="fixed inset-0 bg-grid pointer-events-none z-[-1]"></div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-[#30363d]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center animate-pulse">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight text-white">OS DAILY <span class="text-blue-400 font-mono text-sm">v2.6.22</span></h1>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 text-sm font-mono text-gray-400">
+                <span class="hidden md:inline-block px-2 py-1 rounded bg-[#21262d] border border-[#30363d]">SYS.STATUS: ONLINE</span>
+                <span id="clock" class="text-blue-400">00:00:00</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+        
+        <!-- Hero Section -->
+        <section class="mb-16 animate-fade-in">
+            <div class="border-l-4 border-blue-500 pl-6 py-2 mb-8">
+                <p class="text-blue-400 font-mono text-sm mb-2">DATE: 2026-05-22 // EDITORIAL</p>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight tracking-tight">
+                    AI Agent 技能链全面爆发：<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">从框架到"反Slop"的内容治理</span>
+                </h2>
+            </div>
+            
+            <div class="glass-panel p-6 rounded-xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <svg class="w-32 h-32 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                </div>
+                <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> 编者按
+                </h3>
+                <div class="prose prose-invert max-w-none text-gray-300 leading-relaxed">
+                    <p class="mb-4">
+                        今日开源热点呈现鲜明的 <span class="text-blue-400 font-bold">"AI Agent基础设施化"</span> 特征。以 <code class="bg-[#21262d] px-1 rounded text-blue-300">obra/superpowers</code>、<code class="bg-[#21262d] px-1 rounded text-blue-300">affaan-m/ECC</code>、<code class="bg-[#21262d] px-1 rounded text-blue-300">anthropics/skills</code> 为代表的项目，正在构建从技能框架、性能优化到公共技能库的全栈生态。
+                    </p>
+                    <p>
+                        与此同时，<span class="text-purple-400 font-bold">AI生成内容的质量治理</span>成为新焦点——<code class="bg-[#21262d] px-1 rounded text-purple-300">Leonxlnx/taste-skill</code> 与 <code class="bg-[#21262d] px-1 rounded text-purple-300">hardikpandya/stop-slop</code> 分别从"提升品味"和"消除AI痕迹"两个维度切入，标志着 Agent 应用从"能生成"向"生成得好"演进。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Grid -->
+        <section class="mb-20">
+            <div class="flex items-center justify-between mb-8 animate-fade-in delay-100">
+                <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+                    <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                    热门项目监测
+                </h3>
+                <div class="flex gap-2">
+                    <button class="px-3 py-1 text-xs font-mono rounded bg-[#21262d] border border-[#30363d] hover:border-blue-500 transition-colors text-blue-400">ALL</button>
+                    <button class="px-3 py-1 text-xs font-mono rounded bg-[#0d1117] border border-[#30363d] hover:border-blue-500 transition-colors text-gray-400">AGENT</button>
+                    <button class="px-3 py-1 text-xs font-mono rounded bg-[#0d1117] border border-[#30363d] hover:border-blue-500 transition-colors text-gray-400">TOOLS</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="repo-grid">
+                <!-- Cards will be injected here by JS -->
+            </div>
+        </section>
+
+        <!-- Analysis Section -->
+        <section class="mb-20 animate-fade-in delay-200">
+            <h3 class="text-2xl font-bold text-white mb-8 flex items-center gap-2">
+                <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                趋势深度解析
+            </h3>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Trend 1 -->
+                <div class="glass-panel p-6 rounded-xl border-t-4 border-blue-500 hover:bg-[#1c2128] transition-colors">
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="text-lg font-bold text-white">Agent 技能层基础设施化</h4>
+                        <span class="text-xs font-mono text-blue-400 bg-blue-400/10 px-2 py-1 rounded">P0 PRIORITY</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">
+                        社区正在构建 <span class="text-white">"Skills as Code"</span> 的新范式。Agent 能力不再内嵌于提示词，而是被抽象为可版本控制、可组合的模块化单元。
+                    </p>
+                    <div class="flex gap-2 mt-auto">
+                        <span class="tag text-blue-300">superpowers</span>
+                        <span class="tag text-blue-300">skills</span>
+                        <span class="tag text-blue-300">harness</span>
+                    </div>
+                </div>
+
+                <!-- Trend 2 -->
+                <div class="glass-panel p-6 rounded-xl border-t-4 border-purple-500 hover:bg-[#1c2128] transition-colors">
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="text-lg font-bold text-white">"反 Slop" 运动兴起</h4>
+                        <span class="text-xs font-mono text-purple-400 bg-purple-400/10 px-2 py-1 rounded">P0 PRIORITY</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">
+                        随着 AI 生成内容泛滥，社区开始系统性治理输出质量。从风格提升到痕迹消除，核心差异化转向内容质感。
+                    </p>
+                    <div class="flex gap-2">
+                        <span class="tag text-purple-300">taste-skill</span>
+                        <span class="tag text-purple-300">stop-slop</span>
+                    </div>
+                </div>
+
+                <!-- Trend 3 -->
+                <div class="glass-panel p-6 rounded-xl border-t-4 border-green-500 hover:bg-[#1c2128] transition-colors">
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="text-lg font-bold text-white">AI IDE 二次开发层竞争</h4>
+                        <span class="text-xs font-mono text-green-400 bg-green-400/10 px-2 py-1 rounded">P1 GROWTH</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">
+                        围绕 Claude Code、Cursor 等工具的"性能调优层"和"工程化插件层"成为新赛道，IDE 本身成为平台。
+                    </p>
+                    <div class="flex gap-2">
+                        <span class="tag text-green-300">ECC</span>
+                        <span class="tag text-green-300">compound-engineering</span>
+                    </div>
+                </div>
+
+                <!-- Trend 4 -->
+                <div class="glass-panel p-6 rounded-xl border-t-4 border-orange-500 hover:bg-[#1c2128] transition-colors">
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="text-lg font-bold text-white">企业级 SaaS 开源替代</h4>
+                        <span class="text-xs font-mono text-orange-400 bg-orange-400/10 px-2 py-1 rounded">P1 GROWTH</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">
+                        以 `twenty` 为代表，传统 SaaS 巨头面临 "AI 原生开源替代" 的跨界打击，采购标准转向 Agent 友好度。
+                    </p>
+                    <div class="flex gap-2">
+                        <span class="tag text-orange-300">twenty</span>
+                        <span class="tag text-orange-300">CRM</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Priority Matrix -->
+        <section class="mb-12 animate-fade-in delay-300">
+            <div class="glass-panel rounded-xl overflow-hidden">
+                <div class="p-6 border-b border-[#30363d]">
+                    <h3 class="text-xl font-bold text-white">2026 Q2 关注优先级矩阵</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-gray-400">
+                        <thead class="bg-[#161b22] text-gray-200 uppercase font-mono text-xs">
+                            <tr>
+                                <th class="px-6 py-4">优先级</th>
+                                <th class="px-6 py-4">方向</th>
+                                <th class="px-6 py-4">代表项目</th>
+                                <th class="px-6 py-4">成熟度</th>
+                                <th class="px-6 py-4">机会类型</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-[#30363d]">
+                            <tr class="hover:bg-[#1c2128] transition-colors">
+                                <td class="px-6 py-4"><span class="text-red-400 font-bold">P0</span></td>
+                                <td class="px-6 py-4 text-white">Agent 技能框架与编排</td>
+                                <td class="px-6 py-4 font-mono text-xs">superpowers, skills</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 rounded bg-yellow-500/10 text-yellow-500 text-xs">早期</span></td>
+                                <td class="px-6 py-4">基础设施、标准制定</td>
+                            </tr>
+                            <tr class="hover:bg-[#1c2128] transition-colors">
+                                <td class="px-6 py-4"><span class="text-red-400 font-bold">P0</span></td>
+                                <td class="px-6 py-4 text-white">AI 内容质量治理</td>
+                                <td class="px-6 py-4 font-mono text-xs">taste-skill, stop-slop</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 rounded bg-green-500/10 text-green-500 text-xs">萌芽</span></td>
+                                <td class="px-6 py-4">平台中间件、合规工具</td>
+                            </tr>
+                            <tr class="hover:bg-[#1c2128] transition-colors">
+                                <td class="px-6 py-4"><span class="text-blue-400 font-bold">P1</span></td>
+                                <td class="px-6 py-4 text-white">AI IDE 性能优化</td>
+                                <td class="px-6 py-4 font-mono text-xs">ECC, compound-eng</td>
+                                <td class="px-6 py-4"><span class="px-2 py-1 rounded bg-blue-500/10 text-blue-500 text-xs">成长期</span></td>
+                                <td class="px-6 py-4">开发者工具、生态位</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-[#30363d] bg-[#0d1117] py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-500 text-sm font-mono">
+            <p> GENERATED BY AI FRONTEND DESIGNER // DATA SOURCE: GITHUB TRENDING</p>
+            <p class="mt-2 text-xs text-gray-600">SYSTEM TIME: <span id="footer-time"></span></p>
+        </div>
+    </footer>
+
+    <script>
+        // Data Source
+        const repos = [
+            { id: 1, name: "codecrafters-io/build-your-own-x", desc: "Master programming by recreating your favorite technologies from scratch.", lang: "Markdown", stars: "506,638", category: "编程学习/教育", langClass: "lang-md" },
+            { id: 2, name: "obra/superpowers", desc: "An agentic skills framework & software development methodology that works.", lang: "Shell", stars: "211,260", category: "AI Agent/框架", langClass: "lang-shell" },
+            { id: 3, name: "affaan-m/ECC", desc: "The agent harness performance optimization system for Claude Code, Codex, Cursor.", lang: "JavaScript", stars: "197,440", category: "AI Agent/性能优化", langClass: "lang-js" },
+            { id: 4, name: "DigitalPlatDev/FreeDomain", desc: "DigitalPlat FreeDomain: Free Domain For Everyone", lang: "HTML", stars: "170,857", category: "网络工具/域名", langClass: "lang-html" },
+            { id: 5, name: "anthropics/skills", desc: "Public repository for Agent Skills", lang: "Python", stars: "142,974", category: "AI Agent/技能库", langClass: "lang-python" },
+            { id: 6, name: "microsoft/markitdown", desc: "Python tool for converting files and office documents to Markdown.", lang: "Python", stars: "127,907", category: "开发工具/文档转换", langClass: "lang-python" },
+            { id: 7, name: "unclecode/crawl4ai", desc: "Open-source LLM Friendly Web Crawler & Scraper.", lang: "Python", stars: "67,030", category: "AI/爬虫数据", langClass: "lang-python" },
+            { id: 8, name: "harry0703/MoneyPrinterTurbo", desc: "利用AI大模型，一键生成高清短视频。", lang: "Python", stars: "66,835", category: "AI/视频生成", langClass: "lang-python" },
+            { id: 9, name: "byoungd/English-level-up-tips", desc: "An advanced guide to learn English which might benefit you a lot.", lang: "—", stars: "48,732", category: "教育/英语学习", langClass: "text-gray-500" },
+            { id: 10, name: "twentyhq/twenty", desc: "The open alternative to Salesforce, designed for AI.", lang: "TypeScript", stars: "47,926", category: "CRM/企业应用", langClass: "lang-ts" },
+            { id: 11, name: "Lum1104/Understand-Anything", desc: "Turn any code into an interactive knowledge graph.", lang: "TypeScript", stars: "43,079", category: "AI/代码可视化", langClass: "lang-ts" },
+            { id: 12, name: "Leonxlnx/taste-skill", desc: "Gives your AI good taste. Stops generating boring, generic slop.", lang: "Shell", stars: "26,686", category: "AI Agent/内容优化", langClass: "lang-shell" },
+            { id: 13, name: "EveryInc/compound-engineering-plugin", desc: "Official Compound Engineering plugin for Claude Code, Codex, Cursor.", lang: "TypeScript", stars: "17,816", category: "AI/IDE插件", langClass: "lang-ts" },
+            { id: 14, name: "hardikpandya/stop-slop", desc: "A skill file for removing AI tells from prose", lang: "—", stars: "6,491", category: "AI/文本优化", langClass: "text-gray-500" },
+            { id: 15, name: "revfactory/harness", desc: "A meta-skill that designs domain-specific agent teams.", lang: "HTML", stars: "3,950", category: "AI Agent/团队协作", langClass: "lang-html" },
+            { id: 16, name: "OpenMOSS/MOSS-TTS", desc: "Open-source speech and sound generation model family.", lang: "Python", stars: "2,301", category: "AI/语音合成", langClass: "lang-python" }
+        ];
+
+        // Render Cards
+        const grid = document.getElementById('repo-grid');
+        
+        repos.forEach((repo, index) => {
+            const card = document.createElement('div');
+            card.className = `repo-card rounded-xl p-5 flex flex-col h-full animate-fade-in`;
+            card.style.animationDelay = `${index * 0.05}s`;
+            
+            // Format stars
+            const starsDisplay = repo.stars.length > 6 ? repo.stars.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : repo.stars;
+
+            card.innerHTML = `
+                <div class="flex justify-between items-start mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-mono text-gray-500">#${repo.id}</span>
+                        <h4 class="font-bold text-blue-400 text-sm truncate hover:underline cursor-pointer" title="${repo.name}">${repo.name.split('/')[1] || repo.name}</h4>
+                    </div>
+                    <div class="flex items-center gap-1 text-xs text-gray-400 bg-[#0d1117] px-2 py-1 rounded-full border border-[#30363d]">
+                        <svg class="w-3 h-3 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        ${starsDisplay}
+                    </div>
+                </div>
+                <p class="text-gray-400 text-xs mb-4 flex-grow line-clamp-3 leading-relaxed">${repo.desc}</p>
+                <div class="mt-auto pt-4 border-t border-[#30363d] flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full ${repo.lang === 'Python' ? 'bg-blue-500' : repo.lang === 'TypeScript' ? 'bg-blue-400' : repo.lang === 'JavaScript' ? 'bg-yellow-400' : repo.lang === 'Shell' ? 'bg-green-400' : 'bg-gray-500'}"></span>
+                        <span class="${repo.langClass} font-mono">${repo.lang}</span>
+                    </div>
+                    <span class="text-gray-500 truncate max-w-[100px]">${repo.category}</span>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+        // Clock
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { hour12: false });
+            document.getElementById('clock').innerText = timeString;
+            document.getElementById('footer-time').innerText = now.toISOString();
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // Canvas Particle Animation (Tech Nodes)
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        document.getElementById('canvas-container').appendChild(canvas);
+
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2;
+                this.color = Math.random() > 0.5 ? 'rgba(88, 166, 255, ' : 'rgba(163, 113, 247, '; 
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color + '0.5)';
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            const count = Math.floor(width * height / 15000); // Density
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                // Draw connections
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(48, 54, 61, ${1 - distance / 100})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            resize();
+            initParticles();
+        });
+
+        resize();
+        initParticles();
+        animate();
+
+        // Intersection Observer for Scroll Animations
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-fade-in').forEach(el => {
+            el.style.opacity = '0'; // Initial state handled by CSS animation usually, but for scroll we might want to re-trigger or ensure visibility
+            // Actually, the CSS animation handles the initial load. 
+            // For this simple page, the CSS delays are enough, but let's ensure elements don't get stuck if JS fails.
+            // We'll leave the CSS animation as primary.
+        });
+
+    </script>
+</body>
+</html>
