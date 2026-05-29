@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub 热点日报 | 2026-05-21</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bg: '#0d1117',
+                        surface: '#161b22',
+                        surfaceHover: '#1c2128',
+                        border: '#30363d',
+                        borderLight: '#484f58',
+                        text: '#c9d1d9',
+                        textMuted: '#8b949e',
+                        textDim: '#6e7681',
+                        accent: '#58a6ff',
+                        accentGlow: 'rgba(88, 166, 255, 0.15)',
+                        success: '#3fb950',
+                        warning: '#d29922',
+                        danger: '#f85149',
+                        purple: '#a371f7',
+                        cyan: '#39c5cf',
+                        pink: '#f778ba',
+                        orange: '#e3b341'
+                    },
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'monospace'],
+                        sans: ['Noto Sans SC', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --accent: #58a6ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: var(--bg);
+            color: #c9d1d9;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ---- Particle Canvas ---- */
+        #particle-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        /* ---- Scrollbar ---- */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #30363d;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #484f58;
+        }
+
+        /* ---- Animations ---- */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes slideRight {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(88,166,255,0.1); }
+            50% { box-shadow: 0 0 40px rgba(88,166,255,0.2); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        @keyframes borderRotate {
+            0% { --angle: 0deg; }
+            100% { --angle: 360deg; }
+        }
+
+        .animate-fade-up {
+            opacity: 0;
+            animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .animate-fade-in {
+            opacity: 0;
+            animation: fadeIn 0.6s ease forwards;
+        }
+        .animate-scale-in {
+            opacity: 0;
+            animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .animate-slide-right {
+            opacity: 0;
+            animation: slideRight 0.5s ease forwards;
+        }
+
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        .delay-500 { animation-delay: 0.5s; }
+        .delay-600 { animation-delay: 0.6s; }
+        .delay-700 { animation-delay: 0.7s; }
+
+        /* ---- Card Styles ---- */
+        .repo-card {
+            background: var(--surface);
+            border: 1px solid #30363d;
+            border-radius: 14px;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .repo-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 14px;
+            padding: 1px;
+            background: linear-gradient(135deg, transparent 40%, rgba(88,166,255,0.08) 50%, transparent 60%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+        .repo-card:hover {
+            transform: translateY(-6px);
+            border-color: #484f58;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(88,166,255,0.06);
+        }
+        .repo-card:hover::before {
+            opacity: 1;
+        }
+
+        /* ---- Rank Badge ---- */
+        .rank-badge {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .rank-1 { background: linear-gradient(135deg, #e3b34120, #e3b34110); color: #e3b341; border: 1px solid #e3b34130; }
+        .rank-2 { background: linear-gradient(135deg, #8b949e20, #8b949e10); color: #c9d1d9; border: 1px solid #8b949e30; }
+        .rank-3 { background: linear-gradient(135deg, #d2992220, #d2992210); color: #d29922; border: 1px solid #d2992230; }
+        .rank-other { background: #21262d; color: #8b949e; border: 1px solid #30363d; }
+
+        /* ---- Language Dots ---- */
+        .lang-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 6px currentColor;
+        }
+
+        /* ---- Section Title ---- */
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            border-radius: 2px;
+        }
+
+        /* ---- Tag ---- */
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            border: 1px solid;
+            white-space: nowrap;
+        }
+
+        /* ---- Insight Card ---- */
+        .insight-card {
+            background: linear-gradient(145deg, rgba(22,27,34,0.9), rgba(13,17,23,0.95));
+            border: 1px solid #30363d;
+            border-radius: 16px;
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .insight-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .insight-card:hover {
+            transform: translateY(-4px);
+            border-color: #484f58;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.35);
+        }
+        .insight-card:hover::after {
+            opacity: 0.6;
+        }
+
+        /* ---- Chart Bars ---- */
+        .chart-bar {
+            height: 8px;
+            border-radius: 4px;
+            transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .chart-bar::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        /* ---- Highlight Box ---- */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(88,166,255,0.06), rgba(163,113,247,0.04));
+            border: 1px solid rgba(88,166,255,0.12);
+            border-radius: 12px;
+            padding: 20px 24px;
+            position: relative;
+        }
+        .highlight-box::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 12px;
+            bottom: 12px;
+            width: 3px;
+            background: linear-gradient(180deg, var(--accent), var(--purple));
+            border-radius: 0 2px 2px 0;
+        }
+
+        /* ---- Glow Text ---- */
+        .glow-text {
+            text-shadow: 0 0 30px rgba(88,166,255,0.3);
+        }
+
+        /* ---- Grid Pattern ---- */
+        .grid-pattern {
+            background-image: 
+                linear-gradient(rgba(48,54,61,0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(48,54,61,0.15) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* ---- Star Counter ---- */
+        .star-count {
+            font-family: 'Space Grotesk', sans-serif;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 768px) {
+            .repo-card { padding: 16px !important; }
+            .insight-card { padding: 20px !important; }
+        }
+
+        /* ---- Selection ---- */
+        ::selection {
+            background: rgba(88,166,255,0.25);
+            color: #fff;
+        }
+    </style>
+</head>
+<body class="grid-pattern">
+
+    <!-- Particle Background -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Header -->
+    <header class="relative z-10 pt-12 pb-8 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <!-- Top Bar -->
+            <div class="flex items-center justify-between mb-10 animate-fade-in">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent/20 to-purple/20 border border-accent/20 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="text-[11px] font-mono text-textDim tracking-widest uppercase">Daily Report</div>
+                        <div class="text-sm font-medium text-textMuted">GitHub Trending Intelligence</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-lg bg-surface border border-border">
+                        <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+                        <span class="text-xs font-mono text-textMuted">LIVE</span>
+                    </div>
+                    <time class="font-mono text-sm text-textMuted tabular-nums" datetime="2026-05-21">2026-05-21</time>
+                </div>
+            </div>
+
+            <!-- Main Title -->
+            <div class="animate-fade-up delay-100">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/8 border border-accent/15 text-accent text-xs font-medium mb-6">
+                    <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
+                    双核驱动格局
+                </div>
+                <h1 class="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight mb-4 glow-text">
+                    GitHub 热点日报
+                </h1>
+                <p class="text-lg sm:text-xl text-textMuted max-w-3xl leading-relaxed">
+                    Agent 工程化席卷开源社区，<span class="text-accent font-medium">"造轮子"教育</span>长盛不衰
+                </p>
+            </div>
+
+            <!-- Editor's Note -->
+            <div class="mt-10 animate-fade-up delay-200">
+                <div class="highlight-box">
+                    <p class="text-text leading-relaxed text-[15px]">
+                        今日 GitHub 趋势榜单呈现鲜明的<strong class="text-white">"双核驱动"格局</strong>。一方面，<code class="text-accent font-mono text-sm bg-accent/8 px-1.5 py-0.5 rounded">build-your-own-x</code> 以超 50 万星稳居榜首，印证了"通过再造实现深度学习"的编程教育理念在开发者社区中的持久生命力；另一方面，<strong class="text-white">AI Agent 相关项目呈爆发态势</strong>，在前 16 名中占据 9 席，标志着社区焦点正从基础模型快速转向 Agent 工程化、技能编排（Skills）与开发工具链。
+                    </p>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="tag bg-purple/8 text-purple border-purple/20">Python 5 席</span>
+                        <span class="tag bg-accent/8 text-accent border-accent/20">TypeScript 4 席</span>
+                        <span class="tag bg-warning/8 text-warning border-warning/20">Agent 9 席</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="relative z-10 px-4 sm:px-6 lg:px-8 pb-20">
+        <div class="max-w-7xl mx-auto space-y-16">
+
+            <!-- Section: Trending Projects -->
+            <section>
+                <div class="flex items-end justify-between mb-8 animate-fade-up delay-300">
+                    <h2 class="section-title text-2xl sm:text-3xl text-white">今日热门项目</h2>
+                    <span class="text-xs font-mono text-textDim hidden sm:block">TOP 16 / 16</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" id="repo-grid">
+                    <!-- Cards injected by JS -->
+                </div>
+            </section>
+
+            <!-- Section: Analytics -->
+            <section class="animate-fade-up delay-400">
+                <h2 class="section-title text-2xl sm:text-3xl text-white mb-8">数据洞察</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Language Distribution -->
+                    <div class="insight-card lg:col-span-2">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="font-display font-semibold text-white text-lg">语言分布</h3>
+                            <span class="text-xs font-mono text-textDim">TOP 16</span>
+                        </div>
+                        <div class="space-y-5" id="lang-chart">
+                            <!-- Bars injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Category Breakdown -->
+                    <div class="insight-card">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="font-display font-semibold text-white text-lg">领域占比</h3>
+                        </div>
+                        <div class="relative w-48 h-48 mx-auto mb-6" id="pie-chart-container">
+                            <canvas id="pieChart" width="192" height="192"></canvas>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="text-3xl font-display font-bold text-white" id="agent-percent">56%</div>
+                                    <div class="text-xs text-textDim mt-0.5">AI Agent</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-3" id="category-legend">
+                            <!-- Legend items injected by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Analyst Insights -->
+            <section class="animate-fade-up delay-500">
+                <div class="mb-2">
+                    <span class="text-xs font-mono text-accent tracking-widest uppercase">Analyst Intelligence</span>
+                </div>
+                <h2 class="section-title text-2xl sm:text-3xl text-white mb-8">分析师洞察</h2>
+
+                <!-- Core Judgment -->
+                <div class="insight-card mb-6 border-l-4 border-l-accent">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-display font-bold text-white text-lg mb-2">核心判断</h3>
+                            <p class="text-text leading-relaxed">开源社区正经历从<strong class="text-white">"模型崇拜"</strong>到<strong class="text-white">"工程落地"</strong>的硬切换。<span class="text-accent font-medium">Agent 技能编排（Skills-as-Code）</span>成为新主战场，而"造轮子"式编程教育证明底层逻辑训练永不过时。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Three Trends -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="insight-card">
+                        <div class="w-8 h-8 rounded-lg bg-purple/10 border border-purple/20 flex items-center justify-center mb-4">
+                            <span class="font-display font-bold text-purple text-sm">01</span>
+                        </div>
+                        <h4 class="font-display font-semibold text-white mb-2">Agent 工程化"精耕细作"</h4>
+                        <p class="text-textMuted text-sm leading-relaxed">焦点从通用框架转向垂直技能层。技能文件（Skill Files）正成为新的配置即代码范式。</p>
+                    </div>
+                    <div class="insight-card">
+                        <div class="w-8 h-8 rounded-lg bg-cyan/10 border border-cyan/20 flex items-center justify-center mb-4">
+                            <span class="font-display font-bold text-cyan text-sm">02</span>
+                        </div>
+                        <h4 class="font-display font-semibold text-white mb-2">AIGC "采编播"闭环</h4>
+                        <p class="text-textMuted text-sm leading-relaxed">数据层 → 内容生成层 → 语音合成层，多模态流水线完整打通，零人工干预内容生产。</p>
+                    </div>
+                    <div class="insight-card">
+                        <div class="w-8 h-8 rounded-lg bg-pink/10 border border-pink/20 flex items-center justify-center mb-4">
+                            <span class="font-display font-bold text-pink text-sm">03</span>
+                        </div>
+                        <h4 class="font-display font-semibold text-white mb-2">开源渗透商业核心</h4>
+                        <p class="text-textMuted text-sm leading-relaxed">AI 能力加持下的开源项目，以更高自动化率重构商业软件成本结构，不再是廉价替代品。</p>
+                    </div>
+                </div>
+
+                <!-- Tech Stack -->
+                <div class="insight-card mb-6">
+                    <h3 class="font-display font-semibold text-white text-lg mb-4">技术栈分化</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="p-4 rounded-xl bg-surface border border-border">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="lang-dot" style="background:#3572A5;color:#3572A5"></span>
+                                <span class="font-mono font-semibold text-white">Python</span>
+                                <span class="ml-auto text-xs font-mono text-textDim">5 席</span>
+                            </div>
+                            <p class="text-xs text-textMuted">AI 后端、数据获取与内容生成</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-surface border border-border">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="lang-dot" style="background:#3178c6;color:#3178c6"></span>
+                                <span class="font-mono font-semibold text-white">TypeScript</span>
+                                <span class="ml-auto text-xs font-mono text-textDim">4 席</span>
+                            </div>
+                            <p class="text-xs text-textMuted">插件生态与企业级应用（CRM）</p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-surface border border-border">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="lang-dot" style="background:#89e051;color:#89e051"></span>
+                                <span class="font-mono font-semibold text-white">Shell / HTML</span>
+                                <span class="ml-auto text-xs font-mono text-textDim">3 席</span>
+                            </div>
+                            <p class="text-xs text-textMuted">Agent 配置与基础设施服务</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Watch List -->
+                <div class="insight-card">
+                    <h3 class="font-display font-semibold text-white text-lg mb-5">值得高度关注的新项目</h3>
+                    <div class="space-y-4" id="watch-list">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer Summary -->
+            <section class="animate-fade-up delay-600">
+                <div class="insight-card text-center py-10">
+                    <p class="text-lg text-text leading-relaxed max-w-3xl mx-auto">
+                        <span class="text-accent font-semibold">一句话总结：</span>
+                        2026 年中，开源社区的核心叙事是<strong class="text-white">"用 Agent 技能编排解决具体问题，用开源替代专有商业软件"</strong>——谁掌握细分场景的技能定义权，谁就掌握下一个周期的开发者流量。
+                    </p>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="text-center pt-8 pb-12 border-t border-border animate-fade-in delay-700">
+                <div class="flex items-center justify-center gap-2 mb-3">
+                    <div class="w-2 h-2 rounded-full bg-accent"></div>
+                    <span class="font-mono text-xs text-textDim tracking-widest uppercase">GitHub Trending Daily</span>
+                </div>
+                <p class="text-xs text-textDim">Generated with intelligence · 2026-05-21</p>
+            </footer>
+        </div>
+    </main>
+
+    <script>
+        // ==================== DATA ====================
+        const repos = [
+            { rank: 1, name: 'codecrafters-io/build-your-own-x', desc: 'Master programming by recreating your favorite technologies from scratch.', lang: 'Markdown', stars: 506592, category: '编程教育', color: '#083fa1' },
+            { rank: 2, name: 'obra/superpowers', desc: 'An agentic skills framework & software development methodology that works.', lang: 'Shell', stars: 211157, category: 'AI Agent框架', color: '#89e051' },
+            { rank: 3, name: 'affaan-m/ECC', desc: 'The agent harness performance optimization system for Claude Code, Codex, Cursor and beyond.', lang: 'JavaScript', stars: 197353, category: 'AI Agent优化', color: '#f1e05a' },
+            { rank: 4, name: 'DigitalPlatDev/FreeDomain', desc: 'DigitalPlat FreeDomain: Free Domain For Everyone', lang: 'HTML', stars: 170782, category: '网络基础设施', color: '#e34c26' },
+            { rank: 5, name: 'anthropics/skills', desc: 'Public repository for Agent Skills', lang: 'Python', stars: 142886, category: 'AI Agent技能库', color: '#3572A5' },
+            { rank: 6, name: 'microsoft/markitdown', desc: 'Python tool for converting files and office documents to Markdown.', lang: 'Python', stars: 127814, category: '文档处理工具', color: '#3572A5' },
+            { rank: 7, name: 'unclecode/crawl4ai', desc: '🚀🤖 Crawl4AI: Open-source LLM Friendly Web Crawler & Scraper', lang: 'Python', stars: 66978, category: '网络爬虫/数据获取', color: '#3572A5' },
+            { rank: 8, name: 'harry0703/MoneyPrinterTurbo', desc: '利用AI大模型，一键生成高清短视频', lang: 'Python', stars: 66550, category: 'AIGC/视频生成', color: '#3572A5' },
+            { rank: 9, name: 'byoungd/English-level-up-tips', desc: 'An advanced guide to learn English which might benefit you a lot', lang: '-', stars: 48605, category: '教育/语言学习', color: '#8b949e' },
+            { rank: 10, name: 'twentyhq/twenty', desc: 'The open alternative to Salesforce, designed for AI.', lang: 'TypeScript', stars: 47889, category: 'CRM/企业应用', color: '#3178c6' },
+            { rank: 11, name: 'Lum1104/Understand-Anything', desc: 'Graphs that teach > graphs that impress. Turn any code into an interactive knowledge graph.', lang: 'TypeScript', stars: 42894, category: '代码智能/知识图谱', color: '#3178c6' },
+            { rank: 12, name: 'Leonxlnx/taste-skill', desc: 'Taste-Skill - gives your AI good taste. Stops the AI from generating boring, generic slop.', lang: 'Shell', stars: 26552, category: 'AI内容优化', color: '#89e051' },
+            { rank: 13, name: 'EveryInc/compound-engineering-plugin', desc: 'Official Compound Engineering plugin for Claude Code, Codex, Cursor, and more.', lang: 'TypeScript', stars: 17792, category: 'AI开发插件', color: '#3178c6' },
+            { rank: 14, name: 'hardikpandya/stop-slop', desc: 'A skill file for removing AI tells from prose', lang: '-', stars: 6456, category: 'AI文本优化', color: '#8b949e' },
+            { rank: 15, name: 'revfactory/harness', desc: 'A meta-skill that designs domain-specific agent teams and generates the skills they use.', lang: 'HTML', stars: 3916, category: 'AI Agent编排', color: '#e34c26' },
+            { rank: 16, name: 'OpenMOSS/MOSS-TTS', desc: 'Open-source speech and sound generation model family for high-fidelity, expressive TTS.', lang: 'Python', stars: 2274, category: 'AI语音合成', color: '#3572A5' }
+        ];
+
+        const watchList = [
+            { name: 'obra/superpowers', highlight: '不仅是框架，更是一套 Agentic 软件工程方法论，可能定义未来 AI 协作开发的工作流标准。', color: 'purple' },
+            { name: 'affaan-m/ECC', highlight: '针对 Claude Code / Codex / Cursor 的 Harness 性能优化，解决当前 AI 编程助手"慢"和"贵"的痛点，工程价值极高。', color: 'accent' },
+            { name: 'Lum1104/Understand-Anything', highlight: '"Graphs that teach" 理念将代码库转为交互知识图谱，可能成为 AI 编程助手下一代代码理解的标准交互层。', color: 'cyan' },
+            { name: 'revfactory/harness', highlight: '元技能（Meta-skill）编排，自动设计领域专属 Agent 团队并生成其技能集，代表 Agent 自动化构建的高阶方向。', color: 'pink' }
+        ];
+
+        const langStats = [
+            { name: 'Python', count: 5, color: '#3572A5', width: 100 },
+            { name: 'TypeScript', count: 4, color: '#3178c6', width: 80 },
+            { name: 'Shell', count: 2, color: '#89e051', width: 40 },
+            { name: 'HTML', count: 2, color: '#e34c26', width: 40 },
+            { name: 'Markdown / Other', count: 3, color: '#8b949e', width: 60 }
+        ];
+
+        const categoryData = [
+            { name: 'AI Agent 相关', count: 9, color: '#58a6ff' },
+            { name: '编程教育', count: 2, color: '#e3b341' },
+            { name: '基础设施 / 工具', count: 3, color: '#3fb950' },
+            { name: '其他', count: 2, color: '#8b949e' }
+        ];
+
+        // ==================== UTILS ====================
+        function formatStars(n) {
+            if (n >= 10000) return (n / 1000).toFixed(1) + 'k';
+            return n.toLocaleString();
+        }
+
+        function getRankClass(rank) {
+            if (rank === 1) return 'rank-1';
+            if (rank === 2) return 'rank-2';
+            if (rank === 3) return 'rank-3';
+            return 'rank-other';
+        }
+
+        function getCategoryTagColor(cat) {
+            if (cat.includes('AI Agent') || cat.includes('AI ')) return 'bg-accent/8 text-accent border-accent/20';
+            if (cat.includes('编程') || cat.includes('教育')) return 'bg-warning/8 text-warning border-warning/20';
+            if (cat.includes('AIGC') || cat.includes('视频') || cat.includes('语音')) return 'bg-purple/8 text-purple border-purple/20';
+            if (cat.includes('基础设施') || cat.includes('网络')) return 'bg-success/8 text-success border-success/20';
+            if (cat.includes('CRM') || cat.includes('企业')) return 'bg-cyan/8 text-cyan border-cyan/20';
+            return 'bg-textDim/8 text-textDim border-textDim/20';
+        }
+
+        // ==================== RENDER ====================
+        function renderRepos() {
+            const grid = document.getElementById('repo-grid');
+            repos.forEach((repo, i) => {
+                const card = document.createElement('div');
+                card.className = 'repo-card p-5 animate-fade-up';
+                card.style.animationDelay = `${0.3 + i * 0.05}s`;
+                const shortName = repo.name.split('/')[1] || repo.name;
+
+                card.innerHTML = `
+                    <div class="flex items-start gap-3 mb-3">
+                        <div class="rank-badge ${getRankClass(repo.rank)}">${repo.rank}</div>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center gap-2 mb-1">
+                                <h3 class="font-mono font-semibold text-white text-sm truncate" title="${repo.name}">${shortName}</h3>
+                            </div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="tag ${getCategoryTagColor(repo.category)}">${repo.category}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-textMuted text-sm leading-relaxed mb-4 line-clamp-2">${repo.desc}</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-border">
+                        <div class="flex items-center gap-2">
+                            ${repo.lang !== '-' ? `<span class="lang-dot" style="background:${repo.color};color:${repo.color}"></span>` : ''}
+                            <span class="text-xs text-textDim font-mono">${repo.lang}</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <svg class="w-3.5 h-3.5 text-warning" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            <span class="star-count text-sm font-semibold text-white" data-target="${repo.stars}">${formatStars(repo.stars)}</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderLangChart() {
+            const container = document.getElementById('lang-chart');
+            langStats.forEach((stat, i) => {
+                const row = document.createElement('div');
+                row.className = 'animate-slide-right';
+                row.style.animationDelay = `${0.5 + i * 0.1}s`;
+                row.innerHTML = `
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="lang-dot" style="background:${stat.color};color:${stat.color}"></span>
+                            <span class="text-sm text-text font-medium">${stat.name}</span>
+                        </div>
+                        <span class="text-xs font-mono text-textDim">${stat.count} 个项目</span>
+                    </div>
+                    <div class="h-2 bg-surface rounded-full overflow-hidden border border-border">
+                        <div class="chart-bar h-full rounded-full" style="width:0%; background: linear-gradient(90deg, ${stat.color}90, ${stat.color});" data-width="${stat.width}%"></div>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function renderWatchList() {
+            const container = document.getElementById('watch-list');
+            const colorMap = {
+                purple: { bg: 'bg-purple/8', border: 'border-purple/20', text: 'text-purple', dot: 'bg-purple' },
+                accent: { bg: 'bg-accent/8', border: 'border-accent/20', text: 'text-accent', dot: 'bg-accent' },
+                cyan: { bg: 'bg-cyan/8', border: 'border-cyan/20', text: 'text-cyan', dot: 'bg-cyan' },
+                pink: { bg: 'bg-pink/8', border: 'border-pink/20', text: 'text-pink', dot: 'bg-pink' }
+            };
+            watchList.forEach((item, i) => {
+                const c = colorMap[item.color];
+                const div = document.createElement('div');
+                div.className = `flex items-start gap-3 p-4 rounded-xl ${c.bg} border ${c.border} animate-fade-up`;
+                div.style.animationDelay = `${0.6 + i * 0.1}s`;
+                div.innerHTML = `
+                    <div class="w-2 h-2 rounded-full ${c.dot} mt-2 flex-shrink-0"></div>
+                    <div class="min-w-0">
+                        <code class="font-mono text-sm font-semibold ${c.text}">${item.name}</code>
+                        <p class="text-textMuted text-sm mt-1 leading-relaxed">${item.highlight}</p>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function renderCategoryLegend() {
+            const container = document.getElementById('category-legend');
+            categoryData.forEach(cat => {
+                const div = document.createElement('div');
+                div.className = 'flex items-center justify-between';
+                div.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full" style="background:${cat.color}"></span>
+                        <span class="text-sm text-text">${cat.name}</span>
+                    </div>
+                    <span class="text-xs font-mono text-textDim">${cat.count}</span>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // ==================== PIE CHART ====================
+        function drawPieChart() {
+            const canvas = document.getElementById('pieChart');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const size = 192;
+            canvas.width = size * dpr;
+            canvas.height = size * dpr;
+            canvas.style.width = size + 'px';
+            canvas.style.height = size + 'px';
+            ctx.scale(dpr, dpr);
+
+            const total = categoryData.reduce((s, c) => s + c.count, 0);
+            let currentAngle = -Math.PI / 2;
+            const centerX = size / 2;
+            const centerY = size / 2;
+            const radius = size / 2 - 8;
+            const innerRadius = radius * 0.65;
+
+            categoryData.forEach(cat => {
+                const sliceAngle = (cat.count / total) * Math.PI * 2;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+                ctx.arc(centerX, centerY, innerRadius, currentAngle + sliceAngle, currentAngle, true);
+                ctx.closePath();
+                ctx.fillStyle = cat.color;
+                ctx.fill();
+                currentAngle += sliceAngle;
+            });
+        }
+
+        // ==================== PARTICLES ====================
+        function initParticles() {
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let mouse = { x: -1000, y: -1000 };
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            document.addEventListener('mousemove', e => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+            });
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.vx = (Math.random() - 0.5) * 0.3;
+                    this.vy = (Math.random() - 0.5) * 0.3;
+                    this.radius = Math.random() * 1.5 + 0.5;
+                    this.alpha = Math.random() * 0.4 + 0.1;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(88, 166, 255, ${this.alpha})`;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 60; i++) particles.push(new Particle());
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+
+                // Draw connections
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 120) {
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.strokeStyle = `rgba(88, 166, 255, ${0.06 * (1 - dist / 120)})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.stroke();
+                        }
+                    }
+                    // Mouse connection
+                    const mdx = particles[i].x - mouse.x;
+                    const mdy = particles[i].y - mouse.y;
+                    const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+                    if (mdist < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.strokeStyle = `rgba(88, 166, 255, ${0.1 * (1 - mdist / 150)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // ==================== ANIMATE BARS ====================
+        function animateBars() {
+            setTimeout(() => {
+                document.querySelectorAll('.chart-bar').forEach(bar => {
+                    bar.style.width = bar.dataset.width;
+                });
+            }, 800);
+        }
+
+        // ==================== STAR COUNTER ====================
+        function animateStarCounters() {
+            const counters = document.querySelectorAll('.star-count[data-target]');
+            counters.forEach(counter => {
+                const target = parseInt(counter.dataset.target);
+                const duration = 1500;
+                const start = performance.now();
+                const startVal = 0;
+
+                function update(now) {
+                    const elapsed = now - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    const current = Math.floor(startVal + (target - startVal) * eased);
+                    counter.textContent = formatStars(current);
+                    if (progress < 1) requestAnimationFrame(update);
+                }
+                requestAnimationFrame(update);
+            });
+        }
+
+        // ==================== INIT ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            renderRepos();
+            renderLangChart();
+            renderWatchList();
+            renderCategoryLegend();
+            drawPieChart();
+            initParticles();
+            animateBars();
+            animateStarCounters();
+        });
+    </script>
+</body>
+</html>

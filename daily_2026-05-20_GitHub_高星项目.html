@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开源星选日报 | 2026-05-20</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#0d1117',
+                            800: '#161b22',
+                            700: '#21262d',
+                            600: '#30363d',
+                            500: '#484f58',
+                        },
+                        accent: {
+                            blue: '#58a6ff',
+                            cyan: '#39d0d8',
+                            purple: '#a371f7',
+                            green: '#3fb950',
+                            orange: '#f0883e',
+                            red: '#f85149',
+                        }
+                    },
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'monospace'],
+                        sans: ['Noto Sans SC', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px rgba(88, 166, 255, 0.2)' },
+                            '100%': { boxShadow: '0 0 20px rgba(88, 166, 255, 0.6), 0 0 40px rgba(88, 166, 255, 0.2)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: 'Noto Sans SC', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        .glass-panel {
+            background: rgba(22, 27, 34, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(48, 54, 61, 0.5);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #58a6ff 0%, #a371f7 50%, #39d0d8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(88, 166, 255, 0.1);
+        }
+        
+        .star-glow {
+            text-shadow: 0 0 10px rgba(240, 136, 62, 0.5);
+        }
+        
+        .grid-bg {
+            background-image: 
+                linear-gradient(rgba(48, 54, 61, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(48, 54, 61, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .language-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        
+        .rank-badge {
+            background: linear-gradient(135deg, rgba(88, 166, 255, 0.15), rgba(163, 113, 247, 0.15));
+            border: 1px solid rgba(88, 166, 255, 0.3);
+        }
+        
+        .trend-line {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .trend-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(88, 166, 255, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .insight-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .insight-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #58a6ff, #a371f7, #39d0d8);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .insight-card:hover::before {
+            opacity: 1;
+        }
+        
+        .tag-pill {
+            transition: all 0.3s;
+        }
+        
+        .tag-pill:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(88, 166, 255, 0.3);
+        }
+        
+        .hero-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(88, 166, 255, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0d1117;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #30363d;
+            border-radius: 3px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #484f58;
+        }
+        
+        .number-counter {
+            font-variant-numeric: tabular-nums;
+        }
+    </style>
+</head>
+<body class="custom-scrollbar">
+
+    <!-- Background Effects -->
+    <div class="fixed inset-0 grid-bg pointer-events-none z-0"></div>
+    <div class="hero-glow top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-panel border-b border-dark-600/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-blue to-accent-purple flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <span class="font-bold text-lg tracking-tight text-white">开源星选</span>
+                    <span class="text-xs px-2 py-0.5 rounded-full bg-accent-blue/10 text-accent-blue border border-accent-blue/20 font-mono">DAILY</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex items-center space-x-2 text-sm text-gray-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <span class="font-mono">2026-05-20</span>
+                    </div>
+                    <button onclick="scrollToTop()" class="p-2 rounded-lg hover:bg-dark-700 transition-colors">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center animate-fade-in-up">
+            <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-dark-800/80 border border-dark-600/50 mb-6">
+                <span class="w-2 h-2 rounded-full bg-accent-green animate-pulse"></span>
+                <span class="text-sm text-gray-400 font-mono">今日已更新 16 个项目</span>
+            </div>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black mb-6 leading-tight">
+                <span class="gradient-text">开源星选日报</span>
+            </h1>
+            <p class="text-xl sm:text-2xl text-gray-400 max-w-4xl mx-auto leading-relaxed mb-4">
+                AI Agent全栈工具链崛起，<span class="text-accent-cyan font-semibold">"反Slop"</span>质量运动升温
+            </p>
+            <div class="flex items-center justify-center space-x-4 text-sm text-gray-500 font-mono">
+                <span>2026.05.20</span>
+                <span class="w-1 h-1 rounded-full bg-gray-600"></span>
+                <span>第 142 期</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Editor's Note -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 scroll-reveal">
+        <div class="glass-panel rounded-2xl p-8 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-accent-blue/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+            <div class="relative">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-purple to-accent-blue flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white">编者按</h2>
+                </div>
+                <div class="prose prose-invert max-w-none text-gray-300 leading-relaxed text-base sm:text-lg">
+                    <p class="mb-4">
+                        今日GitHub热榜呈现清晰的<span class="text-accent-blue font-semibold">"AI Agent产业化"</span>与<span class="text-accent-purple font-semibold">"质量反思"</span>双重主线。<code class="px-2 py-0.5 rounded bg-dark-700 text-accent-cyan font-mono text-sm">obra/superpowers</code>、<code class="px-2 py-0.5 rounded bg-dark-700 text-accent-cyan font-mono text-sm">affaan-m/ECC</code> 与 <code class="px-2 py-0.5 rounded bg-dark-700 text-accent-cyan font-mono text-sm">revfactory/harness</code> 分别占据Agent框架、性能优化与元技能编排节点，配合 <code class="px-2 py-0.5 rounded bg-dark-700 text-accent-cyan font-mono text-sm">anthropics/skills</code> 官方技能库，一条完整的开发工具链已然成型。
+                    </p>
+                    <p class="mb-4">
+                        与此同时，社区对AI生成内容的审美疲劳催生新风口：<code class="px-2 py-0.5 rounded bg-dark-700 text-accent-cyan font-mono text-sm">Leonxlnx/taste-skill</code> 与 <code class="px-2 py-0.5 rounded bg-dark-700 text-accent-cyan font-mono text-sm">hardikpandya/stop-slop</code> 从不同维度对抗"AI slop"，标志着开源界从<span class="text-accent-orange">"追求生成效率"</span>转向<span class="text-accent-green">"追求输出品味"</span>。
+                    </p>
+                    <p>
+                        <code class="px-2 py-0.5 rounded bg-dark-700 text-accent-cyan font-mono text-sm">codecrafters-io/build-your-own-x</code> 以超50万星标稳居榜首，再次印证<span class="text-white font-semibold">"动手造轮子"</span>是开发者长盛不衰的进阶信仰。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Cards Grid -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <div class="flex items-center justify-between mb-8 scroll-reveal">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-lg bg-dark-700 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-accent-orange" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-white">热门项目</h2>
+            </div>
+            <div class="flex space-x-2">
+                <button onclick="filterProjects('all')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-all bg-accent-blue/20 text-accent-blue border border-accent-blue/30" data-filter="all">全部</button>
+                <button onclick="filterProjects('agent')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-all text-gray-400 hover:text-white hover:bg-dark-700" data-filter="agent">AI Agent</button>
+                <button onclick="filterProjects('tool')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-all text-gray-400 hover:text-white hover:bg-dark-700" data-filter="tool">工具</button>
+                <button onclick="filterProjects('other')" class="filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-all text-gray-400 hover:text-white hover:bg-dark-700" data-filter="other">其他</button>
+            </div>
+        </div>
+
+        <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <!-- Projects will be inserted here by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Trend Analysis -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 scroll-reveal">
+        <div class="flex items-center space-x-3 mb-8">
+            <div class="w-8 h-8 rounded-lg bg-dark-700 flex items-center justify-center">
+                <svg class="w-4 h-4 text-accent-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-white">趋势分析</h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Trend 1 -->
+            <div class="glass-panel rounded-2xl p-6 insight-card card-hover scroll-reveal">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-accent-blue/10 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-accent-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        </svg>
+                    </div>
+                    <span class="text-xs font-mono text-accent-blue bg-accent-blue/10 px-2 py-1 rounded">基础设施</span>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-3">AI Agent基础设施分层成型</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                    从 <span class="text-accent-cyan font-mono text-xs">obra/superpowers</span> 的方法论框架（21.1万⭐）到 <span class="text-accent-cyan font-mono text-xs">affaan-m/ECC</span> 的IDE性能优化系统，再到 <span class="text-accent-cyan font-mono text-xs">revfactory/harness</span> 的元技能编排工具，AI Agent开发工具链正快速专业化、垂直化。
+                </p>
+                <div class="flex items-center space-x-2 text-xs text-gray-500">
+                    <span class="w-2 h-2 rounded-full bg-accent-green"></span>
+                    <span>工具链成熟度 ↑ 47%</span>
+                </div>
+            </div>
+
+            <!-- Trend 2 -->
+            <div class="glass-panel rounded-2xl p-6 insight-card card-hover scroll-reveal">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-accent-purple/10 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-accent-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <span class="text-xs font-mono text-accent-purple bg-accent-purple/10 px-2 py-1 rounded">质量运动</span>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-3">"反Slop"运动升温</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                    针对AI生成内容同质化问题，<span class="text-accent-cyan font-mono text-xs">Leonxlnx/taste-skill</span> 提出"Taste-Skill"概念，通过提示工程赋予AI"品味"；<span class="text-accent-cyan font-mono text-xs">hardikpandya/stop-slop</span> 则专注于去除文本中的AI痕迹。两者星标合计突破3.3万。
+                </p>
+                <div class="flex items-center space-x-2 text-xs text-gray-500">
+                    <span class="w-2 h-2 rounded-full bg-accent-orange"></span>
+                    <span>社区关注度 ↑ 128%</span>
+                </div>
+            </div>
+
+            <!-- Trend 3 -->
+            <div class="glass-panel rounded-2xl p-6 insight-card card-hover scroll-reveal">
+                <div class="flex items-start justify-between mb-4">
+                    <div class="w-12 h-12 rounded-xl bg-accent-green/10 flex items-center justify-center">
+                        <svg class="w-6 h-6 text-accent-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <span class="text-xs font-mono text-accent-green bg-accent-green/10 px-2 py-1 rounded">企业服务</span>
+                </div>
+                <h3 class="text-lg font-bold text-white mb-3">开源CRM挑战传统SaaS</h3>
+                <p class="text-gray-400 text-sm leading-relaxed mb-4">
+                    <span class="text-accent-cyan font-mono text-xs">twentyhq/twenty</span> 作为Salesforce的开源替代，凭借AI原生设计获得近4.8万星标，企业级开源替代方案在CRM、ERP领域持续渗透，标志着开源软件从"功能替代"转向"架构反超"。
+                </p>
+                <div class="flex items-center space-x-2 text-xs text-gray-500">
+                    <span class="w-2 h-2 rounded-full bg-accent-blue"></span>
+                    <span>企业采用率 ↑ 35%</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Analyst Insights -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 scroll-reveal">
+        <div class="glass-panel rounded-2xl p-8 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-blue via-accent-purple to-accent-cyan"></div>
+            <div class="absolute -bottom-20 -right-20 w-80 h-80 bg-accent-purple/5 rounded-full blur-3xl"></div>
+            
+            <div class="relative">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-orange to-accent-red flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white">分析师洞察</h2>
+                </div>
+
+                <div class="mb-8 p-6 rounded-xl bg-dark-800/50 border border-dark-600/30">
+                    <p class="text-xl font-bold text-white mb-2">核心判断</p>
+                    <p class="text-lg text-accent-cyan font-medium">AI Agent开发进入「工业化分工」阶段，社区同步掀起「去AI味」质量觉醒运动。</p>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="flex space-x-4">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-accent-blue/20 flex items-center justify-center text-accent-blue font-bold text-sm">1</div>
+                        <div>
+                            <h4 class="text-white font-bold mb-2">Agent全栈工具链：从「造轮子」到「造流水线」</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                今日热榜清晰呈现Agent开发的四层架构：<span class="text-accent-blue">方法论层</span>（obra/superpowers）→ <span class="text-accent-purple">性能优化层</span>（affaan-m/ECC）→ <span class="text-accent-green">技能资产层</span>（anthropics/skills）→ <span class="text-accent-orange">元编排层</span>（revfactory/harness）。这标志着Agent开发已从单点提示工程演进为系统化软件工程，「技能即代码」成为新范式。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-accent-purple/20 flex items-center justify-center text-accent-purple font-bold text-sm">2</div>
+                        <div>
+                            <h4 class="text-white font-bold mb-2">「反Slop」运动：效率红利后的审美反噬</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                Leonxlnx/taste-skill 与 hardikpandya/stop-slop 合计突破3.3万星标，揭示关键拐点：社区对AI同质化内容（AI Slop）的耐受度已达临界点。<span class="text-white font-semibold">「去AI味」正从美学偏好升级为产品刚需</span>，提示工程赛道开始分化——不仅要「生成」，更要「生成得有品味」。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-4">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-accent-green/20 flex items-center justify-center text-accent-green font-bold text-sm">3</div>
+                        <div>
+                            <h4 class="text-white font-bold mb-2">企业级开源替代：AI原生重构SaaS</h4>
+                            <p class="text-gray-400 text-sm leading-relaxed">
+                                twentyhq/twenty 以AI原生设计挑战Salesforce，印证开源方案正从「功能替代」转向「架构反超」。配合 microsoft/markitdown、crawl4ai 等基础设施的稳健增长，<span class="text-white font-semibold">AI应用层创新正在倒逼底层企业工具链全面重构</span>。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Worth Watching -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20 scroll-reveal">
+        <div class="flex items-center space-x-3 mb-8">
+            <div class="w-8 h-8 rounded-lg bg-dark-700 flex items-center justify-center">
+                <svg class="w-4 h-4 text-accent-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-white">值得关注的新项目</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass-panel rounded-xl p-6 card-hover group cursor-pointer" onclick="window.open('https://github.com/revfactory/harness', '_blank')">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-mono text-gray-500">元技能编排</span>
+                    <span class="text-accent-orange font-mono text-sm font-bold">3.9k ⭐</span>
+                </div>
+                <h4 class="text-white font-bold mb-2 group-hover:text-accent-blue transition-colors">revfactory/harness</h4>
+                <p class="text-gray-400 text-sm leading-relaxed">元技能编排概念超前，解决Agent团队设计与技能生成的自动化问题，低星标高概念价值，可能是下一代Agent框架的雏形。</p>
+            </div>
+
+            <div class="glass-panel rounded-xl p-6 card-hover group cursor-pointer" onclick="window.open('https://github.com/Lum1104/Understand-Anything', '_blank')">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-mono text-gray-500">知识图谱</span>
+                    <span class="text-accent-orange font-mono text-sm font-bold">4.2k ⭐</span>
+                </div>
+                <h4 class="text-white font-bold mb-2 group-hover:text-accent-blue transition-colors">Lum1104/Understand-Anything</h4>
+                <p class="text-gray-400 text-sm leading-relaxed">将代码库转化为交互式知识图谱，代表AI时代代码理解从「文本阅读」向「图式探索」的范式迁移。</p>
+            </div>
+
+            <div class="glass-panel rounded-xl p-6 card-hover group cursor-pointer" onclick="window.open('https://github.com/OpenMOSS/MOSS-TTS', '_blank')">
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-xs font-mono text-gray-500">语音合成</span>
+                    <span class="text-accent-orange font-mono text-sm font-bold">2.3k ⭐</span>
+                </div>
+                <h4 class="text-white font-bold mb-2 group-hover:text-accent-blue transition-colors">OpenMOSS/MOSS-TTS</h4>
+                <p class="text-gray-400 text-sm leading-relaxed">高保真实时流式TTS，与AI视频生成工具形成「音视频闭环」，短视频全自动生产链路最后一环正在补齐。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Summary Quote -->
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-20 scroll-reveal">
+        <div class="text-center">
+            <div class="inline-block p-8 rounded-2xl glass-panel border border-accent-blue/20">
+                <svg class="w-10 h-10 text-accent-blue/30 mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                </svg>
+                <p class="text-xl sm:text-2xl font-bold text-white leading-relaxed">
+                    当Agent工具链解决<span class="text-accent-blue">「怎么造」</span>的问题时，<br>
+                    <span class="text-accent-purple">「反Slop」</span>运动正在定义<span class="text-accent-cyan">「造什么才值得」</span>。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-dark-600/30 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between">
+            <div class="flex items-center space-x-3 mb-4 sm:mb-0">
+                <div class="w-6 h-6 rounded bg-gradient-to-br from-accent-blue to-accent-purple flex items-center justify-center">
+                    <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <span class="text-sm text-gray-500">开源星选日报 · 2026-05-20</span>
+            </div>
+            <div class="flex items-center space-x-4 text-sm text-gray-600">
+                <span>数据来源于 GitHub Trending</span>
+                <span class="w-1 h-1 rounded-full bg-gray-700"></span>
+                <span>每日更新</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="backToTop" onclick="scrollToTop()" class="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-dark-800 border border-dark-600 shadow-lg flex items-center justify-center text-gray-400 hover:text-white hover:bg-dark-700 transition-all opacity-0 pointer-events-none z-50">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+        </svg>
+    </button>
+
+    <script>
+        // Project Data
+        const projects = [
+            { rank: 1, name: 'codecrafters-io/build-your-own-x', desc: 'Master programming by recreating your favorite technologies from scratch.', lang: 'Markdown', stars: 506589, category: 'education', tags: ['all', 'other'] },
+            { rank: 2, name: 'obra/superpowers', desc: 'An agentic skills framework & software development methodology that works.', lang: 'Shell', stars: 211146, category: 'agent', tags: ['all', 'agent'] },
+            { rank: 3, name: 'affaan-m/ECC', desc: 'The agent harness performance optimization system for Claude Code, Codex, Cursor and beyond.', lang: 'JavaScript', stars: 197345, category: 'agent', tags: ['all', 'agent'] },
+            { rank: 4, name: 'DigitalPlatDev/FreeDomain', desc: 'DigitalPlat FreeDomain: Free Domain For Everyone', lang: 'HTML', stars: 170775, category: 'service', tags: ['all', 'other'] },
+            { rank: 5, name: 'anthropics/skills', desc: 'Public repository for Agent Skills', lang: 'Python', stars: 142879, category: 'agent', tags: ['all', 'agent'] },
+            { rank: 6, name: 'microsoft/markitdown', desc: 'Python tool for converting files and office documents to Markdown.', lang: 'Python', stars: 127805, category: 'tool', tags: ['all', 'tool'] },
+            { rank: 7, name: 'unclecode/crawl4ai', desc: 'Open-source LLM Friendly Web Crawler & Scraper.', lang: 'Python', stars: 66972, category: 'tool', tags: ['all', 'tool'] },
+            { rank: 8, name: 'harry0703/MoneyPrinterTurbo', desc: '利用AI大模型，一键生成高清短视频 Generate short videos with one click using AI LLM.', lang: 'Python', stars: 66537, category: 'ai', tags: ['all', 'other'] },
+            { rank: 9, name: 'byoungd/English-level-up-tips', desc: 'An advanced guide to learn English which might benefit you a lot.', lang: '-', stars: 48597, category: 'education', tags: ['all', 'other'] },
+            { rank: 10, name: 'twentyhq/twenty', desc: 'The open alternative to Salesforce, designed for AI.', lang: 'TypeScript', stars: 47884, category: 'enterprise', tags: ['all', 'tool'] },
+            { rank: 11, name: 'Lum1104/Understand-Anything', desc: 'Turn any code into an interactive knowledge graph you can explore, search, and ask questions about.', lang: 'TypeScript', stars: 42882, category: 'tool', tags: ['all', 'tool'] },
+            { rank: 12, name: 'Leonxlnx/taste-skill', desc: 'Taste-Skill - gives your AI good taste. Stops the AI from generating boring, generic slop.', lang: 'Shell', stars: 26542, category: 'agent', tags: ['all', 'agent'] },
+            { rank: 13, name: 'EveryInc/compound-engineering-plugin', desc: 'Official Compound Engineering plugin for Claude Code, Codex, Cursor, and more.', lang: 'TypeScript', stars: 17791, category: 'agent', tags: ['all', 'agent'] },
+            { rank: 14, name: 'hardikpandya/stop-slop', desc: 'A skill file for removing AI tells from prose.', lang: '-', stars: 6452, category: 'agent', tags: ['all', 'agent'] },
+            { rank: 15, name: 'revfactory/harness', desc: 'A meta-skill that designs domain-specific agent teams, defines specialized agents, and generates the skills they use.', lang: 'HTML', stars: 3912, category: 'agent', tags: ['all', 'agent'] },
+            { rank: 16, name: 'OpenMOSS/MOSS-TTS', desc: 'Open-source speech and sound generation model family for high-fidelity, multi-speaker dialogue, and real-time streaming TTS.', lang: 'Python', stars: 2269, category: 'ai', tags: ['all', 'other'] },
+        ];
+
+        const langColors = {
+            'Python': '#3572A5',
+            'JavaScript': '#f1e05a',
+            'TypeScript': '#2b7489',
+            'HTML': '#e34c26',
+            'Shell': '#89e051',
+            'Markdown': '#083fa1',
+            '-': '#8b949e'
+        };
+
+        const categoryLabels = {
+            'agent': 'AI Agent',
+            'tool': '工具',
+            'education': '教育',
+            'service': '服务',
+            'enterprise': '企业',
+            'ai': 'AI'
+        };
+
+        const categoryColors = {
+            'agent': 'bg-accent-purple/20 text-accent-purple border-accent-purple/30',
+            'tool': 'bg-accent-blue/20 text-accent-blue border-accent-blue/30',
+            'education': 'bg-accent-green/20 text-accent-green border-accent-green/30',
+            'service': 'bg-accent-orange/20 text-accent-orange border-accent-orange/30',
+            'enterprise': 'bg-accent-cyan/20 text-accent-cyan border-accent-cyan/30',
+            'ai': 'bg-accent-red/20 text-accent-red border-accent-red/30'
+        };
+
+        function formatStars(num) {
+            if (num >= 10000) {
+                return (num / 10000).toFixed(1) + 'w';
+            }
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1) + 'k';
+            }
+            return num.toString();
+        }
+
+        function renderProjects(filter = 'all') {
+            const grid = document.getElementById('projects-grid');
+            grid.innerHTML = '';
+            
+            const filtered = projects.filter(p => p.tags.includes(filter));
+            
+            filtered.forEach((project, index) => {
+                const card = document.createElement('div');
+                card.className = 'glass-panel rounded-xl p-5 card-hover group cursor-pointer scroll-reveal';
+                card.style.animationDelay = `${index * 0.05}s`;
+                card.onclick = () => window.open(`https://github.com/${project.name}`, '_blank');
+                
+                const langColor = langColors[project.lang] || '#8b949e';
+                const catClass = categoryColors[project.category] || 'bg-gray-500/20 text-gray-400 border-gray-500/30';
+                const catLabel = categoryLabels[project.category] || project.category;
+                
+                card.innerHTML = `
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="rank-badge w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-accent-blue font-mono">
+                            ${project.rank}
+                        </div>
+                        <span class="text-xs px-2 py-1 rounded-full border ${catClass} font-medium">
+                            ${catLabel}
+                        </span>
+                    </div>
+                    <h3 class="text-white font-bold text-sm mb-2 group-hover:text-accent-blue transition-colors truncate" title="${project.name}">
+                        ${project.name}
+                    </h3>
+                    <p class="text-gray-400 text-xs leading-relaxed mb-4 line-clamp-2 h-8">
+                        ${project.desc}
+                    </p>
+                    <div class="flex items-center justify-between pt-3 border-t border-dark-600/30">
+                        <div class="flex items-center space-x-2">
+                            <span class="language-dot" style="background-color: ${langColor}; box-shadow: 0 0 6px ${langColor}40;"></span>
+                            <span class="text-xs text-gray-500 font-mono">${project.lang}</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <svg class="w-3.5 h-3.5 text-accent-orange star-glow" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            <span class="text-xs font-mono text-gray-300 number-counter">${formatStars(project.stars)}</span>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+            
+            // Re-trigger scroll reveal
+            setTimeout(() => {
+                observeElements();
+            }, 100);
+        }
+
+        function filterProjects(filter) {
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.dataset.filter === filter) {
+                    btn.className = 'filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-all bg-accent-blue/20 text-accent-blue border border-accent-blue/30';
+                } else {
+                    btn.className = 'filter-btn px-4 py-2 rounded-lg text-sm font-medium transition-all text-gray-400 hover:text-white hover:bg-dark-700';
+                }
+            });
+            
+            renderProjects(filter);
+        }
+
+        // Scroll Reveal
+        function observeElements() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            document.querySelectorAll('.scroll-reveal').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Back to Top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('backToTop');
+            if (window.scrollY > 500) {
+                btn.classList.remove('opacity-0', 'pointer-events-none');
+                btn.classList.add('opacity-100', 'pointer-events-auto');
+            } else {
+                btn.classList.add('opacity-0', 'pointer-events-none');
+                btn.classList.remove('opacity-100', 'pointer-events-auto');
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProjects('all');
+            observeElements();
+        });
+
+        // Particle effect on mouse move
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.97) {
+                const particle = document.createElement('div');
+                particle.className = 'fixed pointer-events-none z-50 w-1 h-1 rounded-full bg-accent-blue/30';
+                particle.style.left = e.clientX + 'px';
+                particle.style.top = e.clientY + 'px';
+                particle.style.transition = 'all 1s ease-out';
+                document.body.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.style.transform = `translate(${(Math.random() - 0.5) * 50}px, ${(Math.random() - 0.5) * 50}px)`;
+                    particle.style.opacity = '0';
+                }, 10);
+                
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
