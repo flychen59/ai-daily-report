@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术日报 2026-05-17 | AI Agent 工具链井喷</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans SC', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        gh: {
+                            bg: '#0d1117',
+                            surface: '#161b22',
+                            border: '#30363d',
+                            text: '#c9d1d9',
+                            muted: '#8b949e',
+                            accent: '#58a6ff',
+                            success: '#3fb950',
+                            warning: '#d29922',
+                            danger: '#f85149',
+                            purple: '#a371f7',
+                            pink: '#f778ba',
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'fade-in': 'fadeIn 0.6s ease-out forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'shimmer': 'shimmer 2.5s linear infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-1000px 0' },
+                            '100%': { backgroundPosition: '1000px 0' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0d1117; }
+        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #58a6ff; }
+
+        /* Grid Background */
+        .bg-grid {
+            background-image: 
+                linear-gradient(rgba(48, 54, 61, 0.4) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(48, 54, 61, 0.4) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+        }
+
+        /* Glow Effects */
+        .glow-text {
+            text-shadow: 0 0 20px rgba(88, 166, 255, 0.3), 0 0 40px rgba(88, 166, 255, 0.1);
+        }
+        .glow-border {
+            box-shadow: 0 0 0 1px rgba(88, 166, 255, 0.1), 0 0 20px rgba(88, 166, 255, 0.05);
+        }
+        .glow-border:hover {
+            box-shadow: 0 0 0 1px rgba(88, 166, 255, 0.3), 0 0 30px rgba(88, 166, 255, 0.1);
+        }
+
+        /* Card Hover */
+        .project-card {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-style: preserve-3d;
+        }
+        .project-card:hover {
+            transform: translateY(-6px) scale(1.01);
+        }
+
+        /* Language Dot Colors */
+        .lang-python { background-color: #3572A5; }
+        .lang-javascript { background-color: #f1e05a; }
+        .lang-typescript { background-color: #3178c6; }
+        .lang-shell { background-color: #89e051; }
+        .lang-html { background-color: #e34c26; }
+        .lang-markdown { background-color: #083fa1; }
+        .lang-other { background-color: #8b949e; }
+
+        /* Stagger Animation Delays */
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+        .stagger-5 { animation-delay: 0.5s; }
+
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #58a6ff 0%, #a371f7 50%, #f778ba 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Noise Texture */
+        .noise {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Insight Card */
+        .insight-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .insight-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, #58a6ff, transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .insight-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Bet Card Special */
+        .bet-card {
+            background: linear-gradient(135deg, rgba(22, 27, 34, 0.9) 0%, rgba(13, 17, 23, 0.95) 100%);
+            border: 1px solid rgba(88, 166, 255, 0.15);
+            position: relative;
+        }
+        .bet-card::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(88, 166, 255, 0.3), rgba(163, 113, 247, 0.3), transparent 60%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        /* Typing cursor */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+            color: #58a6ff;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Section divider */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #30363d, transparent);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen relative">
+
+    <!-- Noise Overlay -->
+    <div class="noise"></div>
+
+    <!-- Background Grid -->
+    <div class="fixed inset-0 bg-grid pointer-events-none z-0"></div>
+
+    <!-- Floating Orbs -->
+    <div class="fixed top-20 left-10 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl pointer-events-none animate-pulse-slow"></div>
+    <div class="fixed bottom-20 right-10 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl pointer-events-none animate-pulse-slow" style="animation-delay: 2s;"></div>
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-40 backdrop-blur-xl bg-[#0d1117]/80 border-b border-gh-border/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <span class="font-mono text-sm font-bold tracking-wider text-gh-text">TECH<span class="text-gh-accent">DAILY</span></span>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="hidden sm:flex items-center gap-2 text-xs font-mono text-gh-muted">
+                    <span class="w-2 h-2 rounded-full bg-gh-success animate-pulse"></span>
+                    LIVE
+                </div>
+                <time class="font-mono text-sm text-gh-muted tabular-nums" id="current-time">2026-05-17</time>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative z-10 pt-24 pb-20">
+        
+        <!-- Hero Section -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+            <div class="text-center space-y-6 opacity-0 animate-fade-in-up">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gh-surface border border-gh-border text-xs font-mono text-gh-accent mb-4">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gh-accent animate-pulse"></span>
+                    ISSUE #247 • DAILY BRIEFING
+                </div>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black leading-tight tracking-tight max-w-5xl mx-auto">
+                    <span class="text-white">AI Agent 工具链井喷</span><br>
+                    <span class="gradient-text italic">从框架到"去AI味"的技能生态成型</span>
+                </h1>
+                <p class="text-lg sm:text-xl text-gh-muted max-w-3xl mx-auto leading-relaxed font-light">
+                    今日收录 <span class="text-gh-accent font-semibold">16</span> 个高热度开源项目，Agent 基础设施占据半壁江山，开发者生态正从"模型调用"向"工程化落地"深度迁移。
+                </p>
+            </div>
+        </section>
+
+        <!-- Editor's Note -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20 opacity-0 animate-fade-in-up stagger-2">
+            <div class="relative rounded-2xl bg-gradient-to-br from-gh-surface to-[#0d1117] border border-gh-border p-8 lg:p-10 glow-border">
+                <div class="absolute -top-3 left-8 px-4 py-1 bg-gh-surface border border-gh-border rounded-full">
+                    <span class="text-xs font-mono font-bold text-gh-accent tracking-wider">EDITOR'S NOTE</span>
+                </div>
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <div class="lg:w-1/3 flex items-start">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-500/20 flex items-center justify-center flex-shrink-0">
+                            <svg class="w-8 h-8 text-gh-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="lg:w-2/3 space-y-4">
+                        <p class="text-gh-text leading-relaxed text-base lg:text-lg">
+                            <code class="text-gh-accent font-mono text-sm bg-gh-surface px-1.5 py-0.5 rounded">obra/superpowers</code> 以超 <span class="text-gh-warning font-bold">21 万 Star</span> 领跑 Agent 框架赛道，<code class="text-gh-accent font-mono text-sm bg-gh-surface px-1.5 py-0.5 rounded">anthropics/skills</code> 与 <code class="text-gh-accent font-mono text-sm bg-gh-surface px-1.5 py-0.5 rounded">affaan-m/ECC</code> 分别代表官方技能标准化与性能优化两大方向。
+                        </p>
+                        <p class="text-gh-muted leading-relaxed">
+                            更值得注意的是，<code class="text-gh-pink font-mono text-sm bg-gh-surface px-1.5 py-0.5 rounded">taste-skill</code>、<code class="text-gh-pink font-mono text-sm bg-gh-surface px-1.5 py-0.5 rounded">stop-slop</code> 等项目的崛起，标志着社区开始系统性治理 AI 生成内容的"机械味"，Agent 经济正进入精细化运营阶段。
+                        </p>
+                        <div class="pt-2 flex items-center gap-2 text-sm text-gh-muted">
+                            <svg class="w-4 h-4 text-gh-success" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <span><code class="font-mono text-gh-warning">build-your-own-x</code> 突破 <span class="font-bold text-white">50 万 Star</span> 大关</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Grid -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+            <div class="flex items-center justify-between mb-8 opacity-0 animate-fade-in-up stagger-3">
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                        <span class="w-1 h-8 bg-gradient-to-b from-gh-accent to-purple-500 rounded-full"></span>
+                        热门项目
+                    </h2>
+                    <p class="text-gh-muted text-sm mt-1 ml-4">16 个精选开源项目，按 Star 数排序</p>
+                </div>
+                <div class="hidden sm:flex items-center gap-2 text-xs font-mono text-gh-muted">
+                    <span class="px-2 py-1 rounded bg-gh-surface border border-gh-border">AI Agent</span>
+                    <span class="px-2 py-1 rounded bg-gh-surface border border-gh-border">教育</span>
+                    <span class="px-2 py-1 rounded bg-gh-surface border border-gh-border">工具</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" id="projects-grid">
+                <!-- Projects will be injected here by JS -->
+            </div>
+        </section>
+
+        <!-- Trend Analysis -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+            <div class="section-divider mb-12"></div>
+            <div class="mb-8 opacity-0 animate-fade-in-up">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                    <span class="w-1 h-8 bg-gradient-to-b from-gh-purple to-pink-500 rounded-full"></span>
+                    趋势分析
+                </h2>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="trends-grid">
+                <!-- Trends injected by JS -->
+            </div>
+        </section>
+
+        <!-- Analyst Insights -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+            <div class="section-divider mb-12"></div>
+            <div class="mb-8 opacity-0 animate-fade-in-up">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                    <span class="w-1 h-8 bg-gradient-to-b from-gh-success to-emerald-400 rounded-full"></span>
+                    分析师洞察
+                </h2>
+            </div>
+
+            <div class="space-y-4" id="insights-list">
+                <!-- Insights injected by JS -->
+            </div>
+        </section>
+
+        <!-- Worth Betting On -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+            <div class="section-divider mb-12"></div>
+            <div class="mb-8 opacity-0 animate-fade-in-up">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                    <span class="w-1 h-8 bg-gradient-to-b from-gh-warning to-orange-500 rounded-full"></span>
+                    值得押注的新项目
+                </h2>
+                <p class="text-gh-muted text-sm mt-1 ml-4">高潜力早期项目，代表未来技术方向</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="bets-grid">
+                <!-- Bets injected by JS -->
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+            <div class="relative rounded-2xl bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border border-gh-border p-8 lg:p-12 text-center opacity-0 animate-fade-in-up">
+                <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/5 to-purple-500/5"></div>
+                <div class="relative">
+                    <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gh-surface border border-gh-border mb-6">
+                        <svg class="w-6 h-6 text-gh-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gh-muted mb-4 tracking-widest uppercase">一句话总结</h3>
+                    <p class="text-xl lg:text-2xl font-bold text-white leading-relaxed glow-text">
+                        AI Agent 生态正从"能跑"走向"好用"：<br>
+                        <span class="gradient-text">底层拼数据管道，中层拼技能编排，表层拼内容质感。</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gh-border/50 bg-[#0d1117]/50 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-6 h-6 rounded bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <span class="font-mono text-xs text-gh-muted">TECHDAILY • 2026</span>
+                </div>
+                <p class="text-xs text-gh-muted font-mono">Generated with AI • Data from Open Source Community</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Data
+        const projects = [
+            { name: 'codecrafters-io/build-your-own-x', desc: 'Master programming by recreating your favorite technologies from scratch.', lang: 'Markdown', stars: 506622, category: '编程教育', highlight: true },
+            { name: 'obra/superpowers', desc: 'An agentic skills framework & software development methodology that works.', lang: 'Shell', stars: 211228, category: 'AI Agent框架', highlight: true },
+            { name: 'affaan-m/ECC', desc: 'The agent harness performance optimization system for Claude Code, Codex, Cursor and beyond.', lang: 'JavaScript', stars: 197412, category: 'AI Agent优化', highlight: true },
+            { name: 'DigitalPlatDev/FreeDomain', desc: 'DigitalPlat FreeDomain: Free Domain For Everyone', lang: 'HTML', stars: 170832, category: '域名服务' },
+            { name: 'anthropics/skills', desc: 'Public repository for Agent Skills', lang: 'Python', stars: 142932, category: 'AI Agent技能库', highlight: true },
+            { name: 'microsoft/markitdown', desc: 'Python tool for converting files and office documents to Markdown.', lang: 'Python', stars: 127881, category: '文档工具' },
+            { name: 'unclecode/crawl4ai', desc: 'Open-source LLM Friendly Web Crawler & Scraper.', lang: 'Python', stars: 67011, category: '网络爬虫' },
+            { name: 'harry0703/MoneyPrinterTurbo', desc: 'Generate short videos with one click using AI LLM.', lang: 'Python', stars: 66741, category: 'AI视频生成' },
+            { name: 'byoungd/English-level-up-tips', desc: 'An advanced guide to learn English which might benefit you a lot.', lang: '-', stars: 48694, category: '教育学习' },
+            { name: 'twentyhq/twenty', desc: 'The open alternative to Salesforce, designed for AI.', lang: 'TypeScript', stars: 47910, category: 'CRM/企业软件', highlight: true },
+            { name: 'Lum1104/Understand-Anything', desc: 'Turn any code into an interactive knowledge graph you can explore, search, and ask questions about.', lang: 'TypeScript', stars: 43018, category: '代码可视化' },
+            { name: 'Leonxlnx/taste-skill', desc: 'Taste-Skill - gives your AI good taste. stops the AI from generating boring, generic slop.', lang: 'Shell', stars: 26639, category: 'AI内容优化', highlight: true },
+            { name: 'EveryInc/compound-engineering-plugin', desc: 'Official Compound Engineering plugin for Claude Code, Codex, Cursor, and more', lang: 'TypeScript', stars: 17807, category: 'AI开发插件' },
+            { name: 'hardikpandya/stop-slop', desc: 'A skill file for removing AI tells from prose.', lang: '-', stars: 6477, category: 'AI文本优化', highlight: true },
+            { name: 'revfactory/harness', desc: 'A meta-skill that designs domain-specific agent teams, defines specialized agents, and generates the skills they use.', lang: 'HTML', stars: 3940, category: 'AI Agent编排', highlight: true },
+            { name: 'OpenMOSS/MOSS-TTS', desc: 'Open-source speech and sound generation model family for high-fidelity TTS, voice design, and sound effects.', lang: 'Python', stars: 2290, category: 'AI语音合成' },
+        ];
+
+        const trends = [
+            {
+                title: 'AI Agent 技能层标准化加速',
+                desc: 'Anthropics 官方维护的 skills 库与 superpowers、harness 等第三方框架形成互补，暗示 Agent 开发正从"提示工程"转向"技能工程"（Skill Engineering）。',
+                tags: ['Skill Engineering', '标准化'],
+                icon: 'M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z'
+            },
+            {
+                title: '"去AI味"成为内容生产新刚需',
+                desc: 'taste-skill 和 stop-slop 同期上榜，反映社区对 AI 生成文本同质化（AI Slop）的反感已从讨论层面进入工具层面。',
+                tags: ['AI Slop', '内容质量'],
+                icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
+            },
+            {
+                title: 'AI 原生 CRM 挑战传统 SaaS',
+                desc: 'twentyhq/twenty 定位"为 AI 设计的 Salesforce 开源替代"，显示企业软件赛道正经历"AI-first"重构。',
+                tags: ['CRM', 'Enterprise AI'],
+                icon: 'M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z'
+            },
+            {
+                title: '文档与数据管道工具持续硬通货化',
+                desc: 'microsoft/markitdown 与 unclecode/crawl4ai 保持高热度，非结构化数据向 Markdown/结构化文本的转换仍是最高频的基础需求。',
+                tags: ['Data Pipeline', 'Markdown'],
+                icon: 'M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4'
+            }
+        ];
+
+        const insights = [
+            {
+                num: '01',
+                title: 'Agent 开发范式跃迁：从 Prompt Engineering 到 Skill Engineering',
+                desc: '官方（anthropics/skills）与民间（superpowers、harness）同步推进技能层标准化，Agent 开发正从"写提示词"升级为"编排技能团队"。多 Agent 协作与领域特定团队编排将成为下一个架构焦点。',
+                color: 'blue'
+            },
+            {
+                num: '02',
+                title: '"反 Slop"成为内容生产新基建',
+                desc: 'taste-skill、stop-slop 同期上榜，标志社区对 AI 生成内容同质化的反感已从审美讨论进入工具层。预计短期内，去 AI 味能力将像语法检查一样，成为编辑器、CMS 和营销 SaaS 的默认模块。',
+                color: 'purple'
+            },
+            {
+                num: '03',
+                title: '企业软件面临 AI-Native 重构',
+                desc: 'twentyhq/twenty 以"为 AI 设计的 Salesforce 替代"定位冲击传统 CRM，预示企业 SaaS 的数据模型、交互范式和工作流将被 AI-first 逻辑重写，而非简单嫁接 LLM 功能。',
+                color: 'pink'
+            },
+            {
+                num: '04',
+                title: '数据管道仍是沉默的硬通货',
+                desc: 'markitdown、crawl4ai 持续高热度，证明非结构化数据向结构化/ Markdown 的转换仍是 LLM 应用落地的最大公约数，短期内不可替代。',
+                color: 'green'
+            }
+        ];
+
+        const bets = [
+            { name: 'obra/superpowers', reason: '21 万 Star 的 Agent 框架领跑者，方法论级产品，有望成为生态事实标准。', stars: '211K', color: 'blue' },
+            { name: 'taste-skill / stop-slop', reason: '"去 AI 味"赛道的早期定义者，内容工业化时代的质量守门人。', stars: '26K+', color: 'purple' },
+            { name: 'twentyhq/twenty', reason: 'AI 原生企业软件的标杆，开源 CRM 赛道最具颠覆性的变量。', stars: '47K', color: 'pink' },
+            { name: 'revfactory/harness', reason: 'Meta-Skill 级别的 Agent 团队编排器，代表多 Agent 协作的进阶方向。', stars: '3.9K', color: 'green' }
+        ];
+
+        // Helpers
+        function formatStars(num) {
+            if (num >= 100000) return (num / 1000).toFixed(0) + 'k';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
+            return num.toString();
+        }
+
+        function getLangClass(lang) {
+            const map = {
+                'Python': 'lang-python',
+                'JavaScript': 'lang-javascript',
+                'TypeScript': 'lang-typescript',
+                'Shell': 'lang-shell',
+                'HTML': 'lang-html',
+                'Markdown': 'lang-markdown'
+            };
+            return map[lang] || 'lang-other';
+        }
+
+        function getCategoryColor(cat) {
+            if (cat.includes('AI Agent')) return 'text-gh-accent bg-blue-500/10 border-blue-500/20';
+            if (cat.includes('AI')) return 'text-gh-purple bg-purple-500/10 border-purple-500/20';
+            if (cat.includes('教育') || cat.includes('编程')) return 'text-gh-success bg-green-500/10 border-green-500/20';
+            return 'text-gh-muted bg-gh-surface border-gh-border';
+        }
+
+        // Render Projects
+        const projectsGrid = document.getElementById('projects-grid');
+        projects.forEach((p, i) => {
+            const delay = (i % 6) + 1;
+            const card = document.createElement('div');
+            card.className = `project-card group relative rounded-xl bg-gh-surface border border-gh-border p-5 opacity-0 animate-fade-in-up stagger-${delay} ${p.highlight ? 'ring-1 ring-gh-accent/20' : ''}`;
+            
+            card.innerHTML = `
+                <div class="flex items-start justify-between mb-3">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <svg class="w-4 h-4 text-gh-muted flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        </svg>
+                        <h3 class="font-mono text-sm font-semibold text-gh-accent truncate group-hover:text-blue-400 transition-colors">${p.name}</h3>
+                    </div>
+                    ${p.highlight ? '<span class="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-gh-accent animate-pulse ml-2"></span>' : ''}
+                </div>
+                <p class="text-gh-muted text-sm leading-relaxed mb-4 line-clamp-2 h-10">${p.desc}</p>
+                <div class="flex items-center justify-between pt-3 border-t border-gh-border/50">
+                    <div class="flex items-center gap-3">
+                        <span class="flex items-center gap-1.5 text-xs text-gh-muted">
+                            <span class="w-2.5 h-2.5 rounded-full ${getLangClass(p.lang)}"></span>
+                            ${p.lang}
+                        </span>
+                        <span class="px-2 py-0.5 rounded-full text-[10px] font-medium border ${getCategoryColor(p.category)}">
+                            ${p.category}
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-1 text-xs font-mono text-gh-warning">
+                        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                        </svg>
+                        ${formatStars(p.stars)}
+                    </div>
+                </div>
+            `;
+            projectsGrid.appendChild(card);
+        });
+
+        // Render Trends
+        const trendsGrid = document.getElementById('trends-grid');
+        trends.forEach((t, i) => {
+            const card = document.createElement('div');
+            card.className = `insight-card rounded-xl bg-gh-surface border border-gh-border p-6 opacity-0 animate-fade-in-up stagger-${i+1}`;
+            card.innerHTML = `
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500/10 to-purple-500/10 border border-blue-500/10 flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-gh-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="${t.icon}"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="font-bold text-white mb-2 text-base">${t.title}</h3>
+                        <p class="text-gh-muted text-sm leading-relaxed mb-3">${t.desc}</p>
+                        <div class="flex flex-wrap gap-2">
+                            ${t.tags.map(tag => `<span class="px-2 py-0.5 rounded-md bg-gh-surface border border-gh-border text-[11px] font-mono text-gh-accent">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            trendsGrid.appendChild(card);
+        });
+
+        // Render Insights
+        const insightsList = document.getElementById('insights-list');
+        const colorMap = {
+            blue: { border: 'border-l-blue-500', bg: 'bg-blue-500/5', text: 'text-blue-400' },
+            purple: { border: 'border-l-purple-500', bg: 'bg-purple-500/5', text: 'text-purple-400' },
+            pink: { border: 'border-l-pink-500', bg: 'bg-pink-500/5', text: 'text-pink-400' },
+            green: { border: 'border-l-green-500', bg: 'bg-green-500/5', text: 'text-green-400' }
+        };
+        insights.forEach((ins, i) => {
+            const c = colorMap[ins.color];
+            const item = document.createElement('div');
+            item.className = `rounded-r-xl border-l-2 ${c.border} ${c.bg} p-5 opacity-0 animate-fade-in-up stagger-${(i%3)+1}`;
+            item.innerHTML = `
+                <div class="flex items-start gap-4">
+                    <span class="font-mono text-lg font-bold ${c.text} opacity-50">${ins.num}</span>
+                    <div>
+                        <h4 class="font-bold text-white mb-1">${ins.title}</h4>
+                        <p class="text-gh-muted text-sm leading-relaxed">${ins.desc}</p>
+                    </div>
+                </div>
+            `;
+            insightsList.appendChild(item);
+        });
+
+        // Render Bets
+        const betsGrid = document.getElementById('bets-grid');
+        const betColors = {
+            blue: 'from-blue-500/20 to-blue-600/5 border-blue-500/30 text-blue-400',
+            purple: 'from-purple-500/20 to-purple-600/5 border-purple-500/30 text-purple-400',
+            pink: 'from-pink-500/20 to-pink-600/5 border-pink-500/30 text-pink-400',
+            green: 'from-green-500/20 to-green-600/5 border-green-500/30 text-green-400'
+        };
+        bets.forEach((bet, i) => {
+            const card = document.createElement('div');
+            card.className = `bet-card rounded-xl p-5 opacity-0 animate-fade-in-up stagger-${i+1}`;
+            card.innerHTML = `
+                <div class="flex items-start justify-between mb-3">
+                    <code class="font-mono text-sm font-bold text-white">${bet.name}</code>
+                    <span class="px-2 py-0.5 rounded-full bg-gh-surface border border-gh-border text-xs font-mono text-gh-warning">${bet.stars}</span>
+                </div>
+                <p class="text-gh-muted text-sm leading-relaxed">${bet.reason}</p>
+                <div class="mt-3 flex items-center gap-1 text-xs ${betColors[bet.color].split(' ').pop()}">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                    </svg>
+                    <span class="font-medium">High Conviction</span>
+                </div>
+            `;
+            betsGrid.appendChild(card);
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-fade-in-up').forEach(el => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+
+        // Live clock
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('current-time').textContent = `2026-05-17 ${timeStr}`;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>

@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>开源日报 | 2026-05-16</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            900: '#0d1117',
+                            800: '#161b22',
+                            700: '#21262d',
+                            600: '#30363d',
+                            500: '#484f58',
+                        },
+                        accent: {
+                            blue: '#58a6ff',
+                            purple: '#a371f7',
+                            green: '#3fb950',
+                            orange: '#f0883e',
+                            cyan: '#39c5cf',
+                            pink: '#f778ba',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: #0d1117;
+            color: #c9d1d9;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d1117;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #30363d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #484f58;
+        }
+
+        /* Background grid pattern */
+        .bg-grid {
+            background-image: 
+                linear-gradient(rgba(48, 54, 61, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(48, 54, 61, 0.3) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        /* Animated gradient orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: #58a6ff;
+            top: -200px;
+            right: -100px;
+            animation: float-orb 20s ease-in-out infinite;
+        }
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: #a371f7;
+            bottom: -150px;
+            left: -100px;
+            animation: float-orb 25s ease-in-out infinite reverse;
+        }
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: #39c5cf;
+            top: 50%;
+            left: 50%;
+            animation: float-orb 18s ease-in-out infinite;
+        }
+
+        @keyframes float-orb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 30px) scale(0.9); }
+        }
+
+        /* Fade in animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+
+        /* Card hover effects */
+        .project-card {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--card-accent, #58a6ff), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(88, 166, 255, 0.1);
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Insight card */
+        .insight-card {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .insight-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, var(--insight-color, #58a6ff), transparent 60%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .insight-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .insight-card:hover::after {
+            opacity: 1;
+        }
+
+        /* Star count animation */
+        .star-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Language badge colors */
+        .lang-markdown { --lang-color: #083fa1; }
+        .lang-shell { --lang-color: #89e051; }
+        .lang-javascript { --lang-color: #f1e05a; }
+        .lang-html { --lang-color: #e34c26; }
+        .lang-python { --lang-color: #3572A5; }
+        .lang-typescript { --lang-color: #3178c6; }
+        .lang-default { --lang-color: #8b949e; }
+
+        .lang-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--lang-color, #8b949e);
+            display: inline-block;
+            margin-right: 6px;
+            box-shadow: 0 0 8px var(--lang-color, #8b949e);
+        }
+
+        /* Category tags */
+        .cat-tag {
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            border: 1px solid;
+        }
+
+        /* Number ranking */
+        .rank-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: rgba(88, 166, 255, 0.1);
+            color: #58a6ff;
+            border: 1px solid rgba(88, 166, 255, 0.2);
+        }
+
+        .rank-num.top {
+            background: linear-gradient(135deg, rgba(163, 113, 247, 0.2), rgba(88, 166, 255, 0.2));
+            color: #a371f7;
+            border-color: rgba(163, 113, 247, 0.3);
+        }
+
+        /* Pulse animation for live indicator */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        .live-dot {
+            position: relative;
+        }
+        .live-dot::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: #3fb950;
+            animation: pulse-ring 2s ease-out infinite;
+        }
+
+        /* Section divider */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #30363d, transparent);
+        }
+
+        /* Text gradient */
+        .text-gradient {
+            background: linear-gradient(135deg, #58a6ff, #a371f7, #f778ba);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Typewriter cursor */
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading shimmer */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 640px) {
+            .orb { display: none; }
+        }
+
+        /* Focus styles */
+        a:focus-visible, button:focus-visible {
+            outline: 2px solid #58a6ff;
+            outline-offset: 2px;
+        }
+
+        /* Print styles */
+        @media print {
+            .orb, .live-dot::after { display: none; }
+            body { background: white; color: black; }
+        }
+    </style>
+</head>
+<body class="bg-grid min-h-screen">
+
+    <!-- Background orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-dark-900/80 backdrop-blur-xl border-b border-dark-600/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-14">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-accent-blue to-accent-purple flex items-center justify-center">
+                        <i class="fas fa-code-branch text-white text-sm"></i>
+                    </div>
+                    <span class="font-bold text-sm tracking-wide text-gray-300">OS DAILY</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="hidden sm:flex items-center gap-2 text-xs text-gray-500">
+                        <span class="w-2 h-2 rounded-full bg-accent-green live-dot"></span>
+                        <span>实时更新</span>
+                    </div>
+                    <time class="font-mono text-xs text-gray-400 tabular-nums" datetime="2026-05-16">2026-05-16</time>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="fade-in">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="px-3 py-1 rounded-full text-xs font-medium bg-accent-blue/10 text-accent-blue border border-accent-blue/20">
+                    <i class="fas fa-bolt mr-1"></i>每日精选
+                </span>
+                <span class="text-xs text-gray-500 font-mono">ISSUE #247</span>
+            </div>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-4">
+                开源日报 <span class="text-gray-600">|</span> <span class="text-gradient">2026-05-16</span>
+            </h1>
+            <p class="text-lg sm:text-xl text-gray-400 max-w-3xl leading-relaxed">
+                Agent技能层爆发，<span class="text-accent-cyan font-medium">"手搓"</span>编程教育长盛不衰
+            </p>
+        </div>
+    </header>
+
+    <!-- Editor's Note -->
+    <section class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-16 fade-in delay-1">
+        <div class="relative rounded-2xl bg-dark-800/60 border border-dark-600/50 p-6 sm:p-8 backdrop-blur-sm overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-accent-blue/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+            <div class="relative">
+                <div class="flex items-center gap-2 mb-4">
+                    <i class="fas fa-pen-nib text-accent-purple text-sm"></i>
+                    <span class="text-xs font-semibold text-accent-purple uppercase tracking-wider">编者按</span>
+                </div>
+                <div class="prose prose-invert max-w-none">
+                    <p class="text-gray-300 leading-relaxed text-sm sm:text-base">
+                        本日开源榜单呈现鲜明的 <strong class="text-accent-blue">"Agent精耕"</strong> 特征。在基础模型能力日益同质化的背景下，社区创新焦点正快速上移至 <strong class="text-accent-cyan">Agent技能框架</strong>（Skills Framework）、<strong class="text-accent-green">性能优化</strong> 与 <strong class="text-accent-orange">生成品质控制</strong> 三个维度。
+                        <code class="text-accent-pink bg-dark-700 px-1.5 py-0.5 rounded text-xs font-mono">obra/superpowers</code>、
+                        <code class="text-accent-pink bg-dark-700 px-1.5 py-0.5 rounded text-xs font-mono">anthropics/skills</code>、
+                        <code class="text-accent-pink bg-dark-700 px-1.5 py-0.5 rounded text-xs font-mono">revfactory/harness</code> 
+                        等项目从不同角度探索"技能即代码"的Agent开发范式；而 
+                        <code class="text-accent-pink bg-dark-700 px-1.5 py-0.5 rounded text-xs font-mono">taste-skill</code> 
+                        与 
+                        <code class="text-accent-pink bg-dark-700 px-1.5 py-0.5 rounded text-xs font-mono">stop-slop</code> 
+                        则敏锐地捕捉到"去AI味"这一新兴刚需，标志着AI应用竞争已从"能生成"进入"生成得好"的质感阶段。
+                    </p>
+                    <p class="text-gray-400 mt-4 text-sm sm:text-base leading-relaxed">
+                        与此同时，<code class="text-accent-orange bg-dark-700 px-1.5 py-0.5 rounded text-xs font-mono">codecrafters-io/build-your-own-x</code> 
+                        以超50万星标持续霸榜，印证了"通过重建来理解"的硬核编程教育仍是开源社区的长青基石。基础设施层面，
+                        <code class="text-accent-blue bg-dark-700 px-1.5 py-0.5 rounded text-xs font-mono">microsoft/markitdown</code> 
+                        与 
+                        <code class="text-accent-blue bg-dark-700 px-1.5 py-0.5 rounded text-xs font-mono">unclecode/crawl4ai</code> 
+                        持续降低LLM应用的数据预处理门槛；垂直应用方面，
+                        <code class="text-accent-cyan bg-dark-700 px-1.5 py-0.5 rounded text-xs font-mono">twentyhq/twenty</code> 
+                        瞄准AI原生CRM，
+                        <code class="text-accent-green bg-dark-700 px-1.5 py-0.5 rounded text-xs font-mono">MoneyPrinterTurbo</code> 
+                        深耕AI视频生成，显示开源生态正沿"工具链完善+场景纵深"双轴同步演进。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trend Analysis -->
+    <section class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-16 fade-in delay-2">
+        <div class="flex items-center gap-3 mb-8">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-purple to-accent-pink flex items-center justify-center">
+                <i class="fas fa-chart-line text-white text-sm"></i>
+            </div>
+            <div>
+                <h2 class="text-xl font-bold text-white">趋势分析</h2>
+                <p class="text-xs text-gray-500">Agent工程化与质感竞争</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Trend 1 -->
+            <div class="insight-card rounded-xl bg-dark-800/50 border border-dark-600/30 p-6" style="--insight-color: #58a6ff;">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-accent-blue/10 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-cubes text-accent-blue text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white mb-2 text-sm">Agent开发进入"技能微服务"时代</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">
+                            基础模型同质化倒逼创新上移。社区正将Agent能力拆解为可复用、可编排的"技能单元"，从 <code class="text-accent-blue font-mono">obra/superpowers</code> 的方法论到 <code class="text-accent-blue font-mono">revfactory/harness</code> 的元技能编排，再到 Anthropic 官方技能库，标志着Agent开发从"写Prompt"的草莽阶段迈向<strong class="text-white">工程化、模块化</strong>时代。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trend 2 -->
+            <div class="insight-card rounded-xl bg-dark-800/50 border border-dark-600/30 p-6" style="--insight-color: #f778ba;">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-accent-pink/10 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-wand-magic-sparkles text-accent-pink text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white mb-2 text-sm">"去AI味"成为核心差异化赛道</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">
+                            大模型普及后，竞争焦点从"能生成"转向"生成得好"。<code class="text-accent-pink font-mono">taste-skill</code>（赋予AI品味）与 <code class="text-accent-pink font-mono">stop-slop</code>（去除AI痕迹）的崛起，揭示了<strong class="text-white">内容质感与风格控制</strong>已成为新刚需。AI应用的下一场战争是"反同质化"和"人格化"。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trend 3 -->
+            <div class="insight-card rounded-xl bg-dark-800/50 border border-dark-600/30 p-6" style="--insight-color: #3fb950;">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-accent-green/10 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-building text-accent-green text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white mb-2 text-sm">企业软件栈围绕LLM范式重构</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">
+                            文档层（<code class="text-accent-green font-mono">markitdown</code>）解决非结构化数据向LLM友好的转换痛点，应用层（<code class="text-accent-green font-mono">twenty</code>）提出"为AI设计"的CRM理念。企业基础设施正被<strong class="text-white">LLM的输入输出范式</strong>深度重写，从被动工具变为主动Agent的上下文环境。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trend 4 -->
+            <div class="insight-card rounded-xl bg-dark-800/50 border border-dark-600/30 p-6" style="--insight-color: #39c5cf;">
+                <div class="flex items-start gap-4">
+                    <div class="w-12 h-12 rounded-xl bg-accent-cyan/10 flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-code text-accent-cyan text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white mb-2 text-sm">开发者体验的双向进化</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed">
+                            <code class="text-accent-cyan font-mono">build-your-own-x</code>（50万星）证明"手搓/重建式学习"仍是硬核编程教育的基石；而 <code class="text-accent-cyan font-mono">Understand-Anything</code> 则通过知识图谱降低代码认知负荷。<strong class="text-white">"写"的肌肉记忆与"读"的智能辅助</strong>并行，开发者工具链在两端同时突破。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hot Projects -->
+    <section class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-16 fade-in delay-3">
+        <div class="flex items-center justify-between mb-8">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-orange to-accent-pink flex items-center justify-center">
+                    <i class="fas fa-fire text-white text-sm"></i>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-white">热门项目一览</h2>
+                    <p class="text-xs text-gray-500">基于 GitHub 趋势数据</p>
+                </div>
+            </div>
+            <div class="hidden sm:flex items-center gap-2 text-xs text-gray-500">
+                <i class="fas fa-sort-amount-down"></i>
+                <span>按 Star 数排序</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4" id="projects-grid">
+            <!-- Projects will be rendered by JS -->
+        </div>
+    </section>
+
+    <!-- Worth Watching -->
+    <section class="px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto mb-20 fade-in delay-4">
+        <div class="section-divider mb-8"></div>
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-accent-green to-accent-cyan flex items-center justify-center">
+                <i class="fas fa-eye text-white text-sm"></i>
+            </div>
+            <div>
+                <h2 class="text-xl font-bold text-white">值得关注的项目</h2>
+                <p class="text-xs text-gray-500">分析师精选 · 高潜力标的</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="group rounded-xl bg-dark-800/40 border border-dark-600/30 p-5 hover:border-accent-blue/30 transition-all duration-300 hover:-translate-y-1">
+                <div class="flex items-center gap-2 mb-3">
+                    <i class="fas fa-bolt text-accent-blue text-xs"></i>
+                    <code class="text-xs font-mono text-accent-blue">obra/superpowers</code>
+                </div>
+                <p class="text-xs text-gray-400 leading-relaxed">Agent技能框架+软件工程方法论，可能定义下一代Agent架构标准。</p>
+            </div>
+            <div class="group rounded-xl bg-dark-800/40 border border-dark-600/30 p-5 hover:border-accent-pink/30 transition-all duration-300 hover:-translate-y-1">
+                <div class="flex items-center gap-2 mb-3">
+                    <i class="fas fa-palette text-accent-pink text-xs"></i>
+                    <code class="text-xs font-mono text-accent-pink">taste-skill / stop-slop</code>
+                </div>
+                <p class="text-xs text-gray-400 leading-relaxed">AI内容质感控制的早期基础设施，解决大模型商业化中的"审美疲劳"痛点。</p>
+            </div>
+            <div class="group rounded-xl bg-dark-800/40 border border-dark-600/30 p-5 hover:border-accent-green/30 transition-all duration-300 hover:-translate-y-1">
+                <div class="flex items-center gap-2 mb-3">
+                    <i class="fas fa-briefcase text-accent-green text-xs"></i>
+                    <code class="text-xs font-mono text-accent-green">twentyhq/twenty</code>
+                </div>
+                <p class="text-xs text-gray-400 leading-relaxed">AI原生CRM，观察传统SaaS被Agent范式颠覆的样本。</p>
+            </div>
+            <div class="group rounded-xl bg-dark-800/40 border border-dark-600/30 p-5 hover:border-accent-cyan/30 transition-all duration-300 hover:-translate-y-1">
+                <div class="flex items-center gap-2 mb-3">
+                    <i class="fas fa-project-diagram text-accent-cyan text-xs"></i>
+                    <code class="text-xs font-mono text-accent-cyan">Understand-Anything</code>
+                </div>
+                <p class="text-xs text-gray-400 leading-relaxed">代码知识图谱化，探索程序理解的新交互范式。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-dark-600/30 bg-dark-800/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-accent-blue to-accent-purple flex items-center justify-center">
+                        <i class="fas fa-code-branch text-white text-xs"></i>
+                    </div>
+                    <span class="text-sm font-semibold text-gray-400">开源日报</span>
+                </div>
+                <p class="text-xs text-gray-600">数据截至 2026-05-16 · 由分析师团队精心编撰</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Project data
+        const projects = [
+            { rank: 1, name: 'codecrafters-io/build-your-own-x', desc: '通过从零重建喜爱的技术来掌握编程', lang: 'Markdown', stars: 506621, category: '编程教育', accent: '#f0883e' },
+            { rank: 2, name: 'obra/superpowers', desc: 'Agentic技能框架与行之有效的软件开发方法论', lang: 'Shell', stars: 211218, category: 'AI Agent框架', accent: '#58a6ff' },
+            { rank: 3, name: 'affaan-m/ECC', desc: 'Agent性能优化系统：技能、直觉、记忆、安全与研究优先开发', lang: 'JavaScript', stars: 197408, category: 'AI Agent优化', accent: '#3fb950' },
+            { rank: 4, name: 'DigitalPlatDev/FreeDomain', desc: 'DigitalPlat FreeDomain：面向所有人的免费域名', lang: 'HTML', stars: 170827, category: '网络基础设施', accent: '#a371f7' },
+            { rank: 5, name: 'anthropics/skills', desc: 'Anthropic官方Agent技能公共仓库', lang: 'Python', stars: 142928, category: 'AI Agent技能', accent: '#58a6ff' },
+            { rank: 6, name: 'microsoft/markitdown', desc: '将文件与办公文档转换为Markdown的Python工具', lang: 'Python', stars: 127877, category: '文档工具', accent: '#39c5cf' },
+            { rank: 7, name: 'unclecode/crawl4ai', desc: '开源LLM友好型网页爬虫与抓取工具', lang: 'Python', stars: 67008, category: '网络爬虫', accent: '#39c5cf' },
+            { rank: 8, name: 'harry0703/MoneyPrinterTurbo', desc: '利用AI大模型一键生成高清短视频', lang: 'Python', stars: 66724, category: 'AI视频生成', accent: '#f778ba' },
+            { rank: 9, name: 'byoungd/English-level-up-tips', desc: '进阶英语学习指南', lang: '-', stars: 48687, category: '教育学习', accent: '#3fb950' },
+            { rank: 10, name: 'twentyhq/twenty', desc: '专为AI设计的Salesforce开源替代方案', lang: 'TypeScript', stars: 47906, category: '企业CRM/AI', accent: '#58a6ff' },
+            { rank: 11, name: 'Lum1104/Understand-Anything', desc: '将任意代码转为可交互知识图谱', lang: 'TypeScript', stars: 43005, category: '代码可视化', accent: '#a371f7' },
+            { rank: 12, name: 'Leonxlnx/taste-skill', desc: '赋予AI良好品味，阻止生成无聊、通用的内容', lang: 'Shell', stars: 26628, category: 'AI内容优化', accent: '#f778ba' },
+            { rank: 13, name: 'EveryInc/compound-engineering-plugin', desc: 'Claude Code、Codex、Cursor等工具的Compound Engineering官方插件', lang: 'TypeScript', stars: 17804, category: 'AI开发插件', accent: '#58a6ff' },
+            { rank: 14, name: 'hardikpandya/stop-slop', desc: '去除散文中AI痕迹的技能文件', lang: '-', stars: 6476, category: 'AI文本优化', accent: '#f0883e' },
+            { rank: 15, name: 'revfactory/harness', desc: '设计领域特定Agent团队并生成其技能的元技能框架', lang: 'HTML', stars: 3939, category: 'AI Agent框架', accent: '#a371f7' },
+            { rank: 16, name: 'OpenMOSS/MOSS-TTS', desc: '开源语音与音效生成模型家族，面向高保真复杂场景', lang: 'Python', stars: 2290, category: '语音合成/TTS', accent: '#39c5cf' },
+        ];
+
+        // Category color mapping
+        const categoryColors = {
+            '编程教育': 'border-accent-orange/30 text-accent-orange bg-accent-orange/5',
+            'AI Agent框架': 'border-accent-blue/30 text-accent-blue bg-accent-blue/5',
+            'AI Agent优化': 'border-accent-green/30 text-accent-green bg-accent-green/5',
+            '网络基础设施': 'border-accent-purple/30 text-accent-purple bg-accent-purple/5',
+            'AI Agent技能': 'border-accent-blue/30 text-accent-blue bg-accent-blue/5',
+            '文档工具': 'border-accent-cyan/30 text-accent-cyan bg-accent-cyan/5',
+            '网络爬虫': 'border-accent-cyan/30 text-accent-cyan bg-accent-cyan/5',
+            'AI视频生成': 'border-accent-pink/30 text-accent-pink bg-accent-pink/5',
+            '教育学习': 'border-accent-green/30 text-accent-green bg-accent-green/5',
+            '企业CRM/AI': 'border-accent-blue/30 text-accent-blue bg-accent-blue/5',
+            '代码可视化': 'border-accent-purple/30 text-accent-purple bg-accent-purple/5',
+            'AI内容优化': 'border-accent-pink/30 text-accent-pink bg-accent-pink/5',
+            'AI开发插件': 'border-accent-blue/30 text-accent-blue bg-accent-blue/5',
+            'AI文本优化': 'border-accent-orange/30 text-accent-orange bg-accent-orange/5',
+            '语音合成/TTS': 'border-accent-cyan/30 text-accent-cyan bg-accent-cyan/5',
+        };
+
+        // Language class mapping
+        const langClassMap = {
+            'Markdown': 'lang-markdown',
+            'Shell': 'lang-shell',
+            'JavaScript': 'lang-javascript',
+            'HTML': 'lang-html',
+            'Python': 'lang-python',
+            'TypeScript': 'lang-typescript',
+            '-': 'lang-default',
+        };
+
+        // Format star count
+        function formatStars(num) {
+            if (num >= 100000) return (num / 1000).toFixed(0) + 'k';
+            if (num >= 10000) return (num / 1000).toFixed(1) + 'k';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
+            return num.toString();
+        }
+
+        // Render projects
+        function renderProjects() {
+            const grid = document.getElementById('projects-grid');
+            
+            projects.forEach((project, index) => {
+                const langClass = langClassMap[project.lang] || 'lang-default';
+                const catColorClass = categoryColors[project.category] || 'border-gray-500/30 text-gray-400 bg-gray-500/5';
+                const isTop3 = project.rank <= 3;
+                const delay = Math.min(index * 0.05, 0.5);
+                
+                const card = document.createElement('div');
+                card.className = `project-card rounded-xl bg-dark-800/60 border border-dark-600/40 p-5 fade-in`;
+                card.style.setProperty('--card-accent', project.accent);
+                card.style.animationDelay = `${delay}s`;
+                
+                card.innerHTML = `
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="flex items-center gap-3">
+                            <span class="rank-num ${isTop3 ? 'top' : ''}">${project.rank}</span>
+                            <div class="min-w-0">
+                                <h3 class="font-semibold text-sm text-white truncate hover:text-accent-blue transition-colors cursor-pointer" title="${project.name}">
+                                    ${project.name}
+                                </h3>
+                            </div>
+                        </div>
+                        <span class="cat-tag ${catColorClass} flex-shrink-0">${project.category}</span>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed mb-4 line-clamp-2">${project.desc}</p>
+                    <div class="flex items-center justify-between pt-3 border-t border-dark-600/30">
+                        <div class="flex items-center gap-2">
+                            <span class="lang-dot ${langClass}"></span>
+                            <span class="text-xs text-gray-500 font-mono">${project.lang}</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 text-gray-400">
+                            <i class="fas fa-star text-[10px] text-accent-orange"></i>
+                            <span class="star-count text-xs font-semibold">${formatStars(project.stars)}</span>
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Intersection Observer for scroll animations
+        function setupScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in').forEach(el => {
+                el.style.animationPlayState = 'paused';
+                observer.observe(el);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProjects();
+            
+            // Trigger animations after a short delay
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in').forEach(el => {
+                    el.style.animationPlayState = 'running';
+                });
+            }, 100);
+
+            // Parallax effect for orbs on mouse move
+            document.addEventListener('mousemove', (e) => {
+                const orbs = document.querySelectorAll('.orb');
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                orbs.forEach((orb, i) => {
+                    const speed = (i + 1) * 15;
+                    const xOffset = (x - 0.5) * speed;
+                    const yOffset = (y - 0.5) * speed;
+                    orb.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
