@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub 高星项目日报 — 2026-06-04</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0d1117;
+  color: #c9d1d9;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+}
+.header {
+  background: linear-gradient(135deg, #0d2137 0%, #1a0a2e 50%, #0d1117 100%);
+  padding: 40px 20px 30px;
+  border-bottom: 1px solid #21262d;
+}
+.header h1 {
+  font-size: 28px;
+  color: #f0f6fc;
+  margin-bottom: 8px;
+}
+.header h1 span.fire { color: #f97316; }
+.header .date {
+  color: #8b949e;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+.badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 16px; font-size: 12px; font-weight: 500;
+}
+.badge-blue { background: rgba(56,139,253,0.15); color: #58a6ff; }
+.badge-purple { background: rgba(163,113,247,0.15); color: #bc8cff; }
+.badge-green { background: rgba(63,185,80,0.15); color: #3fb950; }
+.badge-pink { background: rgba(219,109,162,0.15); color: #db6da2; }
+.badge-orange { background: rgba(249,115,22,0.15); color: #f97316; }
+.editorial {
+  background: rgba(56,139,253,0.08);
+  border-left: 3px solid #58a6ff;
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  color: #8b949e;
+  font-size: 14px;
+  max-width: 800px;
+}
+.container { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
+.section-title {
+  font-size: 20px; color: #f0f6fc; margin: 30px 0 16px;
+  padding-bottom: 8px; border-bottom: 1px solid #21262d;
+}
+.section-title .icon { margin-right: 8px; }
+
+/* Project cards */
+.project-card {
+  background: #161b22;
+  border: 1px solid #21262d;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  transition: transform 0.2s, border-color 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.project-card:hover {
+  transform: translateY(-2px);
+  border-color: #58a6ff;
+}
+.project-card .rank {
+  position: absolute; top: 0; left: 0;
+  padding: 4px 12px; font-size: 12px; font-weight: 700; border-radius: 0 0 8px 0;
+  color: #fff;
+}
+.rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); }
+.rank-2 { background: linear-gradient(135deg, #C0C0C0, #A8A8A8); }
+.rank-3 { background: linear-gradient(135deg, #CD7F32, #A0522D); }
+.rank-other { background: #21262d; color: #8b949e; }
+.project-card .project-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 10px;
+}
+.project-card .project-name {
+  font-size: 18px; color: #58a6ff; font-weight: 600;
+  text-decoration: none;
+  padding-left: 50px;
+}
+.project-card .project-name:hover { text-decoration: underline; }
+.project-card .stars {
+  font-size: 22px; font-weight: 700; color: #f97316;
+  white-space: nowrap;
+}
+.project-card .stars small { font-size: 12px; color: #8b949e; font-weight: 400; }
+.project-card .desc {
+  padding-left: 50px; color: #c9d1d9; font-size: 14px; margin-bottom: 8px;
+}
+.project-card .meta {
+  padding-left: 50px; display: flex; gap: 12px; align-items: center;
+}
+.lang-badge {
+  padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 500;
+}
+.lang-Python { background: rgba(55,118,171,0.2); color: #4B8BBE; }
+.lang-JavaScript { background: rgba(247,223,30,0.15); color: #f1e05a; }
+.lang-Go { background: rgba(0,173,216,0.15); color: #00ADD8; }
+.lang-Java { background: rgba(176,114,25,0.15); color: #b07225; }
+.lang-TypeScript { background: rgba(49,120,198,0.15); color: #3178c6; }
+.lang-Jupyter { background: rgba(247,152,36,0.15); color: #f79824; }
+
+/* Language distribution */
+.lang-bar {
+  margin: 4px 0; display: flex; align-items: center; gap: 8px;
+}
+.lang-bar .label { font-size: 12px; color: #8b949e; min-width: 70px; }
+.lang-bar .bar-bg {
+  flex: 1; height: 8px; background: #21262d; border-radius: 4px; overflow: hidden;
+}
+.lang-bar .bar-fill { height: 100%; border-radius: 4px; transition: width 1s; }
+.lang-bar .pct { font-size: 12px; color: #8b949e; min-width: 36px; text-align: right; }
+
+/* Trend cards */
+.trend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 600px) { .trend-grid { grid-template-columns: 1fr; } }
+.trend-card {
+  background: #161b22; border: 1px solid #21262d; border-radius: 10px;
+  padding: 16px; transition: border-color 0.3s;
+}
+.trend-card:hover { border-color: #3fb950; }
+.trend-card h3 { font-size: 15px; color: #f0f6fc; margin-bottom: 6px; }
+.trend-card p { font-size: 13px; color: #8b949e; }
+.trend-card .heat { color: #f97316; font-weight: 600; }
+
+/* Insight cards */
+.insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.insight-card {
+  background: #161b22; border: 1px solid #21262d; border-radius: 10px;
+  padding: 16px;
+}
+.insight-card h3 { font-size: 14px; color: #f0f6fc; margin-bottom: 6px; }
+.insight-card p { font-size: 13px; color: #8b949e; }
+
+.footer {
+  text-align: center; padding: 30px; color: #484f58; font-size: 12px;
+  border-top: 1px solid #21262d; margin-top: 40px;
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="badges">
+    <span class="badge badge-blue">🔍 研究员</span>
+    <span class="badge badge-purple">✍️ 编辑</span>
+    <span class="badge badge-green">📊 分析师</span>
+    <span class="badge badge-pink">🎨 视觉设计师</span>
+    <span class="badge badge-orange">👁️ 审查员</span>
+  </div>
+  <h1><span class="fire">🔥</span> GitHub 高星项目日报</h1>
+  <div class="date">📅 2026-06-04 · 每日精选 · 共 14 个热门项目</div>
+  <div class="editorial">
+    <strong>编者按：</strong>今日 GitHub Trending 榜单呈现出明显的 AI 工具链与开发者效率工具双轨并行的趋势。Claude Code 性能优化框架 ECC 以 20.5 万星遥遥领先，NousResearch 的 Hermes Agent 紧随其后达到 17.9 万星。压缩工具 headroom 和文档转换工具 markitdown 也在快速增长。AI 时代的基础设施正在快速成熟。
+  </div>
+</div>
+
+<div class="container">
+
+<div class="section-title"><span class="icon">📊</span>今日热门项目</div>
+
+<!-- #1 -->
+<div class="project-card">
+  <span class="rank rank-1">#1</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/affaan-m/ECC" target="_blank">affaan-m/ECC</a>
+    <div class="stars">205,696 <small>⭐</small></div>
+  </div>
+  <div class="desc">The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.</div>
+  <div class="meta">
+    <span class="lang-badge lang-JavaScript">JavaScript</span>
+  </div>
+</div>
+
+<!-- #2 -->
+<div class="project-card">
+  <span class="rank rank-2">#2</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/jwasham/coding-interview-university" target="_blank">jwasham/coding-interview-university</a>
+    <div class="stars">348,989 <small>⭐</small></div>
+  </div>
+  <div class="desc">A complete computer science study plan to become a software engineer.</div>
+  <div class="meta"></div>
+</div>
+
+<!-- #3 -->
+<div class="project-card">
+  <span class="rank rank-3">#3</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/NousResearch/hermes-agent" target="_blank">NousResearch/hermes-agent</a>
+    <div class="stars">179,074 <small>⭐</small></div>
+  </div>
+  <div class="desc">The agent that grows with you</div>
+  <div class="meta">
+    <span class="lang-badge lang-Python">Python</span>
+  </div>
+</div>
+
+<!-- #4 -->
+<div class="project-card">
+  <span class="rank rank-other">#4</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/microsoft/markitdown" target="_blank">microsoft/markitdown</a>
+    <div class="stars">142,822 <small>⭐</small></div>
+  </div>
+  <div class="desc">Python tool for converting files and office documents to Markdown.</div>
+  <div class="meta">
+    <span class="lang-badge lang-Python">Python</span>
+  </div>
+</div>
+
+<!-- #5 -->
+<div class="project-card">
+  <span class="rank rank-other">#5</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/D4Vinci/Scrapling" target="_blank">D4Vinci/Scrapling</a>
+    <div class="stars">60,205 <small>⭐</small></div>
+  </div>
+  <div class="desc">🕷️ An adaptive Web Scraping framework that handles everything from a single request to a full-scale crawl!</div>
+  <div class="meta">
+    <span class="lang-badge lang-Python">Python</span>
+  </div>
+</div>
+
+<!-- #6 -->
+<div class="project-card">
+  <span class="rank rank-other">#6</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/odoo/odoo" target="_blank">odoo/odoo</a>
+    <div class="stars">51,917 <small>⭐</small></div>
+  </div>
+  <div class="desc">Odoo. Open Source Apps To Grow Your Business.</div>
+  <div class="meta">
+    <span class="lang-badge lang-Python">Python</span>
+  </div>
+</div>
+
+<!-- #7 -->
+<div class="project-card">
+  <span class="rank rank-other">#7</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/aquasecurity/trivy" target="_blank">aquasecurity/trivy</a>
+    <div class="stars">35,390 <small>⭐</small></div>
+  </div>
+  <div class="desc">Find vulnerabilities, misconfigurations, secrets, SBOM in containers, Kubernetes, code repositories, clouds and more</div>
+  <div class="meta">
+    <span class="lang-badge lang-Go">Go</span>
+  </div>
+</div>
+
+<!-- #8 -->
+<div class="project-card">
+  <span class="rank rank-other">#8</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/supermemoryai/supermemory" target="_blank">supermemoryai/supermemory</a>
+    <div class="stars">25,151 <small>⭐</small></div>
+  </div>
+  <div class="desc">Memory engine and app that is extremely fast, scalable. The Memory API for the AI era.</div>
+  <div class="meta">
+    <span class="lang-badge lang-TypeScript">TypeScript</span>
+  </div>
+</div>
+
+<!-- #9 -->
+<div class="project-card">
+  <span class="rank rank-other">#9</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/opendataloader-project/opendataloader-pdf" target="_blank">opendataloader-project/opendataloader-pdf</a>
+    <div class="stars">23,244 <small>⭐</small></div>
+  </div>
+  <div class="desc">PDF Parser for AI-ready data. Automate PDF accessibility. Open-source.</div>
+  <div class="meta">
+    <span class="lang-badge lang-Java">Java</span>
+  </div>
+</div>
+
+<!-- #10 -->
+<div class="project-card">
+  <span class="rank rank-other">#10</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/lyogavin/airllm" target="_blank">lyogavin/airllm</a>
+    <div class="stars">18,872 <small>⭐</small></div>
+  </div>
+  <div class="desc">AirLLM 70B inference with single 4GB GPU</div>
+  <div class="meta">
+    <span class="lang-badge lang-Jupyter">Jupyter Notebook</span>
+  </div>
+</div>
+
+<!-- #11 -->
+<div class="project-card">
+  <span class="rank rank-other">#11</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/nesquena/hermes-webui" target="_blank">nesquena/hermes-webui</a>
+    <div class="stars">13,090 <small>⭐</small></div>
+  </div>
+  <div class="desc">Hermes WebUI: The best way to use Hermes Agent from the web or from your phone!</div>
+  <div class="meta">
+    <span class="lang-badge lang-Python">Python</span>
+  </div>
+</div>
+
+<!-- #12 -->
+<div class="project-card">
+  <span class="rank rank-other">#12</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/HKUDS/Vibe-Trading" target="_blank">HKUDS/Vibe-Trading</a>
+    <div class="stars">9,885 <small>⭐</small></div>
+  </div>
+  <div class="desc">"Vibe-Trading: Your Personal Trading Agent"</div>
+  <div class="meta">
+    <span class="lang-badge lang-Python">Python</span>
+  </div>
+</div>
+
+<!-- #13 -->
+<div class="project-card">
+  <span class="rank rank-other">#13</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/chopratejas/headroom" target="_blank">chopratejas/headroom</a>
+    <div class="stars">9,635 <small>⭐</small></div>
+  </div>
+  <div class="desc">Compress tool outputs, logs, files, and RAG chunks before they reach the LLM. 60-95% fewer tokens, same answers. Library, proxy, MCP server.</div>
+  <div class="meta">
+    <span class="lang-badge lang-Python">Python</span>
+  </div>
+</div>
+
+<!-- #14 -->
+<div class="project-card">
+  <span class="rank rank-other">#14</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/Open-LLM-VTuber/Open-LLM-VTuber" target="_blank">Open-LLM-VTuber/Open-LLM-VTuber</a>
+    <div class="stars">8,932 <small>⭐</small></div>
+  </div>
+  <div class="desc">Talk to any LLM with hands-free voice interaction, voice interruption, and Live2D taking face running locally across platforms</div>
+  <div class="meta">
+    <span class="lang-badge lang-Python">Python</span>
+  </div>
+</div>
+
+<div class="section-title"><span class="icon">🎨</span>语言分布</div>
+<div style="background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 20px;">
+  <div class="lang-bar">
+    <span class="label">Python</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:64.3%;background:#3572A5;"></div></div>
+    <span class="pct">64.3%</span>
+  </div>
+  <div class="lang-bar">
+    <span class="label">JavaScript</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:7.1%;background:#f1e05a;"></div></div>
+    <span class="pct">7.1%</span>
+  </div>
+  <div class="lang-bar">
+    <span class="label">TypeScript</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:7.1%;background:#3178c6;"></div></div>
+    <span class="pct">7.1%</span>
+  </div>
+  <div class="lang-bar">
+    <span class="label">Go</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:7.1%;background:#00ADD8;"></div></div>
+    <span class="pct">7.1%</span>
+  </div>
+  <div class="lang-bar">
+    <span class="label">Java</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:7.1%;background:#b07225;"></div></div>
+    <span class="pct">7.1%</span>
+  </div>
+  <div class="lang-bar">
+    <span class="label">Other</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:7.1%;background:#8b949e;"></div></div>
+    <span class="pct">7.1%</span>
+  </div>
+</div>
+
+<div class="section-title"><span class="icon">🔥</span>今日热点趋势</div>
+<div class="trend-grid">
+  <div class="trend-card">
+    <h3>🔥🔥🔥🔥🔥 AI Coding Agents 生态爆发</h3>
+    <p>ECC（Claude Code 优化框架）以 20.5 万星领衔，配合 headroom 的 LLM 输出压缩，说明 AI 辅助编码工具链正在快速成熟，开发者对这类工具的需求极强。</p>
+  </div>
+  <div class="trend-card">
+    <h3>🔥🔥🔥🔥 文档/数据处理工具井喷</h3>
+    <p>markitdown（Microsoft, 14.2万星）、opendataloader-pdf、headroom 都围绕"让数据更适合 AI 消费"这一主题，AI-ready 数据管道成为新基建。</p>
+  </div>
+  <div class="trend-card">
+    <h3>🔥🔥🔥 Agent 框架百花齐放</h3>
+    <p>Hermes Agent（17.9万星）、ECC、Vibe-Trading 展示了 Agent 架构从通用到垂直领域的快速渗透，Trading Agent 是新的应用方向。</p>
+  </div>
+  <div class="trend-card">
+    <h3>🔥🔥 Python 统治地位持续强化</h3>
+    <p>14 个项目中 9 个使用 Python（64.3%），AI/ML 生态对 Python 的依赖仍在加深，Go 在安全工具领域保持存在感。</p>
+  </div>
+</div>
+
+<div class="section-title"><span class="icon">💡</span>分析师洞察</div>
+<div class="insight-grid">
+  <div class="insight-card">
+    <h3>📌 投资建议：关注 AI 基础设施层</h3>
+    <p>headroom（token 压缩）、markitdown（格式转换）这类"AI 管道"工具正在成为 LLM 应用的必需品，值得关注和跟进。</p>
+  </div>
+  <div class="insight-card">
+    <h3>📌 值得试用的工具</h3>
+    <p>Scrapling（自适应爬虫框架）和 airllm（4GB GPU 跑 70B）对于资源受限的开发者特别有价值，强烈建议试用。</p>
+  </div>
+  <div class="insight-card">
+    <h3>📌 安全领域</h3>
+    <p>Trivy 作为容器安全扫描工具稳定在 Trending 榜单，说明云原生安全需求持续增长，DevSecOps 是确定性趋势。</p>
+  </div>
+  <div class="insight-card">
+    <h3>📌 社区动态</h3>
+    <p>coding-interview-university 以 34.9 万星重回榜单，始终是开发者学习资源的首选之一，经典地位不可撼动。</p>
+  </div>
+</div>
+
+</div>
+
+<div class="footer">
+  🤖 由 Hermes Agent 5-Agent 全链路协作生成 · 数据来源 GitHub Trending<br>
+  研究员 🔍 → 编辑 ✍️ → 分析师 📊 → 视觉设计师 🎨 → 审查员 👁️<br>
+  © 2026 AI 日报 · 每日自动推送
+</div>
+
+</body>
+</html>
