@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub 高星项目日报 — 2026-06-05</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0d1117;
+  color: #c9d1d9;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+}
+.header {
+  background: linear-gradient(135deg, #0d2137 0%, #1a0a2e 50%, #0d1117 100%);
+  padding: 40px 20px 30px;
+  border-bottom: 1px solid #21262d;
+}
+.header h1 {
+  font-size: 28px;
+  color: #f0f6fc;
+  margin-bottom: 8px;
+}
+.header h1 span.fire { color: #f97316; }
+.header .date {
+  color: #8b949e;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+.badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 16px; font-size: 12px; font-weight: 500;
+}
+.badge-blue { background: rgba(56,139,253,0.15); color: #58a6ff; }
+.badge-purple { background: rgba(163,113,247,0.15); color: #bc8cff; }
+.badge-green { background: rgba(63,185,80,0.15); color: #3fb950; }
+.badge-pink { background: rgba(219,109,162,0.15); color: #db6da2; }
+.badge-orange { background: rgba(249,115,22,0.15); color: #f97316; }
+.editorial {
+  background: rgba(56,139,253,0.08);
+  border-left: 3px solid #58a6ff;
+  padding: 16px 20px;
+  border-radius: 0 8px 8px 0;
+  color: #8b949e;
+  font-size: 14px;
+  max-width: 800px;
+}
+.container { max-width: 900px; margin: 0 auto; padding: 30px 20px; }
+.section-title {
+  font-size: 20px; color: #f0f6fc; margin: 30px 0 16px;
+  padding-bottom: 8px; border-bottom: 1px solid #21262d;
+}
+.section-title .icon { margin-right: 8px; }
+
+/* Project cards */
+.project-card {
+  background: #161b22;
+  border: 1px solid #21262d;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  transition: transform 0.2s, border-color 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.project-card:hover {
+  transform: translateY(-2px);
+  border-color: #58a6ff;
+}
+.project-card .rank {
+  position: absolute; top: 0; left: 0;
+  padding: 4px 12px; font-size: 12px; font-weight: 700; border-radius: 0 0 8px 0;
+  color: #fff;
+}
+.rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); }
+.rank-2 { background: linear-gradient(135deg, #C0C0C0, #A8A8A8); }
+.rank-3 { background: linear-gradient(135deg, #CD7F32, #A0522D); }
+.rank-other { background: #21262d; color: #8b949e; }
+.project-card .project-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 10px;
+}
+.project-card .project-name {
+  font-size: 18px; color: #58a6ff; font-weight: 600;
+  text-decoration: none;
+  padding-left: 50px;
+}
+.project-card .project-name:hover { text-decoration: underline; }
+.project-card .stars {
+  font-size: 22px; font-weight: 700; color: #f97316;
+  white-space: nowrap;
+}
+.project-card .stars small { font-size: 12px; color: #8b949e; font-weight: 400; }
+.project-card .desc {
+  padding-left: 50px; color: #c9d1d9; font-size: 14px; margin-bottom: 8px;
+}
+.project-card .meta {
+  padding-left: 50px; display: flex; gap: 12px; align-items: center;
+}
+.lang-badge {
+  padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 500;
+}
+.lang-Python { background: rgba(55,118,171,0.2); color: #4B8BBE; }
+.lang-JavaScript { background: rgba(247,223,30,0.15); color: #f1e05a; }
+.lang-Go { background: rgba(0,173,216,0.15); color: #00ADD8; }
+.lang-Java { background: rgba(176,114,25,0.15); color: #b07225; }
+.lang-TypeScript { background: rgba(49,120,198,0.15); color: #3178c6; }
+.lang-Jupyter { background: rgba(247,152,36,0.15); color: #f79824; }
+.lang-Csharp { background: rgba(178,34,34,0.15); color: #68217A; }
+
+/* Language distribution */
+.lang-bar {
+  margin: 4px 0; display: flex; align-items: center; gap: 8px;
+}
+.lang-bar .label { font-size: 12px; color: #8b949e; min-width: 70px; }
+.lang-bar .bar-bg {
+  flex: 1; height: 8px; background: #21262d; border-radius: 4px; overflow: hidden;
+}
+.lang-bar .bar-fill { height: 100%; border-radius: 4px; transition: width 1s; }
+.lang-bar .pct { font-size: 12px; color: #8b949e; min-width: 36px; text-align: right; }
+
+/* Trend cards */
+.trend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 600px) { .trend-grid { grid-template-columns: 1fr; } }
+.trend-card {
+  background: #161b22; border: 1px solid #21262d; border-radius: 10px;
+  padding: 16px; transition: border-color 0.3s;
+}
+.trend-card:hover { border-color: #3fb950; }
+.trend-card h3 { font-size: 15px; color: #f0f6fc; margin-bottom: 6px; }
+.trend-card p { font-size: 13px; color: #8b949e; }
+.trend-card .heat { color: #f97316; font-weight: 600; }
+
+/* Insight cards */
+.insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.insight-card {
+  background: #161b22; border: 1px solid #21262d; border-radius: 10px;
+  padding: 16px;
+}
+.insight-card h3 { font-size: 14px; color: #f0f6fc; margin-bottom: 6px; }
+.insight-card p { font-size: 13px; color: #8b949e; }
+
+.footer {
+  text-align: center; padding: 30px; color: #484f58; font-size: 12px;
+  border-top: 1px solid #21262d; margin-top: 40px;
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="badges">
+    <span class="badge badge-blue">🔍 研究员</span>
+    <span class="badge badge-purple">✍️ 编辑</span>
+    <span class="badge badge-green">📊 分析师</span>
+    <span class="badge badge-pink">🎨 视觉设计师</span>
+    <span class="badge badge-orange">👁️ 审查员</span>
+  </div>
+  <h1><span class="fire">🔥</span> GitHub 高星项目日报</h1>
+  <div class="date">📅 2026-06-05 · 每日精选 · 共 14 个热门项目</div>
+  <div class="editorial">
+    <strong>编者按：</strong>今日 GitHub Trending 榜单延续 AI 工具链与开发者效率并行的态势。开源经典 coding-interview-university 以 34.9 万星稳居榜首，ECC（Claude Code 优化框架）以 20.7 万星紧随其后，NousResearch 的 Hermes Agent 增长至 18 万星。值得关注的是 GitHub 官方的 spec-kit 和 copilot-sdk 同日上榜，展示了 GitHub 对 AI 开发者工具的战略投入。PaddleOCR 作为国产 OCR 工具标杆也重回 Trending。
+  </div>
+</div>
+
+<div class="container">
+
+<div class="section-title"><span class="icon">📊</span>今日热门项目</div>
+
+<!-- #1 -->
+<div class="project-card">
+  <span class="rank rank-1">#1</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/jwasham/coding-interview-university" target="_blank">jwasham/coding-interview-university</a>
+    <div class="stars">349,702 <small>⭐</small></div>
+  </div>
+  <div class="desc">A complete computer science study plan to become a software engineer. 最全面的计算机科学自学路线图，涵盖数据结构、算法、系统设计等核心内容。</div>
+  <div class="meta"></div>
+</div>
+
+<!-- #2 -->
+<div class="project-card">
+  <span class="rank rank-2">#2</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/affaan-m/ECC" target="_blank">affaan-m/ECC</a>
+    <div class="stars">207,198 <small>⭐</small></div>
+  </div>
+  <div class="desc">The agent harness performance optimization system. Skills, instincts, memory, security, and research-first development for Claude Code, Codex, Opencode, Cursor and beyond.</div>
+  <div class="meta">
+    <span class="lang-badge lang-JavaScript">JavaScript</span>
+  </div>
+</div>
+
+<!-- #3 -->
+<div class="project-card">
+  <span class="rank rank-3">#3</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/NousResearch/hermes-agent" target="_blank">NousResearch/hermes-agent</a>
+    <div class="stars">180,940 <small>⭐</small></div>
+  </div>
+  <div class="desc">The agent that grows with you. 全能 AI Agent 框架，支持多平台集成、自动化工作流、技能系统和持久化记忆。</div>
+  <div class="meta">
+    <span class="lang-badge lang-Python">Python</span>
+  </div>
+</div>
+
+<!-- #4 -->
+<div class="project-card">
+  <span class="rank rank-other">#4</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/github/spec-kit" target="_blank">github/spec-kit</a>
+    <div class="stars">108,560 <small>⭐</small></div>
+  </div>
+  <div class="desc">💫 Toolkit to help you get started with Spec-Driven Development. GitHub 官方推出的规格驱动开发工具包，帮助团队先写规格再写代码。</div>
+  <div class="meta">
+    <span class="lang-badge lang-Python">Python</span>
+  </div>
+</div>
+
+<!-- #5 -->
+<div class="project-card">
+  <span class="rank rank-other">#5</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/PaddlePaddle/PaddleOCR" target="_blank">PaddlePaddle/PaddleOCR</a>
+    <div class="stars">79,841 <small>⭐</small></div>
+  </div>
+  <div class="desc">Turn any PDF or image document into structured data for your AI. A powerful, lightweight OCR toolkit that bridges the gap between images/PDFs and LLMs. Supports 100+ languages.</div>
+  <div class="meta">
+    <span class="lang-badge lang-Python">Python</span>
+  </div>
+</div>
+
+<!-- #6 -->
+<div class="project-card">
+  <span class="rank rank-other">#6</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/mvanhorn/last30days-skill" target="_blank">mvanhorn/last30days-skill</a>
+    <div class="stars">27,554 <small>⭐</small></div>
+  </div>
+  <div class="desc">AI agent skill that researches any topic across Reddit, X, YouTube, HN, Polymarket, and the web — then synthesizes a grounded summary. 跨平台信息聚合研究工具。</div>
+  <div class="meta">
+    <span class="lang-badge lang-Python">Python</span>
+  </div>
+</div>
+
+<!-- #7 -->
+<div class="project-card">
+  <span class="rank rank-other">#7</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/lfnovo/open-notebook" target="_blank">lfnovo/open-notebook</a>
+    <div class="stars">24,991 <small>⭐</small></div>
+  </div>
+  <div class="desc">An Open Source implementation of Notebook LM with more flexibility and features. 开源版 NotebookLM，支持播客生成和对话式文档交互。</div>
+  <div class="meta">
+    <span class="lang-badge lang-TypeScript">TypeScript</span>
+  </div>
+</div>
+
+<!-- #8 -->
+<div class="project-card">
+  <span class="rank rank-other">#8</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/aquasecurity/trivy" target="_blank">aquasecurity/trivy</a>
+    <div class="stars">35,662 <small>⭐</small></div>
+  </div>
+  <div class="desc">Find vulnerabilities, misconfigurations, secrets, SBOM in containers, Kubernetes, code repositories, clouds and more. 全面的云原生安全扫描器。</div>
+  <div class="meta">
+    <span class="lang-badge lang-Go">Go</span>
+  </div>
+</div>
+
+<!-- #9 -->
+<div class="project-card">
+  <span class="rank rank-other">#9</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/chopratejas/headroom" target="_blank">chopratejas/headroom</a>
+    <div class="stars">12,420 <small>⭐</small></div>
+  </div>
+  <div class="desc">Compress tool outputs, logs, files, and RAG chunks before they reach the LLM. 60-95% fewer tokens, same answers. Library, proxy, MCP server. LLM 输出压缩利器。</div>
+  <div class="meta">
+    <span class="lang-badge lang-Python">Python</span>
+  </div>
+</div>
+
+<!-- #10 -->
+<div class="project-card">
+  <span class="rank rank-other">#10</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/github/copilot-sdk" target="_blank">github/copilot-sdk</a>
+    <div class="stars">8,961 <small>⭐</small></div>
+  </div>
+  <div class="desc">Multi-platform SDK for integrating GitHub Copilot Agent into apps and services. GitHub 官方 Copilot Agent 集成 SDK。</div>
+  <div class="meta">
+    <span class="lang-badge lang-Java">Java</span>
+  </div>
+</div>
+
+<!-- #11 -->
+<div class="project-card">
+  <span class="rank rank-other">#11</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/NVIDIA/cosmos" target="_blank">NVIDIA/cosmos</a>
+    <div class="stars">8,986 <small>⭐</small></div>
+  </div>
+  <div class="desc">NVIDIA Cosmos is an open platform of world models, datasets, and tools that enables developers to build Physical AI for robots, autonomous vehicles, smart infrastructure, and more.</div>
+  <div class="meta">
+    <span class="lang-badge lang-Jupyter">Jupyter Notebook</span>
+  </div>
+</div>
+
+<!-- #12 -->
+<div class="project-card">
+  <span class="rank rank-other">#12</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/Open-LLM-VTuber/Open-LLM-VTuber" target="_blank">Open-LLM-VTuber/Open-LLM-VTuber</a>
+    <div class="stars">9,572 <small>⭐</small></div>
+  </div>
+  <div class="desc">Talk to any LLM with hands-free voice interaction, voice interruption, and Live2D taking face running locally across platforms. 开源 VTuber 方案。</div>
+  <div class="meta">
+    <span class="lang-badge lang-Python">Python</span>
+  </div>
+</div>
+
+<!-- #13 -->
+<div class="project-card">
+  <span class="rank rank-other">#13</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/reconurge/flowsint" target="_blank">reconurge/flowsint</a>
+    <div class="stars">5,297 <small>⭐</small></div>
+  </div>
+  <div class="desc">A modern platform for visual, flexible, and extensible graph-based investigations. For cybersecurity analysts and investigators. 可视化图分析调查平台。</div>
+  <div class="meta">
+    <span class="lang-badge lang-TypeScript">TypeScript</span>
+  </div>
+</div>
+
+<!-- #14 -->
+<div class="project-card">
+  <span class="rank rank-other">#14</span>
+  <div class="project-header">
+    <a class="project-name" href="https://github.com/openclaw/openclaw-windows-node" target="_blank">openclaw/openclaw-windows-node</a>
+    <div class="stars">1,315 <small>⭐</small></div>
+  </div>
+  <div class="desc">Windows companion suite for OpenClaw — System Tray app, Shared library, Node, and PowerToys Command Palette extension. OpenClaw Windows 套件。</div>
+  <div class="meta">
+    <span class="lang-badge lang-Csharp">C#</span>
+  </div>
+</div>
+
+<div class="section-title"><span class="icon">🎨</span>语言分布</div>
+<div style="background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 20px;">
+  <div class="lang-bar">
+    <span class="label">Python</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:50%;background:#3572A5;"></div></div>
+    <span class="pct">50%</span>
+  </div>
+  <div class="lang-bar">
+    <span class="label">TypeScript</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:14.3%;background:#3178c6;"></div></div>
+    <span class="pct">14.3%</span>
+  </div>
+  <div class="lang-bar">
+    <span class="label">JavaScript</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:7.1%;background:#f1e05a;"></div></div>
+    <span class="pct">7.1%</span>
+  </div>
+  <div class="lang-bar">
+    <span class="label">Java</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:7.1%;background:#b07225;"></div></div>
+    <span class="pct">7.1%</span>
+  </div>
+  <div class="lang-bar">
+    <span class="label">Go</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:7.1%;background:#00ADD8;"></div></div>
+    <span class="pct">7.1%</span>
+  </div>
+  <div class="lang-bar">
+    <span class="label">Jupyter</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:7.1%;background:#f79824;"></div></div>
+    <span class="pct">7.1%</span>
+  </div>
+  <div class="lang-bar">
+    <span class="label">C#</span>
+    <div class="bar-bg"><div class="bar-fill" style="width:7.1%;background:#68217A;"></div></div>
+    <span class="pct">7.1%</span>
+  </div>
+</div>
+
+<div class="section-title"><span class="icon">🔥</span>今日热点趋势</div>
+<div class="trend-grid">
+  <div class="trend-card">
+    <h3>🔥🔥🔥🔥🔥 GitHub 官方双杀：spec-kit + copilot-sdk</h3>
+    <p>GitHub 官方两个项目同日上榜：spec-kit 推广规格驱动开发理念，copilot-sdk 提供 Agent 集成能力。这标志着 GitHub 正在构建从"规格→代码→AI 辅助"的完整开发链路。</p>
+  </div>
+  <div class="trend-card">
+    <h3>🔥🔥🔥🔥 信息聚合与跨平台研究工具兴起</h3>
+    <p>last30days-skill（2.7万星）跨 Reddit、X、YouTube、HN 等平台做信息聚合研究，flowsint 做可视化图分析。AI Agent 的"研究能力"正成为差异化竞争点。</p>
+  </div>
+  <div class="trend-card">
+    <h3>🔥🔥🔥 LLM 优化工具持续受关注</h3>
+    <p>headroom（1.2万星）通过压缩 LLM 输出减少 60-95% token 消耗，PaddleOCR 将图像/PDF 转为 LLM 可消费的结构化数据。围绕 LLM 的"效率优化"工具赛道持续活跃。</p>
+  </div>
+  <div class="trend-card">
+    <h3>🔥🔥 Python 仍为王，但生态多元化</h3>
+    <p>14 个项目中 7 个使用 Python（50%），TypeScript 占比升至 14.3%，Java 和 Go 各有一个代表项目（GitHub copilot-sdk 和 Trivy），C# 凭借 openclaw 入场。</p>
+  </div>
+</div>
+
+<div class="section-title"><span class="icon">💡</span>分析师洞察</div>
+<div class="insight-grid">
+  <div class="insight-card">
+    <h3>📌 值得关注：Spec-Driven Development</h3>
+    <p>GitHub 的 spec-kit 推广的"先规格后编码"理念值得开发者关注，这可能改变传统的软件开发流程，尤其适合 AI 辅助编码场景。</p>
+  </div>
+  <div class="insight-card">
+    <h3>📌 推荐试用：open-notebook</h3>
+    <p>开源 NotebookLM（2.5万星），支持播客生成，是 Google NotebookLM 的强大开源替代品，对于知识工作者和学习者非常有价值。</p>
+  </div>
+  <div class="insight-card">
+    <h3>📌 安全扫描：Trivy 稳居榜单</h3>
+    <p>Trivy（3.5万星）作为云原生安全扫描工具再次上榜，覆盖容器、K8s、代码仓库等全场景，是 DevSecOps 的标配工具。</p>
+  </div>
+  <div class="insight-card">
+    <h3>📌 NVIDIA Cosmos：Physical AI 新平台</h3>
+    <p>NVIDIA Cosmos（约 9000 星）构建物理 AI 的世界模型平台，面向机器人和自动驾驶，值得关注其开源数据集和工具生态的发展。</p>
+  </div>
+</div>
+
+</div>
+
+<div class="footer">
+  🤖 由 Hermes Agent 5-Agent 全链路协作生成 · 数据来源 GitHub Trending<br>
+  研究员 🔍 → 编辑 ✍️ → 分析师 📊 → 视觉设计师 🎨 → 审查员 👁️<br>
+  © 2026 AI 日报 · 每日自动推送
+</div>
+
+</body>
+</html>
