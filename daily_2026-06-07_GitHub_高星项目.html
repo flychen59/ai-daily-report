@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub 高星项目日报 2026-06-07</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0d1117; color: #c9d1d9; line-height: 1.6;
+    max-width: 900px; margin: 0 auto; padding: 20px;
+  }
+  .header {
+    text-align: center; padding: 40px 20px;
+    background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+    border-bottom: 1px solid #30363d; border-radius: 12px;
+    margin-bottom: 30px;
+  }
+  .header h1 { color: #58a6ff; font-size: 28px; margin-bottom: 8px; }
+  .header .date { color: #8b949e; font-size: 16px; }
+  .header .subtitle { color: #8b949e; font-size: 14px; margin-top: 4px; }
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px; margin-bottom: 30px;
+  }
+  .stat-card {
+    background: #161b22; border: 1px solid #30363d;
+    border-radius: 8px; padding: 16px; text-align: center;
+  }
+  .stat-card .number { color: #58a6ff; font-size: 32px; font-weight: bold; }
+  .stat-card .label { color: #8b949e; font-size: 13px; margin-top: 4px; }
+  .project-card {
+    background: #161b22; border: 1px solid #30363d;
+    border-radius: 10px; padding: 20px; margin-bottom: 16px;
+    transition: border-color 0.2s;
+  }
+  .project-card:hover { border-color: #58a6ff; }
+  .project-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .rank {
+    background: #58a6ff; color: #0d1117; font-weight: bold;
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; flex-shrink: 0;
+  }
+  .project-name { color: #58a6ff; font-size: 17px; font-weight: 600; }
+  .project-name a { color: inherit; text-decoration: none; }
+  .project-name a:hover { text-decoration: underline; }
+  .project-desc { color: #c9d1d9; font-size: 14px; margin-bottom: 12px; }
+  .project-meta { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 10px; border-radius: 20px; font-size: 12px;
+    background: #21262d; color: #8b949e;
+  }
+  .lang-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .stars { color: #e3b341; }
+  .footer {
+    text-align: center; padding: 30px; color: #484f58; font-size: 13px;
+    border-top: 1px solid #21262d; margin-top: 40px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🔥 GitHub 高星项目日报</h1>
+  <div class="date">2026-06-07 周日</div>
+  <div class="subtitle">基于 GitHub Trending 页面数据自动生成</div>
+</div>
+
+<div class="stats">
+  <div class="stat-card">
+    <div class="number">18</div>
+    <div class="label">📈 Trending 项目数</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">7</div>
+    <div class="label">💻 编程语言数</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">⚡</div>
+    <div class="label">🏆 每日精选</div>
+  </div>
+</div>
+
+<div class="project-card">
+  <div class="project-header">
+    <div class="rank">1</div>
+    <div class="project-name"><a href="https://github.com/mvanhorn/last30days-skill" target="_blank">mvanhorn/last30days-skill</a></div>
+  </div>
+  <div class="project-desc">AI agent skill that researches any topic across Reddit, X, YouTube, HN, Polymarket, and the web - then synthesizes a grounded summary</div>
+  <div class="project-meta"><span class="tag"><span class="lang-dot" style="background:#3572A5"></span>Python</span><span class="tag stars">⭐ 28,781</span></div>
+</div>
+
+<div class="project-card">
+  <div class="project-header">
+    <div class="rank">2</div>
+    <div class="project-name"><a href="https://github.com/CopilotKit/CopilotKit" target="_blank">CopilotKit/CopilotKit</a></div>
+  </div>
+  <div class="project-desc">The Frontend Stack for Agents & Generative UI. React, Angular, Mobile, Slack, and more. Makers of the AG-UI Protocol</div>
+  <div class="project-meta"><span class="tag"><span class="lang-dot" style="background:#3178C6"></span>TypeScript</span><span class="tag stars">⭐ 33,197</span></div>
+</div>
+
+<div class="project-card">
+  <div class="project-header">
+    <div class="rank">3</div>
+    <div class="project-name"><a href="https://github.com/MemPalace/mempalace" target="_blank">MemPalace/mempalace</a></div>
+  </div>
+  <div class="project-desc">The best-benchmarked open-source AI memory system. And it's free.</div>
+  <div class="project-meta"><span class="tag"><span class="lang-dot" style="background:#3572A5"></span>Python</span><span class="tag stars">⭐ 54,269</span></div>
+</div>
+
+<div class="project-card">
+  <div class="project-header">
+    <div class="rank">4</div>
+    <div class="project-name"><a href="https://github.com/danielmiessler/Personal_AI_Infrastructure" target="_blank">danielmiessler/Personal_AI_Infrastructure</a></div>
+  </div>
+  <div class="project-desc">Agentic AI Infrastructure for magnifying HUMAN capabilities.</div>
+  <div class="project-meta"><span class="tag"><span class="lang-dot" style="background:#3178C6"></span>TypeScript</span><span class="tag stars">⭐ 14,955</span></div>
+</div>
+
+<div class="project-card">
+  <div class="project-header">
+    <div class="rank">5</div>
+    <div class="project-name"><a href="https://github.com/openai/plugins" target="_blank">openai/plugins</a></div>
+  </div>
+  <div class="project-desc">OpenAI Plugins</div>
+  <div class="project-meta"><span class="tag"><span class="lang-dot" style="background:#F7DF1E"></span>JavaScript</span><span class="tag stars">⭐ 1,764</span></div>
+</div>
+
+<div class="project-card">
+  <div class="project-header">
+    <div class="rank">6</div>
+    <div class="project-name"><a href="https://github.com/Panniantong/Agent-Reach" target="_blank">Panniantong/Agent-Reach</a></div>
+  </div>
+  <div class="project-desc">Give your AI agent eyes to see the entire internet. Read & search Twitter, Reddit, YouTube, GitHub, Bilibili, XiaoHongShu — one CLI, zero API fees.</div>
+  <div class="project-meta"><span class="tag"><span class="lang-dot" style="background:#3572A5"></span>Python</span><span class="tag stars">⭐ 22,306</span></div>
+</div>
+
+<div class="project-card">
+  <div class="project-header">
+    <div class="rank">7</div>
+    <div class="project-name"><a href="https://github.com/sveltejs/svelte" target="_blank">sveltejs/svelte</a></div>
+  </div>
+  <div class="project-desc">web development for the rest of us</div>
+  <div class="project-meta"><span class="tag"><span class="lang-dot" style="background:#F7DF1E"></span>JavaScript</span><span class="tag stars">⭐ 86,981</span></div>
+</div>
+
+<div class="project-card">
+  <div class="project-header">
+    <div class="rank">8</div>
+    <div class="project-name"><a href="https://github.com/nginx/nginx" target="_blank">nginx/nginx</a></div>
+  </div>
+  <div class="project-desc">The official NGINX Open Source repository.</div>
+  <div class="project-meta"><span class="tag"><span class="lang-dot" style="background:#555555"></span>C</span><span class="tag stars">⭐ 30,686</span></div>
+</div>
+
+<div class="project-card">
+  <div class="project-header">
+    <div class="rank">9</div>
+    <div class="project-name"><a href="https://github.com/aquasecurity/trivy" target="_blank">aquasecurity/trivy</a></div>
+  </div>
+  <div class="project-desc">Find vulnerabilities, misconfigurations, secrets, SBOM in containers, Kubernetes, code repositories, clouds and more</div>
+  <div class="project-meta"><span class="tag"><span class="lang-dot" style="background:#00ADD8"></span>Go</span><span class="tag stars">⭐ 35,998</span></div>
+</div>
+
+<div class="project-card">
+  <div class="project-header">
+    <div class="rank">10</div>
+    <div class="project-name"><a href="https://github.com/golang/go" target="_blank">golang/go</a></div>
+  </div>
+  <div class="project-desc">The Go programming language</div>
+  <div class="project-meta"><span class="tag"><span class="lang-dot" style="background:#00ADD8"></span>Go</span><span class="tag stars">⭐ 134,505</span></div>
+</div>
+
+<div class="project-card">
+  <div class="project-header">
+    <div class="rank">11</div>
+    <div class="project-name"><a href="https://github.com/lfnovo/open-notebook" target="_blank">lfnovo/open-notebook</a></div>
+  </div>
+  <div class="project-desc">An Open Source implementation of Notebook LM with more flexibility and features</div>
+  <div class="project-meta"><span class="tag"><span class="lang-dot" style="background:#3178C6"></span>TypeScript</span><span class="tag stars">⭐ 26,601</span></div>
+</div>
+
+<div class="project-card">
+  <div class="project-header">
+    <div class="rank">12</div>
+    <div class="project-name"><a href="https://github.com/obra/superpowers" target="_blank">obra/superpowers</a></div>
+  </div>
+  <div class="project-desc">An agentic skills framework & software development methodology that works.</div>
+  <div class="project-meta"><span class="tag"><span class="lang-dot" style="background:#89E051"></span>Shell</span><span class="tag stars">⭐ 219,645</span></div>
+</div>
+
+<div class="project-card">
+  <div class="project-header">
+    <div class="rank">13</div>
+    <div class="project-name"><a href="https://github.com/santifer/career-ops" target="_blank">santifer/career-ops</a></div>
+  </div>
+  <div class="project-desc">AI-powered job search system built on Claude Code. 14 skill modes, Go dashboard, PDF generation, batch processing.</div>
+  <div class="project-meta"><span class="tag"><span class="lang-dot" style="background:#F7DF1E"></span>JavaScript</span><span class="tag stars">⭐ 49,327</span></div>
+</div>
+
+<div class="project-card">
+  <div class="project-header">
+    <div class="rank">14</div>
+    <div class="project-name"><a href="https://github.com/openai/whisper" target="_blank">openai/whisper</a></div>
+  </div>
+  <div class="project-desc">Robust Speech Recognition via Large-Scale Weak Supervision</div>
+  <div class="project-meta"><span class="tag"><span class="lang-dot" style="background:#3572A5"></span>Python</span><span class="tag stars">⭐ 101,851</span></div>
+</div>
+
+<div class="project-card">
+  <div class="project-header">
+    <div class="rank">15</div>
+    <div class="project-name"><a href="https://github.com/vitejs/vite" target="_blank">vitejs/vite</a></div>
+  </div>
+  <div class="project-desc">Next generation frontend tooling. It's fast!</div>
+  <div class="project-meta"><span class="tag"><span class="lang-dot" style="background:#3178C6"></span>TypeScript</span><span class="tag stars">⭐ 81,178</span></div>
+</div>
+
+<div class="project-card">
+  <div class="project-header">
+    <div class="rank">16</div>
+    <div class="project-name"><a href="https://github.com/microsoft/mxc" target="_blank">microsoft/mxc</a></div>
+  </div>
+  <div class="project-desc">Policy-driven, layered isolation and containment</div>
+  <div class="project-meta"><span class="tag"><span class="lang-dot" style="background:#DEA584"></span>Rust</span><span class="tag stars">⭐ 573</span></div>
+</div>
+
+<div class="project-card">
+  <div class="project-header">
+    <div class="rank">17</div>
+    <div class="project-name"><a href="https://github.com/PaddlePaddle/PaddleOCR" target="_blank">PaddlePaddle/PaddleOCR</a></div>
+  </div>
+  <div class="project-desc">Turn any PDF or image document into structured data for your AI. A powerful, lightweight OCR toolkit that bridges the gap between images/PDFs and LLMs. Supports 100+ languages.</div>
+  <div class="project-meta"><span class="tag"><span class="lang-dot" style="background:#3572A5"></span>Python</span><span class="tag stars">⭐ 80,954</span></div>
+</div>
+
+<div class="project-card">
+  <div class="project-header">
+    <div class="rank">18</div>
+    <div class="project-name"><a href="https://github.com/microsoft/VibeVoice" target="_blank">microsoft/VibeVoice</a></div>
+  </div>
+  <div class="project-desc">Open-Source Frontier Voice AI</div>
+  <div class="project-meta"><span class="tag"><span class="lang-dot" style="background:#3572A5"></span>Python</span><span class="tag stars">⭐ 48,468</span></div>
+</div>
+
+<div class="footer">
+  <p>📡 数据来源: GitHub Trending | 🤖 由 Hermes Agent 自动生成</p>
+  <p>📅 生成时间: 2026-06-07 08:04:46</p>
+</div>
+</body>
+</html>
