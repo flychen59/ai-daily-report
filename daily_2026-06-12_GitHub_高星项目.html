@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub 热点日报 (2026-06-12)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0d1117;
+    --bg-card: #161b22;
+    --bg-card-hover: #1c2333;
+    --border: #30363d;
+    --border-hover: #58a6ff;
+    --fg: #e6edf3;
+    --fg-muted: #8b949e;
+    --fg-dim: #6e7681;
+    --accent-orange: #f0883e;
+    --accent-gold: #ffd700;
+    --accent-silver: #c0c0c0;
+    --accent-bronze: #cd7f32;
+    --badge-editor: #a371f7;
+    --badge-analyst: #3fb950;
+    --badge-researcher: #58a6ff;
+    --badge-designer: #f778ba;
+    --badge-reviewer: #f0883e;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #0a1628 0%, #1a1040 40%, #2d1b69 70%, #1a1040 100%);
+    padding: 60px 24px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(88,166,255,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 30%, rgba(163,113,247,0.06) 0%, transparent 50%);
+    animation: headerGlow 8s ease-in-out infinite alternate;
+  }
+  @keyframes headerGlow {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-2%, 2%) scale(1.05); }
+  }
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .header-logo {
+    width: 40px;
+    height: 40px;
+    background: var(--fg);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .header-logo svg { width: 24px; height: 24px; fill: var(--bg); }
+  .header-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--fg-muted);
+    letter-spacing: 0.5px;
+  }
+  .header h1 {
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 900;
+    letter-spacing: -1px;
+    line-height: 1.2;
+    margin-bottom: 24px;
+    background: linear-gradient(135deg, #e6edf3 0%, #a5b4fc 50%, #c4b5fd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .editor-note {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 20px 24px;
+    backdrop-filter: blur(10px);
+  }
+  .editor-note-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--badge-editor);
+    margin-bottom: 10px;
+  }
+  .editor-note-label .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--badge-editor);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+  .editor-note p {
+    font-size: 15px;
+    color: rgba(230,237,243,0.85);
+    line-height: 1.8;
+  }
+  .editor-note strong {
+    color: #a5b4fc;
+    font-weight: 700;
+  }
+
+  /* Main container */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* Section titles */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 28px;
+    color: var(--fg);
+  }
+  .section-title .icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+  .section-title .badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Project grid */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 56px;
+  }
+  @media (max-width: 768px) {
+    .project-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Project card */
+  .project-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: default;
+    overflow: hidden;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: transparent;
+    transition: background 0.3s ease;
+  }
+  .project-card:hover {
+    transform: translateY(-4px);
+    background: var(--bg-card-hover);
+    border-color: var(--border-hover);
+    box-shadow: 0 8px 32px rgba(88,166,255,0.08), 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .project-card:hover::before {
+    background: linear-gradient(90deg, var(--border-hover), var(--badge-editor));
+  }
+
+  /* Rank badges */
+  .project-card.rank-1 { border-left: 3px solid var(--accent-gold); }
+  .project-card.rank-1::before { background: linear-gradient(90deg, var(--accent-gold), #ffaa00) !important; }
+  .project-card.rank-2 { border-left: 3px solid var(--accent-silver); }
+  .project-card.rank-2::before { background: linear-gradient(90deg, var(--accent-silver), #e0e0e0) !important; }
+  .project-card.rank-3 { border-left: 3px solid var(--accent-bronze); }
+  .project-card.rank-3::before { background: linear-gradient(90deg, var(--accent-bronze), #e8a050) !important; }
+
+  .rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 900;
+    font-family: 'JetBrains Mono', monospace;
+    margin-right: 8px;
+    flex-shrink: 0;
+    vertical-align: middle;
+  }
+  .rank-1 .rank-badge { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #1a1200; }
+  .rank-2 .rank-badge { background: linear-gradient(135deg, #e0e0e0, #a8a8a8); color: #1a1a1a; }
+  .rank-3 .rank-badge { background: linear-gradient(135deg, #cd7f32, #a0622a); color: #1a1200; }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .card-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    color: #58a6ff;
+    text-decoration: none;
+    transition: color 0.2s;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .card-name:hover { color: #79c0ff; text-decoration: underline; }
+
+  .card-desc {
+    font-size: 13.5px;
+    color: var(--fg-muted);
+    line-height: 1.65;
+    margin-bottom: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .card-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* Star count */
+  .star-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent-orange);
+    letter-spacing: -0.5px;
+  }
+  .star-count svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--accent-orange);
+    filter: drop-shadow(0 0 4px rgba(240,136,62,0.4));
+  }
+
+  /* Language dot */
+  .lang-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--fg-muted);
+    background: rgba(255,255,255,0.04);
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .lang-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Category tag */
+  .cat-tag {
+    font-size: 11px;
+    color: var(--fg-dim);
+    background: rgba(255,255,255,0.03);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* Trends section */
+  .trends-section { margin-bottom: 56px; }
+  .trend-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 768px) {
+    .trend-grid { grid-template-columns: 1fr; }
+  }
+  .trend-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+  }
+  .trend-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(240,136,62,0.4);
+    box-shadow: 0 8px 24px rgba(240,136,62,0.06);
+  }
+  .trend-card .fire {
+    font-size: 28px;
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    opacity: 0.15;
+    filter: blur(1px);
+  }
+  .trend-card .fire-count {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-orange);
+    opacity: 0.7;
+  }
+  .trend-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--fg);
+    margin-bottom: 8px;
+    padding-right: 50px;
+    line-height: 1.5;
+  }
+  .trend-desc {
+    font-size: 13px;
+    color: var(--fg-muted);
+    line-height: 1.7;
+  }
+  .trend-desc code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: rgba(88,166,255,0.1);
+    color: #79c0ff;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  /* Language distribution */
+  .lang-section { margin-bottom: 56px; }
+  .lang-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .lang-bar-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    transition: border-color 0.3s;
+  }
+  .lang-bar-item:hover { border-color: rgba(255,255,255,0.15); }
+  .lang-bar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .lang-bar-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .lang-bar-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--fg-muted);
+  }
+  .lang-bar-track {
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .lang-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    width: 0;
+    transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .lang-bar-fill.animated { /* width set via inline style */ }
+
+  /* Suggestions */
+  .suggestions-section { margin-bottom: 56px; }
+  .suggestion-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 768px) {
+    .suggestion-grid { grid-template-columns: 1fr; }
+  }
+  .suggestion-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .suggestion-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(63,185,80,0.4);
+    box-shadow: 0 8px 24px rgba(63,185,80,0.06);
+  }
+  .suggestion-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  .suggestion-label.research { background: rgba(88,166,255,0.12); color: var(--badge-researcher); }
+  .suggestion-label.security { background: rgba(240,136,62,0.12); color: var(--badge-reviewer); }
+  .suggestion-label.product { background: rgba(247,120,186,0.12); color: var(--badge-designer); }
+  .suggestion-label.infra { background: rgba(63,185,80,0.12); color: var(--badge-analyst); }
+  .suggestion-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--fg);
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .suggestion-desc {
+    font-size: 13px;
+    color: var(--fg-muted);
+    line-height: 1.75;
+  }
+
+  /* Dynamic news */
+  .dynamics-section { margin-bottom: 56px; }
+  .dynamics-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .dynamic-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    transition: all 0.3s ease;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .dynamic-item:hover {
+    border-color: rgba(163,113,247,0.3);
+    background: var(--bg-card-hover);
+  }
+  .dynamic-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--badge-editor);
+    background: rgba(163,113,247,0.1);
+    min-width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .dynamic-text {
+    font-size: 14px;
+    color: var(--fg-muted);
+    line-height: 1.75;
+  }
+  .dynamic-text strong {
+    color: var(--fg);
+    font-weight: 600;
+  }
+  .dynamic-text code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: rgba(88,166,255,0.1);
+    color: #79c0ff;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 32px 24px;
+    border-top: 1px solid var(--border);
+    color: var(--fg-dim);
+    font-size: 13px;
+  }
+  .footer a {
+    color: var(--fg-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer a:hover { color: var(--fg); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #484f58; }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-in {
+    opacity: 0;
+    animation: fadeInUp 0.5s ease forwards;
+  }
+  .delay-1 { animation-delay: 0.05s; }
+  .delay-2 { animation-delay: 0.1s; }
+  .delay-3 { animation-delay: 0.15s; }
+  .delay-4 { animation-delay: 0.2s; }
+  .delay-5 { animation-delay: 0.25s; }
+  .delay-6 { animation-delay: 0.3s; }
+  .delay-7 { animation-delay: 0.35s; }
+  .delay-8 { animation-delay: 0.4s; }
+  .delay-9 { animation-delay: 0.45s; }
+  .delay-10 { animation-delay: 0.5s; }
+  .delay-11 { animation-delay: 0.55s; }
+  .delay-12 { animation-delay: 0.6s; }
+  .delay-13 { animation-delay: 0.65s; }
+  .delay-14 { animation-delay: 0.7s; }
+  .delay-15 { animation-delay: 0.75s; }
+  .delay-16 { animation-delay: 0.8s; }
+  .delay-17 { animation-delay: 0.85s; }
+  .delay-18 { animation-delay: 0.9s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-in { animation: none; opacity: 1; }
+    .project-card:hover, .trend-card:hover, .suggestion-card:hover { transform: none; }
+    .lang-bar-fill { transition: none; }
+    @keyframes headerGlow { 0%, 100% { transform: none; } }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: none; } }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="header-logo">
+        <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      </div>
+      <span class="header-date">2026-06-12 · Daily Trending</span>
+    </div>
+    <h1>GitHub 热点日报</h1>
+    <div class="editor-note">
+      <div class="editor-note-label"><span class="dot"></span>编者按 · 编辑</div>
+      <p>今日 GitHub 趋势呈现出极其显著的<strong>"AI Agent 技能化与工程化"</strong>浪潮。榜单前两名及多个高星项目均围绕 AI Agent 的"技能框架"与"系统提示词"展开，标志着 AI 编程助手正从简单的对话交互，迈向具备标准化、模块化"专业技能"的新阶段。与此同时，开源生态的"破壁"需求依然旺盛，教育资源共享与底层网络工具持续受到开发者关注。此外，Apple 开源的容器工具与 Mattermost 的协作平台，也为开发者的基础设施提供了更多优质选择。</p>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- Hot Projects -->
+  <section>
+    <div class="section-title">
+      <span class="icon" style="background:rgba(240,136,62,0.12);color:var(--accent-orange);">⭐</span>
+      热门项目
+      <span class="badge" style="background:rgba(240,136,62,0.12);color:var(--accent-orange);">TOP 19</span>
+    </div>
+    <div class="project-grid">
+
+      <a href="https://github.com/obra/superpowers" target="_blank" class="project-card rank-1 animate-in delay-1" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge">1</span>
+          <span class="card-name">obra/superpowers</span>
+        </div>
+        <div class="card-desc">一个有效的智能体技能框架与软件开发方法论。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>224,788</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#89e051;"></span>Shell</span>
+          </div>
+          <span class="cat-tag">AI Agent框架</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/x1xhlol/system-prompts-and-models-of-ai-tools" target="_blank" class="project-card rank-2 animate-in delay-2" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge">2</span>
+          <span class="card-name">x1xhlol/system-prompts-and-models-of-ai-tools</span>
+        </div>
+        <div class="card-desc">全网最全 AI 工具系统提示词合集（含 Augment Code, Claude Code, Cursor, Devin, Windsurf 等 20+ 主流工具及开源模型）。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>139,859</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#6e7681;"></span>其他</span>
+          </div>
+          <span class="cat-tag">AI系统提示词</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/msitarzewski/agency-agents" target="_blank" class="project-card rank-3 animate-in delay-3" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge">3</span>
+          <span class="card-name">msitarzewski/agency-agents</span>
+        </div>
+        <div class="card-desc">完整的 AI 代理机构：从前端大师到 Reddit 社区运营，每个 Agent 都具备专属性格、流程和交付物。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>111,529</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#89e051;"></span>Shell</span>
+          </div>
+          <span class="cat-tag">AI Agent应用</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/TapXWorld/ChinaTextbook" target="_blank" class="project-card animate-in delay-4" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge" style="background:rgba(255,255,255,0.06);color:var(--fg-dim);">4</span>
+          <span class="card-name">TapXWorld/ChinaTextbook</span>
+        </div>
+        <div class="card-desc">收录所有小初高、大学 PDF 教材。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>73,918</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#ecdebe;"></span>Roff</span>
+          </div>
+          <span class="cat-tag">教育资源</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/addyosmani/agent-skills" target="_blank" class="project-card animate-in delay-5" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge" style="background:rgba(255,255,255,0.06);color:var(--fg-dim);">5</span>
+          <span class="card-name">addyosmani/agent-skills</span>
+        </div>
+        <div class="card-desc">面向 AI 编程智能体的生产级工程技能。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>54,656</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#89e051;"></span>Shell</span>
+          </div>
+          <span class="cat-tag">AI Agent框架</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/bannedbook/fanqiang" target="_blank" class="project-card animate-in delay-6" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge" style="background:rgba(255,255,255,0.06);color:var(--fg-dim);">6</span>
+          <span class="card-name">bannedbook/fanqiang</span>
+        </div>
+        <div class="card-desc">翻墙-科学上网。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>46,743</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#A97BFF;"></span>Kotlin</span>
+          </div>
+          <span class="cat-tag">网络工具</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/mattermost/mattermost" target="_blank" class="project-card animate-in delay-7" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge" style="background:rgba(255,255,255,0.06);color:var(--fg-dim);">7</span>
+          <span class="card-name">mattermost/mattermost</span>
+        </div>
+        <div class="card-desc">开源安全协作平台，覆盖整个软件开发生命周期，替代 Intercom/Zendesk 等。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>37,301</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#3178c6;"></span>TypeScript</span>
+          </div>
+          <span class="cat-tag">协作开发</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/restic/restic" target="_blank" class="project-card animate-in delay-8" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge" style="background:rgba(255,255,255,0.06);color:var(--fg-dim);">8</span>
+          <span class="card-name">restic/restic</span>
+        </div>
+        <div class="card-desc">快速、安全、高效的数据备份程序。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>34,146</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#00ADD8;"></span>Go</span>
+          </div>
+          <span class="cat-tag">数据备份</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/soxoj/maigret" target="_blank" class="project-card animate-in delay-9" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge" style="background:rgba(255,255,255,0.06);color:var(--fg-dim);">9</span>
+          <span class="card-name">soxoj/maigret</span>
+        </div>
+        <div class="card-desc">🕵️‍♂️ 通过用户名在 3000+ 网站上收集目标人员的数字档案。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 088 .25z"/></svg>32,593</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#3572A5;"></span>Python</span>
+          </div>
+          <span class="cat-tag">OSINT情报</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/apple/container" target="_blank" class="project-card animate-in delay-10" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge" style="background:rgba(255,255,255,0.06);color:var(--fg-dim);">10</span>
+          <span class="card-name">apple/container</span>
+        </div>
+        <div class="card-desc">Apple 开源容器工具：使用轻量级虚拟机在 Mac 上创建和运行 Linux 容器，基于 Swift 编写，针对 Apple 芯片深度优化。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>32,326</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#F05138;"></span>Swift</span>
+          </div>
+          <span class="cat-tag">容器虚拟化</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/chatwoot/chatwoot" target="_blank" class="project-card animate-in delay-11" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge" style="background:rgba(255,255,255,0.06);color:var(--fg-dim);">11</span>
+          <span class="card-name">chatwoot/chatwoot</span>
+        </div>
+        <div class="card-desc">开源全渠道客户支持平台（在线聊天、邮件等），Intercom/Zendesk 的开源替代方案。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>30,346</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#701516;"></span>Ruby</span>
+          </div>
+          <span class="cat-tag">客户服务</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/phuryn/pm-skills" target="_blank" class="project-card animate-in delay-12" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge" style="background:rgba(255,255,255,0.06);color:var(--fg-dim);">12</span>
+          <span class="card-name">phuryn/pm-skills</span>
+        </div>
+        <div class="card-desc">PM 技能市场：100+ 智能体技能、命令和插件，覆盖从发现、策略、执行到增长的全流程。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>16,184</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#6e7681;"></span>其他</span>
+          </div>
+          <span class="cat-tag">AI Agent应用</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/refactoringhq/tolaria" target="_blank" class="project-card animate-in delay-13" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge" style="background:rgba(255,255,255,0.06);color:var(--fg-dim);">13</span>
+          <span class="card-name">refactoringhq/tolaria</span>
+        </div>
+        <div class="card-desc">用于管理 Markdown 知识库的桌面应用。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>15,373</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#3178c6;"></span>TypeScript</span>
+          </div>
+          <span class="cat-tag">知识管理</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/alchaincyf/zhangxuefeng-skill" target="_blank" class="project-card animate-in delay-14" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge" style="background:rgba(255,255,255,0.06);color:var(--fg-dim);">14</span>
+          <span class="card-name">alchaincyf/zhangxuefeng-skill</span>
+        </div>
+        <div class="card-desc">张雪峰认知操作系统：高考志愿/考研/职业规划的实战思维框架（由女娲.skill 生成）。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>7,933</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#6e7681;"></span>其他</span>
+          </div>
+          <span class="cat-tag">AI Agent应用</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/masterking32/MasterDnsVPN" target="_blank" class="project-card animate-in delay-15" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge" style="background:rgba(255,255,255,0.06);color:var(--fg-dim);">15</span>
+          <span class="card-name">masterking32/MasterDnsVPN</span>
+        </div>
+        <div class="card-desc">高级 DNS 隧道 VPN，针对抗审查优化，具备低开销 ARQ、解析器负载均衡及高丢包稳定性。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>5,676</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#00ADD8;"></span>Go</span>
+          </div>
+          <span class="cat-tag">网络工具</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/maziyarpanahi/openmed" target="_blank" class="project-card animate-in delay-16" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge" style="background:rgba(255,255,255,0.06);color:var(--fg-dim);">16</span>
+          <span class="card-name">maziyarpanahi/openmed</span>
+        </div>
+        <div class="card-desc">开源医疗保健 AI。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>2,737</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#3572A5;"></span>Python</span>
+          </div>
+          <span class="cat-tag">医疗AI</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/NVIDIA/SkillSpector" target="_blank" class="project-card animate-in delay-17" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge" style="background:rgba(255,255,255,0.06);color:var(--fg-dim);">17</span>
+          <span class="card-name">NVIDIA/SkillSpector</span>
+        </div>
+        <div class="card-desc">英伟达出品的 AI 智能体技能安全扫描器，用于检测漏洞、恶意模式和安全风险。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>2,619</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#3572A5;"></span>Python</span>
+          </div>
+          <span class="cat-tag">AI安全</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/kenn-io/agentsview" target="_blank" class="project-card animate-in delay-17" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge" style="background:rgba(255,255,255,0.06);color:var(--fg-dim);">18</span>
+          <span class="card-name">kenn-io/agentsview</span>
+        </div>
+        <div class="card-desc">本地优先的编码智能体会话分析与统计工具，支持 Claude Code、Codex 等 20+ 智能体（号称 ccusage 的 100 倍速替代品）。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>1,623</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#00ADD8;"></span>Go</span>
+          </div>
+          <span class="cat-tag">AI开发工具</span>
+        </div>
+      </a>
+
+      <a href="https://github.com/hexo-ai/sia" target="_blank" class="project-card animate-in delay-18" style="text-decoration:none;color:inherit;">
+        <div class="card-header">
+          <span class="rank-badge" style="background:rgba(255,255,255,0.06);color:var(--fg-dim);">19</span>
+          <span class="card-name">hexo-ai/sia</span>
+        </div>
+        <div class="card-desc">自我改进 AI 框架，可自主提升任何 AI 系统（模型/智能体）在基准任务上的表现。</div>
+        <div class="card-meta">
+          <div class="card-left">
+            <span class="star-count"><svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/></svg>1,280</span>
+            <span class="lang-tag"><span class="lang-dot" style="background:#3572A5;"></span>Python</span>
+          </div>
+          <span class="cat-tag">AI框架</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Related Dynamics -->
+  <section class="dynamics-section">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(163,113,247,0.12);color:var(--badge-editor);">📡</span>
+      相关动态
+      <span class="badge" style="background:rgba(163,113,247,0.12);color:var(--badge-editor);">编辑</span>
+    </div>
+    <div class="dynamics-list">
+      <div class="dynamic-item animate-in delay-1">
+        <span class="dynamic-num">01</span>
+        <div class="dynamic-text"><strong>AI Agent 技能体系加速成型</strong>：<code>obra/superpowers</code> 与 <code>addyosmani/agent-skills</code> 双双爆火，揭示了 AI 编程正在从"提示词工程"向"技能工程"演进。开发者倾向于为 Agent 预设标准化的代码审查、测试、重构等生产级技能。</div>
+      </div>
+      <div class="dynamic-item animate-in delay-2">
+        <span class="dynamic-num">02</span>
+        <div class="dynamic-text"><strong>大模型"底牌"被彻底摸透</strong>：<code>x1xhlol/system-prompts-and-models-of-ai-tools</code> 以近 14 万 Star 登榜，反映了社区对主流 AI 编程工具（Cursor、Devin、Windsurf 等）底层逻辑的强烈探究欲，这对于开发同类竞品或优化现有工作流具有极高参考价值。</div>
+      </div>
+      <div class="dynamic-item animate-in delay-3">
+        <span class="dynamic-num">03</span>
+        <div class="dynamic-text"><strong>垂直领域 Agent 落地加速</strong>：从项目管理（<code>pm-skills</code>）到升学规划（<code>zhangxuefeng-skill</code>），Agent 的应用场景正迅速从纯技术领域向业务、生活等泛知识领域渗透。</div>
+      </div>
+      <div class="dynamic-item animate-in delay-4">
+        <span class="dynamic-num">04</span>
+        <div class="dynamic-text"><strong>AI 安全与可观测性受重视</strong>：随着 Agent 能力增强，其伴生风险引发关注。NVIDIA 发布的 <code>SkillSpector</code> 专注于技能漏洞扫描，而 <code>agentsview</code> 则解决了多 Agent 协作时的黑盒统计问题。</div>
+      </div>
+      <div class="dynamic-item animate-in delay-5">
+        <span class="dynamic-num">05</span>
+        <div class="dynamic-text"><strong>Apple 持续加码开发者基建</strong>：<code>apple/container</code> 的发布表明 Apple 正在为 Apple Silicon 生态提供更原生的容器化支持，试图改善 Mac 端的开发者体验。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trends -->
+  <section class="trends-section">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(240,136,62,0.12);color:var(--accent-orange);">🔥</span>
+      趋势分析
+      <span class="badge" style="background:rgba(63,185,80,0.12);color:var(--badge-analyst);">分析师</span>
+    </div>
+    <div class="trend-grid">
+      <div class="trend-card animate-in delay-1">
+        <span class="fire">🔥</span>
+        <span class="fire-count">🔥🔥🔥🔥</span>
+        <div class="trend-title">从"提示词工程"向"技能工程"跃迁</div>
+        <div class="trend-desc">AI编程助手告别单轮对话，进入模块化、标准化的"专业技能"封装阶段。生产级技能（代码审查、测试）成为Agent落地的核心资产。</div>
+      </div>
+      <div class="trend-card animate-in delay-2">
+        <span class="fire">🔥</span>
+        <span class="fire-count">🔥🔥🔥🔥</span>
+        <div class="trend-title">AI Agent"黑盒"走向"白盒化与合规化"</div>
+        <div class="trend-desc">系统提示词大解密反映社区对AI底层逻辑的掌控欲；同时，NVIDIA安全扫描工具与本地会话分析工具的涌现，标志着Agent生态正从"野蛮生长"转向"安全可观测"。</div>
+      </div>
+      <div class="trend-card animate-in delay-3">
+        <span class="fire">🔥</span>
+        <span class="fire-count">🔥🔥🔥</span>
+        <div class="trend-title">Agent能力边界向泛知识领域极速扩张</div>
+        <div class="trend-desc">应用场景从纯代码开发（前端/后端）迅速渗透至项目管理、升学规划、社区运营等业务与生活领域，Agent正演变为通用认知操作系统。</div>
+      </div>
+      <div class="trend-card animate-in delay-4">
+        <span class="fire">🔥</span>
+        <span class="fire-count">🔥🔥🔥</span>
+        <div class="trend-title">开发者基础设施的"去中心化与国产化替代"</div>
+        <div class="trend-desc">以Mattermost、Chatwoot为代表的开源方案持续冲击Intercom/Zendesk等商业闭源巨头；Apple发力原生容器工具补齐Mac开发短板；教育资源与网络工具的高星则反映了特定区域开发者的刚性需求。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Language Distribution -->
+  <section class="lang-section">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(63,185,80,0.12);color:var(--badge-analyst);">📊</span>
+      语言分布分析
+      <span class="badge" style="background:rgba(63,185,80,0.12);color:var(--badge-analyst);">分析师</span>
+    </div>
+    <div class="lang-bars">
+      <div class="lang-bar-item">
+        <div class="lang-bar-header">
+          <span class="lang-bar-name"><span class="lang-dot" style="background:#89e051;"></span>Shell</span>
+          <span class="lang-bar-pct">绝对主导 · 合计超 39 万 Star</span>
+        </div>
+        <div class="lang-bar-track">
+          <div class="lang-bar-fill" data-width="95" style="background:linear-gradient(90deg, #89e051, #6cc24a);"></div>
+        </div>
+        <div style="font-size:12px;color:var(--fg-dim);margin-top:6px;">主要集中于 AI Agent 技能框架（superpowers, agency-agents, agent-skills），反映当前 Agent 技能化仍处于以脚本编排和流程自动化为主的早期工程化阶段。</div>
+      </div>
+      <div class="lang-bar-item">
+        <div class="lang-bar-header">
+          <span class="lang-bar-name"><span class="lang-dot" style="background:#3572A5;"></span>Python</span>
+          <span class="lang-bar-pct">AI 底层与安全基石</span>
+        </div>
+        <div class="lang-bar-track">
+          <div class="lang-bar-fill" data-width="42" style="background:linear-gradient(90deg, #3572A5, #4b8bbe);"></div>
+        </div>
+        <div style="font-size:12px;color:var(--fg-dim);margin-top:6px;">在情报收集、医疗AI、AI安全扫描及自我改进框架中保持核心地位，是AI模型层与数据层的绝对主力。</div>
+      </div>
+      <div class="lang-bar-item">
+        <div class="lang-bar-header">
+          <span class="lang-bar-name"><span class="lang-dot" style="background:#00ADD8;"></span>Go</span>
+          <span class="lang-bar-pct">基础设施与高并发工具</span>
+        </div>
+        <div class="lang-bar-track">
+          <div class="lang-bar-fill" data-width="28" style="background:linear-gradient(90deg, #00ADD8, #29c5f0);"></div>
+        </div>
+        <div style="font-size:12px;color:var(--fg-dim);margin-top:6px;">集中在数据备份、DNS隧道VPN及本地AI分析工具，延续其在底层系统、网络工具和高性能场景的优势。</div>
+      </div>
+      <div class="lang-bar-item">
+        <div class="lang-bar-header">
+          <span class="lang-bar-name"><span class="lang-dot" style="background:#3178c6;"></span>TypeScript / Ruby</span>
+          <span class="lang-bar-pct">应用层生态</span>
+        </div>
+        <div class="lang-bar-track">
+          <div class="lang-bar-fill" data-width="22" style="background:linear-gradient(90deg, #3178c6, #701516);"></div>
+        </div>
+        <div style="font-size:12px;color:var(--fg-dim);margin-top:6px;">覆盖协作开发、知识管理、客户服务等 SaaS 级开源替代方案，构成开发者服务应用层。</div>
+      </div>
+      <div class="lang-bar-item">
+        <div class="lang-bar-header">
+          <span class="lang-bar-name"><span class="lang-dot" style="background:#F05138;"></span>Swift / Kotlin / Roff</span>
+          <span class="lang-bar-pct">垂直与特定生态</span>
+        </div>
+        <div class="lang-bar-track">
+          <div class="lang-bar-fill" data-width="15" style="background:linear-gradient(90deg, #F05138, #A97BFF, #ecdebe);"></div>
+        </div>
+        <div style="font-size:12px;color:var(--fg-dim);margin-top:6px;">分别对应 Apple 原生生态、Android 端网络工具及特定排版格式，呈现明显的场景绑定特征。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Suggestions -->
+  <section class="suggestions-section">
+    <div class="section-title">
+      <span class="icon" style="background:rgba(88,166,255,0.12);color:var(--badge-researcher);">💡</span>
+      行动建议
+      <span class="badge" style="background:rgba(
