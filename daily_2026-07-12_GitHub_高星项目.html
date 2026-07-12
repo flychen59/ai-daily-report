@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub 热门项目日报 · 2026-07-12</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0d1117;
+    --bg-card: #161b22;
+    --bg-card-hover: #1c2129;
+    --border: #30363d;
+    --border-hover: #58a6ff;
+    --fg: #e6edf3;
+    --fg-muted: #8b949e;
+    --fg-dim: #6e7681;
+    --accent-orange: #f0883e;
+    --accent-blue: #58a6ff;
+    --accent-green: #3fb950;
+    --accent-purple: #bc8cff;
+    --accent-pink: #f778ba;
+    --gold-start: #ffd700;
+    --gold-end: #f0a500;
+    --silver-start: #c0c0c0;
+    --silver-end: #a8a8a8;
+    --bronze-start: #cd7f32;
+    --bronze-end: #a0522d;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* === HEADER === */
+  .header {
+    position: relative;
+    background: linear-gradient(135deg, #0a1628 0%, #1a1040 40%, #2d1b69 70%, #1a1040 100%);
+    padding: 60px 24px 48px;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -20%;
+    width: 60%;
+    height: 200%;
+    background: radial-gradient(ellipse, rgba(88,166,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    right: -10%;
+    width: 50%;
+    height: 180%;
+    background: radial-gradient(ellipse, rgba(188,140,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .header-logo {
+    width: 36px; height: 36px;
+    fill: var(--fg);
+    opacity: 0.9;
+  }
+  .header-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--fg-muted);
+    letter-spacing: 1px;
+  }
+  .header h1 {
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 24px;
+    background: linear-gradient(90deg, #e6edf3 0%, #c9d1d9 50%, #8b949e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .editor-note {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 20px 24px;
+    backdrop-filter: blur(10px);
+  }
+  .editor-note-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent-purple);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+  .editor-note-label::before {
+    content: '';
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: var(--accent-purple);
+    border-radius: 50%;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+  .editor-note p {
+    font-size: 14.5px;
+    color: #c9d1d9;
+    line-height: 1.85;
+  }
+  .editor-note strong {
+    color: var(--fg);
+    font-weight: 600;
+  }
+  .editor-note code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    background: rgba(88,166,255,0.12);
+    color: var(--accent-blue);
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+
+  /* === MAIN CONTAINER === */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* === SECTION TITLE === */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: var(--fg);
+  }
+  .section-title .icon {
+    font-size: 22px;
+    opacity: 0.8;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  /* === PROJECT GRID === */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 56px;
+  }
+  @media (max-width: 768px) {
+    .project-grid { grid-template-columns: 1fr; }
+  }
+
+  /* === PROJECT CARD === */
+  .project-card {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: default;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: card-in 0.5s ease forwards;
+  }
+  .project-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3), 0 0 0 1px rgba(88,166,255,0.1);
+  }
+  @keyframes card-in {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Rank badge */
+  .rank-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: #0d1117;
+    border-radius: 0 0 10px 0;
+  }
+  .rank-1 { background: linear-gradient(135deg, var(--gold-start), var(--gold-end)); }
+  .rank-2 { background: linear-gradient(135deg, var(--silver-start), var(--silver-end)); }
+  .rank-3 { background: linear-gradient(135deg, var(--bronze-start), var(--bronze-end)); }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+    padding-left: 28px;
+  }
+  .card-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    word-break: break-all;
+    line-height: 1.4;
+    transition: color 0.2s;
+  }
+  .project-card:hover .card-name { color: #79c0ff; }
+
+  .card-stars {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent-orange);
+    line-height: 1;
+  }
+  .card-stars .star-icon {
+    font-size: 16px;
+    opacity: 0.9;
+  }
+
+  .card-desc {
+    font-size: 13.5px;
+    color: var(--fg-muted);
+    line-height: 1.6;
+    margin-bottom: 14px;
+    padding-left: 28px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 28px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .card-lang {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--fg-dim);
+  }
+  .lang-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .card-tag {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--fg-muted);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 3px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* === LANGUAGE DISTRIBUTION === */
+  .lang-section { margin-bottom: 56px; }
+  .lang-bars { display: flex; flex-direction: column; gap: 14px; }
+  .lang-bar-item {
+    display: grid;
+    grid-template-columns: 130px 1fr 50px;
+    align-items: center;
+    gap: 16px;
+  }
+  @media (max-width: 500px) {
+    .lang-bar-item { grid-template-columns: 100px 1fr 40px; gap: 10px; }
+  }
+  .lang-bar-label {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--fg);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .lang-bar-track {
+    height: 22px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+  }
+  .lang-bar-fill {
+    height: 100%;
+    border-radius: 6px;
+    width: 0;
+    transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+  }
+  .lang-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+    animation: shimmer 2.5s ease-in-out infinite;
+  }
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  .lang-bar-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg-muted);
+    text-align: right;
+  }
+
+  /* === TRENDS === */
+  .trends-section { margin-bottom: 56px; }
+  .trends-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 768px) {
+    .trends-grid { grid-template-columns: 1fr; }
+  }
+  .trend-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: card-in 0.5s ease forwards;
+  }
+  .trend-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--accent-orange);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3), 0 0 0 1px rgba(240,136,62,0.15);
+  }
+  .trend-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .trend-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--fg);
+    line-height: 1.4;
+  }
+  .trend-fire {
+    font-size: 18px;
+    letter-spacing: 2px;
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+  .trend-desc {
+    font-size: 13px;
+    color: var(--fg-muted);
+    line-height: 1.75;
+  }
+
+  /* === INSIGHTS === */
+  .insights-section { margin-bottom: 56px; }
+  .insight-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 30px;
+    margin-bottom: 16px;
+    transition: border-color 0.3s;
+  }
+  .insight-block:hover { border-color: rgba(255,255,255,0.15); }
+  .insight-block h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--fg);
+    margin-bottom: 16px;
+    padding-left: 14px;
+    border-left: 3px solid var(--accent-blue);
+  }
+  .insight-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .insight-list li {
+    font-size: 14px;
+    color: var(--fg-muted);
+    line-height: 1.8;
+    padding-left: 20px;
+    position: relative;
+  }
+  .insight-list li::before {
+    content: '›';
+    position: absolute;
+    left: 4px;
+    color: var(--accent-blue);
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .insight-list li strong {
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  /* === STRATEGY === */
+  .strategy-section { margin-bottom: 40px; }
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 768px) {
+    .strategy-grid { grid-template-columns: 1fr; }
+  }
+  .strategy-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: card-in 0.5s ease forwards;
+  }
+  .strategy-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--accent-green);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+  .strategy-target {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+    padding: 3px 10px;
+    border-radius: 4px;
+  }
+  .strategy-card:nth-child(1) .strategy-target { color: var(--accent-blue); background: rgba(88,166,255,0.1); }
+  .strategy-card:nth-child(2) .strategy-target { color: var(--accent-orange); background: rgba(240,136,62,0.1); }
+  .strategy-card:nth-child(3) .strategy-target { color: var(--accent-pink); background: rgba(247,120,186,0.1); }
+  .strategy-card:nth-child(4) .strategy-target { color: var(--accent-green); background: rgba(63,185,80,0.1); }
+  .strategy-text {
+    font-size: 13.5px;
+    color: var(--fg-muted);
+    line-height: 1.8;
+  }
+
+  /* === AGENT BADGES === */
+  .agent-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .agent-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+  .badge-researcher { color: var(--accent-blue); background: rgba(88,166,255,0.1); border: 1px solid rgba(88,166,255,0.2); }
+  .badge-editor { color: var(--accent-purple); background: rgba(188,140,255,0.1); border: 1px solid rgba(188,140,255,0.2); }
+  .badge-analyst { color: var(--accent-green); background: rgba(63,185,80,0.1); border: 1px solid rgba(63,185,80,0.2); }
+  .badge-designer { color: var(--accent-pink); background: rgba(247,120,186,0.1); border: 1px solid rgba(247,120,186,0.2); }
+  .badge-reviewer { color: var(--accent-orange); background: rgba(240,136,62,0.1); border: 1px solid rgba(240,136,62,0.2); }
+
+  /* === FOOTER === */
+  .footer {
+    text-align: center;
+    padding: 32px 24px;
+    border-top: 1px solid var(--border);
+    color: var(--fg-dim);
+    font-size: 12px;
+  }
+
+  /* === STAGGER ANIMATIONS === */
+  .project-card:nth-child(1) { animation-delay: 0.05s; }
+  .project-card:nth-child(2) { animation-delay: 0.1s; }
+  .project-card:nth-child(3) { animation-delay: 0.15s; }
+  .project-card:nth-child(4) { animation-delay: 0.2s; }
+  .project-card:nth-child(5) { animation-delay: 0.25s; }
+  .project-card:nth-child(6) { animation-delay: 0.3s; }
+  .project-card:nth-child(7) { animation-delay: 0.35s; }
+  .project-card:nth-child(8) { animation-delay: 0.4s; }
+  .project-card:nth-child(9) { animation-delay: 0.45s; }
+  .project-card:nth-child(10) { animation-delay: 0.5s; }
+  .project-card:nth-child(11) { animation-delay: 0.55s; }
+  .project-card:nth-child(12) { animation-delay: 0.6s; }
+  .project-card:nth-child(13) { animation-delay: 0.65s; }
+  .project-card:nth-child(14) { animation-delay: 0.7s; }
+  .project-card:nth-child(15) { animation-delay: 0.75s; }
+  .project-card:nth-child(16) { animation-delay: 0.8s; }
+  .project-card:nth-child(17) { animation-delay: 0.85s; }
+  .project-card:nth-child(18) { animation-delay: 0.9s; }
+  .project-card:nth-child(19) { animation-delay: 0.95s; }
+  .project-card:nth-child(20) { animation-delay: 1.0s; }
+  .project-card:nth-child(21) { animation-delay: 1.05s; }
+  .project-card:nth-child(22) { animation-delay: 1.1s; }
+  .project-card:nth-child(23) { animation-delay: 1.15s; }
+  .project-card:nth-child(24) { animation-delay: 1.2s; }
+
+  .trend-card:nth-child(1) { animation-delay: 0.1s; }
+  .trend-card:nth-child(2) { animation-delay: 0.2s; }
+  .trend-card:nth-child(3) { animation-delay: 0.3s; }
+  .trend-card:nth-child(4) { animation-delay: 0.4s; }
+
+  .strategy-card:nth-child(1) { animation-delay: 0.1s; }
+  .strategy-card:nth-child(2) { animation-delay: 0.2s; }
+  .strategy-card:nth-child(3) { animation-delay: 0.3s; }
+  .strategy-card:nth-child(4) { animation-delay: 0.4s; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #484f58; }
+
+  /* Selection */
+  ::selection { background: rgba(88,166,255,0.3); color: var(--fg); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-top">
+      <svg class="header-logo" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span class="header-date">2026-07-12</span>
+    </div>
+    <h1>GitHub 热门项目日报</h1>
+    <div class="editor-note">
+      <div class="editor-note-label">编者按</div>
+      <p>今日榜单呈现出显著的<strong>"AI Agent 基础设施化"</strong>与<strong>"底层技术深耕"</strong>两大特征。在 AI 领域，继大模型之后，Agent 框架与 MCP（Model Context Protocol）协议正在成为新的开发热点，<code>obra/superpowers</code> 与 <code>google-labs-code/stitch-skills</code> 标志着 Agent 技能库正在走向标准化；同时，Claude 生态的工具链（如 <code>claude-code-templates</code> 和 <code>DesktopCommanderMCP</code>）持续繁荣。在传统技术栈方面，Rust 语言展现出强劲的下沉势头，不仅在前端运行时（<code>Bun</code>）大放异彩，甚至开始触及数据库最核心的底层重写（<code>pgrust</code>）。前端与云原生领域则继续保持稳健迭代，Next.js 与 Nuxt 双双上榜，Terraform 依然是基础设施编排的绝对基石。</p>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="container">
+
+  <!-- PROJECTS -->
+  <div class="section-title"><span class="icon">⭐</span> 项目榜单</div>
+  <div class="project-grid" id="projectGrid"></div>
+
+  <!-- LANGUAGE DISTRIBUTION -->
+  <div class="lang-section">
+    <div class="section-title"><span class="icon">📊</span> 语言分布</div>
+    <div class="lang-bars" id="langBars"></div>
+  </div>
+
+  <!-- TRENDS -->
+  <div class="trends-section">
+    <div class="section-title"><span class="icon">🔥</span> 核心趋势</div>
+    <div class="trends-grid" id="trendsGrid"></div>
+  </div>
+
+  <!-- INSIGHTS -->
+  <div class="insights-section">
+    <div class="section-title"><span class="icon">🔍</span> 相关动态</div>
+    <div class="insight-block">
+      <ul class="insight-list">
+        <li><strong>AI Agent 与 MCP 协议持续升温</strong>：今日榜单涌现出多个围绕 Claude 与 MCP 协议的优质项目。<code style="font-family:'JetBrains Mono',monospace;font-size:12.5px;background:rgba(88,166,255,0.12);color:var(--accent-blue);padding:1px 6px;border-radius:3px;">obra/superpowers</code> 提出了结构化的 Agent 技能框架，而 <code style="font-family:'JetBrains Mono',monospace;font-size:12.5px;background:rgba(88,166,255,0.12);color:var(--accent-blue);padding:1px 6px;border-radius:3px;">google-labs-code/stitch-skills</code> 和 <code style="font-family:'JetBrains Mono',monospace;font-size:12.5px;background:rgba(88,166,255,0.12);color:var(--accent-blue);padding:1px 6px;border-radius:3px;">wonderwhy-er/DesktopCommanderMCP</code> 则进一步印证了 MCP 协议在打通大模型与本地环境（终端、文件系统）方面的标准地位正在形成。</li>
+        <li><strong>Rust 重写底层基础设施取得突破</strong>：<code style="font-family:'JetBrains Mono',monospace;font-size:12.5px;background:rgba(88,166,255,0.12);color:var(--accent-blue);padding:1px 6px;border-radius:3px;">malisper/pgrust</code> 备受关注，该项目实现了用 Rust 重写 PostgreSQL 核心并 100% 通过官方回归测试。这标志着 Rust 在挑战传统 C 语言主导的极底层系统（如数据库内核）方面迈出了坚实的一步。</li>
+        <li><strong>AI 与传统工作流加速融合</strong>：<code style="font-family:'JetBrains Mono',monospace;font-size:12.5px;background:rgba(88,166,255,0.12);color:var(--accent-blue);padding:1px 6px;border-radius:3px;">DayuanJiang/next-ai-draw-io</code> 展示了 AI 在特定垂直场景（图表绘制与可视化）中的落地能力，结合 Next.js 生态，说明"AI + 传统 SaaS 工具"的改造浪潮正在前端开发者群体中快速铺开。</li>
+        <li><strong>C++ 基建与航天开源依然稳固</strong>：从高性能网络库 <code style="font-family:'JetBrains Mono',monospace;font-size:12.5px;background:rgba(88,166,255,0.12);color:var(--accent-blue);padding:1px 6px;border-radius:3px;">asio</code>、3D 渲染优化库 <code style="font-family:'JetBrains Mono',monospace;font-size:12.5px;background:rgba(88,166,255,0.12);color:var(--accent-blue);padding:1px 6px;border-radius:3px;">meshoptimizer</code> 到 NASA 的 <code style="font-family:'JetBrains Mono',monospace;font-size:12.5px;background:rgba(88,166,255,0.12);color:var(--accent-blue);padding:1px 6px;border-radius:3px;">fprime</code> 航天框架，C++ 在对性能、稳定性和底层控制要求极高的工业级及科研级场景中，依然保持着不可替代的统治力。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- STRATEGY -->
+  <div class="strategy-section">
+    <div class="section-title"><span class="icon">🎯</span> 战略建议</div>
+    <div class="strategy-grid" id="strategyGrid"></div>
+  </div>
+
+  <!-- AGENT BADGES -->
+  <div class="agent-badges">
+    <span class="agent-badge badge-researcher">◆ 研究员</span>
+    <span class="agent-badge badge-editor">◆ 编辑</span>
+    <span class="agent-badge badge-analyst">◆ 分析师</span>
+    <span class="agent-badge badge-designer">◆ 设计师</span>
+    <span class="agent-badge badge-reviewer">◆ 审查员</span>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  GitHub Trending Daily Report · Generated by AI Agents · 2026-07-12
+</footer>
+
+<script>
+// === DATA ===
+const projects = [
+  { name: "obra/superpowers", desc: "一个智能体技能框架与软件开发方法论", lang: "Shell", stars: 252432, tag: "AI Agent框架" },
+  { name: "vercel/next.js", desc: "React 全栈框架", lang: "JavaScript", stars: 140943, tag: "前端框架" },
+  { name: "microsoft/PowerToys", desc: "增强 Windows 生产力与定制化的实用工具集", lang: "C", stars: 136422, tag: "系统工具" },
+  { name: "oven-sh/bun", desc: "极速的 JavaScript 运行时、打包器、测试运行器及包管理器", lang: "Rust", stars: 94556, tag: "JavaScript运行时" },
+  { name: "home-assistant/core", desc: "开源智能家居系统，优先考虑本地控制与隐私", lang: "Python", stars: 88680, tag: "物联网/智能家居" },
+  { name: "ansible/ansible", desc: "极简的 IT 自动化平台，简化应用与系统的部署维护", lang: "Python", stars: 69582, tag: "DevOps/自动化运维" },
+  { name: "nuxt/nuxt", desc: "基于 Vue 的全栈框架", lang: "TypeScript", stars: 60727, tag: "前端框架" },
+  { name: "cypress-io/cypress", desc: "快速、简单、可靠的浏览器端测试工具", lang: "TypeScript", stars: 50614, tag: "前端测试" },
+  { name: "hashicorp/terraform", desc: "安全且可预测地创建、更改和优化基础设施", lang: "Go", stars: 49357, tag: "云原生/基础设施编排" },
+  { name: "anthropics/claude-cookbooks", desc: "展示 Claude 趣味且高效用法的 Notebook/食谱集合", lang: "Jupyter Notebook", stars: 47917, tag: "AI应用/教程" },
+  { name: "prisma/prisma", desc: "下一代 Node.js & TypeScript ORM，支持多种主流数据库", lang: "TypeScript", stars: 47248, tag: "数据库/ORM" },
+  { name: "dotnet/aspnetcore", desc: "跨平台的 .NET 框架，用于构建现代云原生 Web 应用", lang: "C#", stars: 38302, tag: "后端框架" },
+  { name: "DayuanJiang/next-ai-draw-io", desc: "集成 AI 能力与 draw.io 图表的 Next.js Web 应用", lang: "TypeScript", stars: 33279, tag: "AI应用/可视化" },
+  { name: "davila7/claude-code-templates", desc: "用于配置和监控 Claude Code 的 CLI 工具", lang: "Python", stars: 29010, tag: "AI工具" },
+  { name: "catchorg/Catch2", desc: "现代的 C++ 原生单元测试、TDD 和 BDD 框架", lang: "C++", stars: 21023, tag: "测试框架" },
+  { name: "abseil/abseil-cpp", desc: "Abseil C++ 公共基础库", lang: "C++", stars: 17794, tag: "基础库" },
+  { name: "nasa/fprime", desc: "F´ 航天飞行软件与嵌入式系统框架", lang: "C++", stars: 11474, tag: "嵌入式/航天软件" },
+  { name: "actions/checkout", desc: "用于检出代码仓库的 GitHub Action", lang: "TypeScript", stars: 8461, tag: "CI/CD组件" },
+  { name: "zeux/meshoptimizer", desc: "网格优化库，使 3D 网格更小且渲染更快", lang: "C++", stars: 8134, tag: "图形学/3D渲染" },
+  { name: "wonderwhy-er/DesktopCommanderMCP", desc: "赋予 Claude 终端控制、文件搜索和差异编辑能力的 MCP 服务器", lang: "TypeScript", stars: 7765, tag: "AI工具/MCP协议" },
+  { name: "google-labs-code/stitch-skills", desc: "专为 Stitch MCP 服务器设计的 Agent 技能库", lang: "TypeScript", stars: 7050, tag: "AI Agent框架/MCP协议" },
+  { name: "chriskohlhoff/asio", desc: "Asio C++ 网络编程库", lang: "C++", stars: 6137, tag: "网络库" },
+  { name: "openai/plugins", desc: "OpenAI 插件", lang: "JavaScript", stars: 4398, tag: "AI应用/插件" },
+  { name: "malisper/pgrust", desc: "用 Rust 重写的 PostgreSQL，目前已 100% 通过回归测试", lang: "Rust", stars: 2035, tag: "数据库/底层基础设施" }
+];
+
+const langColors = {
+  "Shell": "#89e051",
+  "JavaScript": "#f1e05a",
+  "C": "#555555",
+  "Rust": "#dea584",
+  "Python": "#3572A5",
+  "TypeScript": "#3178c6",
+  "Go": "#00ADD8",
+  "Jupyter Notebook": "#DA5B0B",
+  "C#": "#178600",
+  "C++": "#f34b7d"
+};
+
+const langDistribution = [
+  { lang: "TypeScript/JS", count: 7, pct: 28, color: "#3178c6" },
+  { lang: "C++", count: 5, pct: 20, color: "#f34b7d" },
+  { lang: "Python", count: 3, pct: 12, color: "#3572A5" },
+  { lang: "Rust", count: 2, pct: 8, color: "#dea584" },
+  { lang: "C", count: 1, pct: 4, color: "#555555" },
+  { lang: "C#", count: 1, pct: 4, color: "#178600" },
+  { lang: "Go", count: 1, pct: 4, color: "#00ADD8" },
+  { lang: "Shell", count: 1, pct: 4, color: "#89e051" },
+  { lang: "Jupyter NB", count: 1, pct: 4, color: "#DA5B0B" }
+];
+
+const trends = [
+  { title: "AI 开发范式转移：从"调大模型"走向"建基础设施"", fire: "🔥🔥🔥🔥", desc: "AI 项目的重心已从单纯的模型调用，转向 Agent 技能标准化与执行环境打通。MCP 协议正在成为 AI 与本地操作系统交互的事实标准，Claude 生态的工具链正在快速繁荣并形成护城河。" },
+  { title: "Rust 语言"下沉破局"：挑战 C/C++ 底层霸权", fire: "🔥🔥🔥", desc: "Rust 不再局限于前端工具链，pgrust 100% 通过 PostgreSQL 回归测试是一个标志性事件，证明 Rust 在内存安全与极致性能上，已具备替换传统 C 语言编写核心数据库的能力。" },
+  { title: "前端框架的"AI 化"改造", fire: "🔥🔥", desc: "Next.js/Nuxt 等传统前端框架不仅是 Web 渲染容器，正在演变为 AI 应用的直接载体，"传统 SaaS 交互 + AI 能力注入"成为前端开发者新的流量密码。" },
+  { title: "云原生与 DevOps 进入"稳态期"", fire: "🔥", desc: "Terraform、Ansible 等项目榜单地位稳固，说明云原生基础设施编排技术已经完全成熟，进入存量维护与精细化运营阶段，不再是炒作热点，而是企业数字化的水电气。" }
+];
+
+const strategies = [
+  { target: "AI 应用开发团队", text: "立即将 MCP 协议纳入技术雷达，停止开发孤立的 AI 提示词工程，转向构建模块化、可复用的 Agent 技能库，并重点布局 Claude 生态的本地化工具链。" },
+  { target: "基础设施与底层研发团队", text: "对于新启动的数据库、网络库或高性能计算项目，应将 Rust 作为首选语言进行技术预研；对于存量 C++ 核心系统，可借鉴 pgrust 路径，启动 Rust 渐进式重写的可行性评估。" },
+  { target: "前端与 SaaS 产品团队", text: "在迭代前端技术栈时，强制要求集成 LLM 能力接口，探索"AI + 画布/图表/表单"的垂直场景改造，以提升产品溢价。" },
+  { target: "技术招聘与培训", text: "增加对"TypeScript + AI 工具链"复合型前端人才，以及"Rust + 系统编程"底层人才的储备，减少对纯传统 Web 开发人员的招聘比例。" }
+];
+
+// === RENDER PROJECTS ===
+const grid = document.getElementById('projectGrid');
+projects.forEach((p, i) => {
+  const rank = i + 1;
+  let rankHTML = '';
+  if (rank <= 3) {
+    rankHTML = `<div class="rank-badge rank-${rank}">${rank}</div>`;
+  }
+  const color = langColors[p.lang] || '#8b949e';
+  const starsFormatted = p.stars.toLocaleString();
+  const card = document.createElement('div');
+  card.className = 'project-card';
+  card.innerHTML = `
+    ${rankHTML}
+    <div class="card-header">
+      <div class="card-name">${p.name}</div>
+      <div class="card-stars"><span class="star-icon">★</span>${starsFormatted}</div>
+    </div>
+    <div class="card-desc">${p.desc}</div>
+    <div class="card-footer">
+      <div class="card-lang"><span class="lang-dot" style="background:${color}"></span>${p.lang}</div>
+      <div class="card-tag">${p.tag}</div>
+    </div>
+  `;
+  grid.appendChild(card);
+});
+
+// === RENDER LANGUAGE BARS ===
+const langContainer = document.getElementById('langBars');
+langDistribution.forEach(l => {
+  const item = document.createElement('div');
+  item.className = 'lang-bar-item';
+  item.innerHTML = `
+    <div class="lang-bar-label"><span class="lang-dot" style="background:${l.color}"></span>${l.lang}</div>
+    <div class="lang-bar-track"><div class="lang-bar-fill" data-width="${l.pct}" style="background: linear-gradient(90deg, ${l.color}, ${l.color}cc);"></div></div>
+    <div class="lang-bar-pct">${l.pct}%</div>
+  `;
+  langContainer.appendChild(item);
+});
+
+// Animate bars on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const fills = entry.target.querySelectorAll('.lang-bar-fill');
+      fills.forEach(fill => {
+        const w = fill.getAttribute('data-width');
+        // Scale to make the largest bar ~100%
+        const scaledW = Math.max(8, (w / 28) * 100);
+        fill.style.width = scaledW + '%';
+      });
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.2 });
+observer.observe(langContainer);
+
+// === RENDER TRENDS ===
+const trendsGrid = document.getElementById('trendsGrid');
+trends.forEach(t => {
+  const card = document.createElement('div');
+  card.className = 'trend-card';
+  card.innerHTML = `
+    <div class="trend-header">
+      <div class="trend-title">${t.title}</div>
+      <div class="trend-fire">${t.fire}</div>
+    </div>
+    <div class="trend-desc">${t.desc}</div>
+  `;
+  trendsGrid.appendChild(card);
+});
+
+// === RENDER STRATEGIES ===
+const strategyGrid = document.getElementById('strategyGrid');
+strategies.forEach(s => {
+  const card = document.createElement('div');
+  card.className = 'strategy-card';
+  card.innerHTML = `
+    <div class="strategy-target">${s.target}</div>
+    <div class="strategy-text">${s.text}</div>
+  `;
+  strategyGrid.appendChild(card);
+});
+</script>
+</body>
+</html>
