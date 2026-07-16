@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub 精选日报 | 2026-07-16</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --bg-tertiary: #1c2333;
+  --bg-card: #151b25;
+  --border-default: #2a3140;
+  --border-hover: #4a5568;
+  --text-primary: #e6edf3;
+  --text-secondary: #8b949e;
+  --text-muted: #5a6370;
+  --accent-orange: #f0883e;
+  --accent-gold: #ffd700;
+  --accent-silver: #c0c0c0;
+  --accent-bronze: #cd7f32;
+  --blue: #58a6ff;
+  --purple: #bc8cff;
+  --green: #3fb950;
+  --pink: #f778ba;
+  --orange-badge: #f0883e;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Header */
+.header {
+  position: relative;
+  background: linear-gradient(135deg, #0a1628 0%, #1a1040 40%, #2d1b69 70%, #1a1040 100%);
+  padding: 60px 24px 50px;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 30% 50%, rgba(88, 166, 255, 0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 30%, rgba(188, 140, 255, 0.06) 0%, transparent 50%);
+  animation: headerGlow 8s ease-in-out infinite alternate;
+}
+
+@keyframes headerGlow {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-2%, 2%) scale(1.05); }
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(88, 166, 255, 0.3), rgba(188, 140, 255, 0.3), transparent);
+}
+
+.header-content {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.header-logo {
+  width: 40px;
+  height: 40px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.header-date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.5px;
+}
+
+.header h1 {
+  font-size: clamp(28px, 5vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #fff 0%, #e6edf3 40%, #8b949e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.editors-note {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 20px 24px;
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+
+.editors-note-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--purple);
+  margin-bottom: 10px;
+}
+
+.editors-note-label::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--purple);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--purple);
+}
+
+.editors-note p {
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.7);
+  font-weight: 400;
+}
+
+/* Main Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* Section Title */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.section-title .icon {
+  font-size: 22px;
+}
+
+/* Agent Badge */
+.agent-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-left: 8px;
+}
+
+.badge-editor { background: rgba(188,140,255,0.15); color: var(--purple); border: 1px solid rgba(188,140,255,0.25); }
+.badge-analyst { background: rgba(63,185,80,0.15); color: var(--green); border: 1px solid rgba(63,185,80,0.25); }
+.badge-researcher { background: rgba(88,166,255,0.15); color: var(--blue); border: 1px solid rgba(88,166,255,0.25); }
+.badge-designer { background: rgba(247,120,186,0.15); color: var(--pink); border: 1px solid rgba(247,120,186,0.25); }
+.badge-reviewer { background: rgba(240,136,62,0.15); color: var(--orange-badge); border: 1px solid rgba(240,136,62,0.25); }
+
+/* Project Grid */
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 56px;
+}
+
+.project-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
+  padding: 22px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: transparent;
+  transition: background 0.35s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-hover);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.03);
+}
+
+.project-card:hover::before {
+  background: linear-gradient(90deg, var(--blue), var(--purple));
+}
+
+/* Rank badges */
+.rank-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 800;
+  color: #000;
+}
+
+.rank-1 {
+  background: linear-gradient(135deg, #ffd700, #ffaa00);
+  box-shadow: 0 2px 12px rgba(255, 215, 0, 0.3);
+}
+
+.rank-2 {
+  background: linear-gradient(135deg, #e8e8e8, #a8a8a8);
+  box-shadow: 0 2px 12px rgba(192, 192, 192, 0.25);
+}
+
+.rank-3 {
+  background: linear-gradient(135deg, #e8a862, #cd7f32);
+  box-shadow: 0 2px 12px rgba(205, 127, 50, 0.25);
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding-right: 44px;
+}
+
+.card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  border: 1px solid var(--border-default);
+}
+
+.card-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--blue);
+  text-decoration: none;
+  word-break: break-all;
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+
+.card-name:hover { color: #79c0ff; }
+
+.card-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lang-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.lang-name {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(88,166,255,0.1);
+  color: var(--blue);
+  border: 1px solid rgba(88,166,255,0.15);
+  white-space: nowrap;
+}
+
+.star-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--accent-orange);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  text-shadow: 0 0 20px rgba(240, 136, 62, 0.2);
+}
+
+.star-count .star-icon {
+  font-size: 16px;
+}
+
+/* Language colors */
+.lang-shell { background: #89e051; }
+.lang-python { background: #3572A5; }
+.lang-typescript { background: #3178c6; }
+.lang-rust { background: #dea584; }
+.lang-javascript { background: #f1e05a; }
+.lang-css { background: #563d7c; }
+.lang-html { background: #e34c26; }
+.lang-cpp { background: #f34b7d; }
+
+/* Trends Section */
+.trends-section {
+  margin-bottom: 56px;
+}
+
+.trend-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.trend-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
+  padding: 22px 24px;
+  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+.trend-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(240, 136, 62, 0.3);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.trend-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(240, 136, 62, 0.4), transparent);
+  opacity: 0;
+  transition: opacity 0.35s;
+}
+
+.trend-card:hover::after { opacity: 1; }
+
+.trend-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.trend-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.trend-fire {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.trend-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* Language Distribution */
+.lang-section {
+  margin-bottom: 56px;
+}
+
+.lang-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.lang-bar-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.lang-bar-label {
+  width: 90px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.lang-bar-track {
+  flex: 1;
+  height: 28px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+.lang-bar-fill {
+  height: 100%;
+  border-radius: 7px;
+  position: relative;
+  width: 0;
+  transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.lang-bar-fill.animated { width: var(--target-width); }
+
+.lang-bar-fill span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(0,0,0,0.8);
+  white-space: nowrap;
+}
+
+.lang-bar-pct {
+  width: 50px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.fill-python { background: linear-gradient(90deg, #3572A5, #4a8fd4); }
+.fill-typescript { background: linear-gradient(90deg, #3178c6, #5a9bd5); }
+.fill-rust { background: linear-gradient(90deg, #dea584, #e8b89a); }
+.fill-shell { background: linear-gradient(90deg, #89e051, #a5e870); }
+.fill-javascript { background: linear-gradient(90deg, #f1e05a, #f5e87a); }
+.fill-css { background: linear-gradient(90deg, #563d7c, #7b5ea7); }
+.fill-html { background: linear-gradient(90deg, #e34c26, #ef6d3e); }
+.fill-cpp { background: linear-gradient(90deg, #f34b7d, #f6709a); }
+
+/* Insights Section */
+.insights-section {
+  margin-bottom: 56px;
+}
+
+.insight-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.insight-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
+  padding: 22px 26px;
+  transition: all 0.3s ease;
+  position: relative;
+  padding-left: 30px;
+}
+
+.insight-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 16px;
+  bottom: 16px;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--green);
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.insight-card:hover {
+  border-color: rgba(63, 185, 80, 0.25);
+  transform: translateX(4px);
+}
+
+.insight-card:hover::before { opacity: 1; }
+
+.insight-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--green);
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.insight-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.insight-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* Strategy Section */
+.strategy-section {
+  margin-bottom: 56px;
+}
+
+.strategy-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.strategy-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
+  padding: 22px 24px;
+  transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+}
+
+.strategy-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(188, 140, 255, 0.3);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.strategy-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 32px;
+  font-weight: 900;
+  color: rgba(188, 140, 255, 0.12);
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  line-height: 1;
+}
+
+.strategy-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.strategy-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+/* Footer */
+.footer {
+  border-top: 1px solid var(--border-default);
+  padding: 32px 24px;
+  text-align: center;
+}
+
+.footer-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.footer-text a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-text a:hover { color: var(--blue); }
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+  opacity: 0;
+  animation: fadeInUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header { padding: 40px 16px 36px; }
+  .header h1 { font-size: 24px; }
+  .editors-note { padding: 16px 18px; }
+  .editors-note p { font-size: 13px; }
+  .container { padding: 28px 16px 60px; }
+  .project-grid,
+  .trend-grid,
+  .strategy-grid {
+    grid-template-columns: 1fr;
+  }
+  .project-card { padding: 18px 18px; }
+  .star-count { font-size: 17px; }
+  .card-desc { -webkit-line-clamp: 3; }
+  .lang-bar-label { width: 75px; font-size: 12px; }
+  .section-title { font-size: 17px; }
+  .agent-badge { display: none; }
+}
+
+@media (max-width: 480px) {
+  .card-footer { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .star-count { font-size: 18px; }
+  .lang-bar-item { gap: 8px; }
+  .lang-bar-pct { width: 40px; font-size: 11px; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+
+/* Selection */
+::selection { background: rgba(88, 166, 255, 0.3); color: #fff; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-content">
+    <div class="header-top">
+      <div class="header-logo">⭐</div>
+      <span class="header-date">2026-07-16</span>
+    </div>
+    <h1>GitHub 精选日报</h1>
+    <div class="editors-note">
+      <div class="editors-note-label">编者按</div>
+      <p>今日榜单呈现出显著的"AI Agent 工程化落地"趋势。从 Matt Pocock 的 <code style="background:rgba(255,255,255,0.08);padding:2px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12.5px;">.claude</code> 实用技能库，到专为 AI 编程代理设计的营销与设计规范，再到防御性"破坏性命令拦截器"，开发者们正在从"如何让 AI 写代码"转向"如何让 AI 安全、规范、专业地完成特定领域工作"。与此同时，开源视频剪辑、AI 虚拟伴侣与量化交易等项目也展现了 AI 在多媒体与垂直业务场景的持续渗透。</p>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+
+  <!-- Projects Section -->
+  <div class="section-title">
+    <span class="icon">📊</span>
+    今日热门项目
+    <span class="agent-badge badge-editor">编辑</span>
+  </div>
+
+  <div class="project-grid" id="projectGrid">
+    <!-- Card 1 - Gold -->
+    <a href="https://github.com/mattpocock/skills" target="_blank" class="project-card animate-in" style="text-decoration:none;color:inherit;animation-delay:0.05s">
+      <div class="rank-badge rank-1">1</div>
+      <div class="card-header">
+        <div class="card-icon">🛠️</div>
+        <span class="card-name">mattpocock/skills</span>
+      </div>
+      <div class="card-desc">Skills for Real Engineers. Straight from my .claude directory.</div>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span class="lang-dot lang-shell"></span>
+          <span class="lang-name">Shell</span>
+          <span class="tag">AI Agent 工程化</span>
+        </div>
+        <div class="star-count"><span class="star-icon">★</span>172,227</div>
+      </div>
+    </a>
+
+    <!-- Card 2 - Silver -->
+    <a href="https://github.com/Shubhamsaboo/awesome-llm-apps" target="_blank" class="project-card animate-in" style="text-decoration:none;color:inherit;animation-delay:0.1s">
+      <div class="rank-badge rank-2">2</div>
+      <div class="card-header">
+        <div class="card-icon">🤖</div>
+        <span class="card-name">Shubhamsaboo/awesome-llm-apps</span>
+      </div>
+      <div class="card-desc">100+ AI Agent & RAG apps you can actually run — clone, customize, ship.</div>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span class="lang-dot lang-python"></span>
+          <span class="lang-name">Python</span>
+          <span class="tag">LLM 应用集合</span>
+        </div>
+        <div class="star-count"><span class="star-icon">★</span>121,873</div>
+      </div>
+    </a>
+
+    <!-- Card 3 - Bronze -->
+    <a href="https://github.com/OpenCut-app/OpenCut" target="_blank" class="project-card animate-in" style="text-decoration:none;color:inherit;animation-delay:0.15s">
+      <div class="rank-badge rank-3">3</div>
+      <div class="card-header">
+        <div class="card-icon">🎬</div>
+        <span class="card-name">OpenCut-app/OpenCut</span>
+      </div>
+      <div class="card-desc">The open-source CapCut alternative</div>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span class="lang-dot lang-typescript"></span>
+          <span class="lang-name">TypeScript</span>
+          <span class="tag">视频编辑</span>
+        </div>
+        <div class="star-count"><span class="star-icon">★</span>71,602</div>
+      </div>
+    </a>
+
+    <!-- Card 4 -->
+    <a href="https://github.com/openinterpreter/openinterpreter" target="_blank" class="project-card animate-in" style="text-decoration:none;color:inherit;animation-delay:0.2s">
+      <div class="card-header">
+        <div class="card-icon">💻</div>
+        <span class="card-name">openinterpreter/openinterpreter</span>
+      </div>
+      <div class="card-desc">A coding agent for low-cost models</div>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span class="lang-dot lang-rust"></span>
+          <span class="lang-name">Rust</span>
+          <span class="tag">AI 编程代理</span>
+        </div>
+        <div class="star-count"><span class="star-icon">★</span>65,461</div>
+      </div>
+    </a>
+
+    <!-- Card 5 -->
+    <a href="https://github.com/moeru-ai/airi" target="_blank" class="project-card animate-in" style="text-decoration:none;color:inherit;animation-delay:0.25s">
+      <div class="card-header">
+        <div class="card-icon">💖</div>
+        <span class="card-name">moeru-ai/airi</span>
+      </div>
+      <div class="card-desc">自托管虚拟伴侣，支持实时语音聊天、Minecraft/异星工厂游玩，跨平台支持</div>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span class="lang-dot lang-typescript"></span>
+          <span class="lang-name">TypeScript</span>
+          <span class="tag">AI 虚拟伴侣</span>
+        </div>
+        <div class="star-count"><span class="star-icon">★</span>42,481</div>
+      </div>
+    </a>
+
+    <!-- Card 6 -->
+    <a href="https://github.com/coreyhaines31/marketingskills" target="_blank" class="project-card animate-in" style="text-decoration:none;color:inherit;animation-delay:0.3s">
+      <div class="card-header">
+        <div class="card-icon">📢</div>
+        <span class="card-name">coreyhaines31/marketingskills</span>
+      </div>
+      <div class="card-desc">Marketing skills for Claude Code and AI agents. CRO, copywriting, SEO, analytics, and growth engineering.</div>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span class="lang-dot lang-javascript"></span>
+          <span class="lang-name">JavaScript</span>
+          <span class="tag">AI 营销自动化</span>
+        </div>
+        <div class="star-count"><span class="star-icon">★</span>39,738</div>
+      </div>
+    </a>
+
+    <!-- Card 7 -->
+    <a href="https://github.com/HKUDS/DeepTutor" target="_blank" class="project-card animate-in" style="text-decoration:none;color:inherit;animation-delay:0.35s">
+      <div class="card-header">
+        <div class="card-icon">🎓</div>
+        <span class="card-name">HKUDS/DeepTutor</span>
+      </div>
+      <div class="card-desc">DeepTutor: Lifelong Personalized Tutoring.</div>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span class="lang-dot lang-python"></span>
+          <span class="lang-name">Python</span>
+          <span class="tag">AI 教育</span>
+        </div>
+        <div class="star-count"><span class="star-icon">★</span>26,237</div>
+      </div>
+    </a>
+
+    <!-- Card 8 -->
+    <a href="https://github.com/HKUDS/Vibe-Trading" target="_blank" class="project-card animate-in" style="text-decoration:none;color:inherit;animation-delay:0.4s">
+      <div class="card-header">
+        <div class="card-icon">📈</div>
+        <span class="card-name">HKUDS/Vibe-Trading</span>
+      </div>
+      <div class="card-desc">Vibe-Trading: Your Personal Trading Agent</div>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span class="lang-dot lang-python"></span>
+          <span class="lang-name">Python</span>
+          <span class="tag">AI 量化交易</span>
+        </div>
+        <div class="star-count"><span class="star-icon">★</span>23,672</div>
+      </div>
+    </a>
+
+    <!-- Card 9 -->
+    <a href="https://github.com/hasaneyldrm/exercises-dataset" target="_blank" class="project-card animate-in" style="text-decoration:none;color:inherit;animation-delay:0.45s">
+      <div class="card-header">
+        <div class="card-icon">🏋️</div>
+        <span class="card-name">hasaneyldrm/exercises-dataset</span>
+      </div>
+      <div class="card-desc">1324 个健身动作数据集，含动画 GIF、缩略图、肌肉群数据及 6 种语言步骤说明</div>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span class="lang-dot lang-html"></span>
+          <span class="lang-name">HTML</span>
+          <span class="tag">数据集</span>
+        </div>
+        <div class="star-count"><span class="star-icon">★</span>14,345</div>
+      </div>
+    </a>
+
+    <!-- Card 10 -->
+    <a href="https://github.com/Nutlope/hallmark" target="_blank" class="project-card animate-in" style="text-decoration:none;color:inherit;animation-delay:0.5s">
+      <div class="card-header">
+        <div class="card-icon">🎨</div>
+        <span class="card-name">Nutlope/hallmark</span>
+      </div>
+      <div class="card-desc">Anti-AI-slop design skill for Claude Code, Cursor, and Codex.</div>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span class="lang-dot lang-css"></span>
+          <span class="lang-name">CSS</span>
+          <span class="tag">AI 设计规范</span>
+        </div>
+        <div class="star-count"><span class="star-icon">★</span>8,410</div>
+      </div>
+    </a>
+
+    <!-- Card 11 -->
+    <a href="https://github.com/HenryNdubuaku/maths-cs-ai-compendium" target="_blank" class="project-card animate-in" style="text-decoration:none;color:inherit;animation-delay:0.55s">
+      <div class="card-header">
+        <div class="card-icon">📚</div>
+        <span class="card-name">HenryNdubuaku/maths-cs-ai-compendium</span>
+      </div>
+      <div class="card-desc">Become a cracked AI/ML Research Engineer</div>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span class="lang-dot lang-typescript"></span>
+          <span class="lang-name">TypeScript</span>
+          <span class="tag">学习路线</span>
+        </div>
+        <div class="star-count"><span class="star-icon">★</span>5,873</div>
+      </div>
+    </a>
+
+    <!-- Card 12 -->
+    <a href="https://github.com/Dicklesworthstone/destructive_command_guard" target="_blank" class="project-card animate-in" style="text-decoration:none;color:inherit;animation-delay:0.6s">
+      <div class="card-header">
+        <div class="card-icon">🛡️</div>
+        <span class="card-name">Dicklesworthstone/destructive_command_guard</span>
+      </div>
+      <div class="card-desc">用于拦截 AI 代理执行危险 Git 和 Shell 命令的防护工具</div>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span class="lang-dot lang-rust"></span>
+          <span class="lang-name">Rust</span>
+          <span class="tag">AI 安全防护</span>
+        </div>
+        <div class="star-count"><span class="star-icon">★</span>4,755</div>
+      </div>
+    </a>
+
+    <!-- Card 13 -->
+    <a href="https://github.com/YimMenu/YimMenuV2" target="_blank" class="project-card animate-in" style="text-decoration:none;color:inherit;animation-delay:0.65s">
+      <div class="card-header">
+        <div class="card-icon">🎮</div>
+        <span class="card-name">YimMenu/YimMenuV2</span>
+      </div>
+      <div class="card-desc">Experimental menu for GTA 5: Enhanced</div>
+      <div class="card-footer">
+        <div class="card-meta">
+          <span class="lang-dot lang-cpp"></span>
+          <span class="lang-name">C++</span>
+          <span class="tag">游戏模组</span>
+        </div>
+        <div class="star-count"><span class="star-icon">★</span>1,416</div>
+      </div>
+    </a>
+  </div>
+
+  <!-- Trends Section -->
+  <div class="trends-section">
+    <div class="section-title">
+      <span class="icon">🚀</span>
+      相关动态
+      <span class="agent-badge badge-researcher">研究员</span>
+    </div>
+    <div class="trend-grid">
+      <div class="trend-card animate-in" style="animation-delay:0.1s">
+        <div class="trend-header">
+          <div class="trend-title">AI Agent 生态加速分化</div>
+          <div class="trend-fire">🔥🔥🔥🔥</div>
+        </div>
+        <div class="trend-desc"><code style="background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:12px;">mattpocock/skills</code> 与 <code style="background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:12px;">marketingskills</code> 的爆火，标志着 AI 编程助手的"提示词/技能包"正在成为独立的开源品类，非技术岗位的 Agent 技能库开始涌现。</div>
+      </div>
+      <div class="trend-card animate-in" style="animation-delay:0.15s">
+        <div class="trend-header">
+          <div class="trend-title">AI 编程安全引发关注</div>
+          <div class="trend-fire">🔥🔥🔥</div>
+        </div>
+        <div class="trend-desc">随着编码代理的普及，<code style="background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:12px;">destructive_command_guard</code> 应运而生。通过 Rust 编写的底层拦截机制，防止 AI 代理误执行 <code style="background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:12px;">rm -rf</code> 等破坏性命令。</div>
+      </div>
+      <div class="trend-card animate-in" style="animation-delay:0.2s">
+        <div class="trend-header">
+          <div class="trend-title">多媒体工具持续突围</div>
+          <div class="trend-fire">🔥🔥🔥</div>
+        </div>
+        <div class="trend-desc"><code style="background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:12px;">OpenCut</code> 以超 7 万 Star 成为开源视频编辑赛道新晋黑马，直指 CapCut 的开源替代方案，TypeScript 技术栈降低了贡献门槛。</div>
+      </div>
+      <div class="trend-card animate-in" style="animation-delay:0.25s">
+        <div class="trend-header">
+          <div class="trend-title">港大 DS 实验室双星闪耀</div>
+          <div class="trend-fire">🔥🔥</div>
+        </div>
+        <div class="trend-desc">HKUDS 同日两个项目上榜，<code style="background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:12px;">DeepTutor</code> 聚焦终身个性化教育，<code style="background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:12px;">Vibe-Trading</code> 切入情绪化量化交易，展现学术团队在 AI 垂直应用上的强劲产出。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Language Distribution -->
+  <div class="lang-section">
+    <div class="section-title">
+      <span class="icon">🌐</span>
+      语言分布分析
+      <span class="agent-badge badge-analyst">分析师</span>
+    </div>
+    <div class="lang-bars" id="langBars">
+      <div class="lang-bar-item">
+        <div class="lang-bar-label"><span class="lang-dot lang-python"></span>Python</div>
+        <div class="lang-bar-track">
+          <div class="lang-bar-fill fill-python" style="--target-width:23.1%" data-width="23.1"><span>3 个项目</span></div>
+        </div>
+        <div class="lang-bar-pct">23.1%</div>
+      </div>
+      <div class="lang-bar-item">
+        <div class="lang-bar-label"><span class="lang-dot lang-typescript"></span>TypeScript</div>
+        <div class="lang-bar-track">
+          <div class="lang-bar-fill fill-typescript" style="--target-width:23.1%" data-width="23.1"><span>3 个项目</span></div>
+        </div>
+        <div class="lang-bar-pct">23.1%</div>
+      </div>
+      <div class="lang-bar-item">
+        <div class="lang-bar-label"><span class="lang-dot lang-rust"></span>Rust</div>
+        <div class="lang-bar-track">
+          <div class="lang-bar-fill fill-rust" style="--target-width:15.4%" data-width="15.4"><span>2 个项目</span></div>
+        </div>
+        <div class="lang-bar-pct">15.4%</div>
+      </div>
+      <div class="lang-bar-item">
+        <div class="lang-bar-label"><span class="lang-dot lang-shell"></span>Shell</div>
+        <div class="lang-bar-track">
+          <div class="lang-bar-fill fill-shell" style="--target-width:7.7%" data-width="7.7"><span>1 个项目</span></div>
+        </div>
+        <div class="lang-bar-pct">7.7%</div>
+      </div>
+      <div class="lang-bar-item">
+        <div class="lang-bar-label"><span class="lang-dot lang-javascript"></span>JavaScript</div>
+        <div class="lang-bar-track">
+          <div class="lang-bar-fill fill-javascript" style="--target-width:7.7%" data-width="7.7"><span>1 个项目</span></div>
+        </div>
+        <div class="lang-bar-pct">7.7%</div>
+      </div>
+      <div class="lang-bar-item">
+        <div class="lang-bar-label"><span class="lang-dot lang-css"></span>CSS</div>
+        <div class="lang-bar-track">
+          <div class="lang-bar-fill fill-css" style="--target-width:7.7%" data-width="7.7"><span>1 个项目</span></div>
+        </div>
+        <div class="lang-bar-pct">7.7%</div>
+      </div>
+      <div class="lang-bar-item">
+        <div class="lang-bar-label"><span class="lang-dot lang-html"></span>HTML</div>
+        <div class="lang-bar-track">
+          <div class="lang-bar-fill fill-html" style="--target-width:7.7%" data-width="7.7"><span>1 个项目</span></div>
+        </div>
+        <div class="lang-bar-pct">7.7%</div>
+      </div>
+      <div class="lang-bar-item">
+        <div class="lang-bar-label"><span class="lang-dot lang-cpp"></span>C++</div>
+        <div class="lang-bar-track">
+          <div class="lang-bar-fill fill-cpp" style="--target-width:7.7%" data-width="7.7"><span>1 个项目</span></div>
+        </div>
+        <div class="lang-bar-pct">7.7%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core Insights -->
+  <div class="insights-section">
+    <div class="section-title">
+      <span class="icon">💡</span>
+      核心趋势洞察
+      <span class="agent-badge badge-analyst">分析师</span>
+    </div>
+    <div class="insight-list">
+      <div class="insight-card animate-in" style="animation-delay:0.1s">
+        <div class="insight-num">INSIGHT 01</div>
+        <div class="insight-title">从"通用编码"向"领域工程化"跃迁</div>
+        <div class="insight-desc">AI Agent 不再局限于写代码，而是向营销（CRO/SEO）、设计（反AI审美）、教育等非技术岗位渗透，提示词/技能库正在演化为独立的开源品类。</div>
+      </div>
+      <div class="insight-card animate-in" style="animation-delay:0.15s">
+        <div class="insight-num">INSIGHT 02</div>
+        <div class="insight-title">Agent 安全基建成为刚需</div>
+        <div class="insight-desc">随着 AI 代理获得更高自主权，社区对"失控风险"的防范意识觉醒。底层拦截机制与高性能语言（Rust）的结合，标志着 Agent 开发进入"安全合规"新阶段。</div>
+      </div>
+      <div class="insight-card animate-in" style="animation-delay:0.2s">
+        <div class="insight-num">INSIGHT 03</div>
+        <div class="insight-title">前端技术栈重塑多媒体工具</div>
+        <div class="insight-desc">TypeScript 驱动的开源视频剪辑工具斩获 7 万+ Star，打破了传统 C++ 在视频处理领域的垄断，全栈开发者正大幅降低音视频领域的贡献与创业门槛。</div>
+      </div>
+      <div class="insight-card animate-in" style="animation-delay:0.25s">
+        <div class="insight-num">INSIGHT 04</div>
+        <div class="insight-title">学术机构加速垂直场景变现</div>
+        <div class="insight-desc">高校实验室（如港大 DS）从底层模型研究转向直接发布面向终端用户的商业级应用（教育、交易），学术成果的工程化转化周期显著缩短。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Strategy Section -->
+  <div class="strategy-section">
+    <div class="section-title">
+      <span class="icon">🎯</span>
+      战略建议
+      <span class="agent-badge badge-reviewer">审查员</span>
+    </div>
+    <div class="strategy-grid">
+      <div class="strategy-card animate-in" style="animation-delay:0.1s">
+        <div class="strategy-num">01</div>
+        <div class="strategy-title">投资 AI Agent 技能生态</div>
+        <div class="strategy-desc">建议团队或个人不要仅停留在使用 AI 工具，应针对自身业务壁垒（如财务、法务、特定工业流程）封装专属的 <code style="background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:12px;">.claude</code> 或 Cursor 技能库，形成可复用的数字资产。</div>
+      </div>
+      <div class="strategy-card animate-in" style="animation-delay:0.15s">
+        <div class="strategy-num">02</div>
+        <div class="strategy-title">构建 AI 开发安全网</div>
+        <div class="strategy-desc">在引入 AI 编程代理时，必须同步部署命令拦截与沙盒隔离机制，建议采用 Rust 等内存安全语言编写防护插件，避免 Agent 自主操作引发生产事故。</div>
+      </div>
+      <div class="strategy-card animate-in" style="animation-delay:0.2s">
+        <div class="strategy-num">03</div>
+        <div class="strategy-title">优先采用 TS 技术栈探索多媒体赛道</div>
+        <div class="strategy-desc">对于计划切入视频剪辑、直播、虚拟伴侣等赛道的团队，建议首选 TypeScript + WebAssembly 技术栈，以换取更快的迭代速度和更广泛的开源社区贡献者。</div>
+      </div>
+      <div class="strategy-card animate-in" style="animation-delay:0.25s">
+        <div class="strategy-num">04</div>
+        <div class="strategy-title">建立"数据+Agent"的垂直闭环</div>
+        <div class="strategy-desc">参考量化交易与教育项目，单纯的模型微调已不够，建议将私有数据集与特定 Agent 结合，打造具备"终身记忆"与"个性化"的垂直应用护城河。</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="footer-text">
+    GitHub 精选日报 · 2026-07-16 · 由 AI 编辑团队自动生成 · <a href="#">订阅日报</a>
+  </div>
+</div>
+
+<script>
+// Intersection Observer for animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      // Animate cards
+      if (entry.target.classList.contains('animate-in')) {
+        entry.target.style.animationPlayState = 'running';
+      }
+      // Animate language bars
+      if (entry.target.id === 'langBars') {
+        const bars = entry.target.querySelectorAll('.lang-bar-fill');
+        bars.forEach((bar, i) => {
+          setTimeout(() => {
+            bar.classList.add('animated');
+          }, i * 100);
+        });
+      }
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+// Observe all animated elements
+document.querySelectorAll('.animate-in').forEach(el => {
+  el.style.animationPlayState = 'paused';
+  observer.observe(el);
+});
+
+// Observe language bars section
+const langBars = document.getElementById('langBars');
+if (langBars) observer.observe(langBars);
+
+// Trigger header animations immediately
+document.querySelectorAll('.header .animate-in').forEach(el => {
+  el.style.animationPlayState = 'running';
+});
+</script>
+
+</body>
+</html>
