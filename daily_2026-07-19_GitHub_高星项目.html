@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>开发者日报 | 2026-07-19</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #1c2333;
+    --bg-card: #151b25;
+    --border-default: #2a3140;
+    --border-hover: #4a5568;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-tertiary: #6e7681;
+    --accent-gold: #f0b429;
+    --accent-silver: #a0aec0;
+    --accent-bronze: #d69e2e;
+    --accent-orange: #f97316;
+    --accent-blue: #58a6ff;
+    --accent-purple: #bc8cff;
+    --accent-green: #3fb950;
+    --accent-pink: #f778ba;
+    --lang-python: #3572A5;
+    --lang-typescript: #3178C6;
+    --lang-jupyter: #F37626;
+    --lang-markdown: #083fa1;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #0c1929 0%, #1a1040 40%, #2d1b69 70%, #1a1040 100%);
+    border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(88, 166, 255, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 50%, rgba(188, 140, 255, 0.06) 0%, transparent 50%);
+    animation: headerGlow 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes headerGlow {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(-2%, 1%) rotate(1deg); }
+  }
+
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 24px 44px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(188, 140, 255, 0.15);
+    border: 1px solid rgba(188, 140, 255, 0.3);
+    color: var(--accent-purple);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  .header-date {
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .header h1 {
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #e6edf3 0%, #c9d1d9 50%, #8b949e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .editors-note {
+    background: rgba(255, 255, 255, 0.04);
+    border-left: 3px solid var(--accent-purple);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    font-size: 14.5px;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    max-width: 860px;
+  }
+
+  .editors-note strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .editors-note code {
+    background: rgba(188, 140, 255, 0.12);
+    color: var(--accent-purple);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+  }
+
+  /* Main Container */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  /* Section Title */
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title .icon {
+    font-size: 18px;
+  }
+
+  /* Project Cards Grid */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  @media (max-width: 768px) {
+    .projects-grid { grid-template-columns: 1fr; }
+  }
+
+  .project-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: transparent;
+    transition: background 0.3s ease;
+  }
+
+  .project-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-hover);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.03);
+  }
+
+  .project-card:hover::before {
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+  }
+
+  /* Rank badges */
+  .project-card.rank-1 { border-color: rgba(240, 180, 41, 0.25); }
+  .project-card.rank-1::before { background: linear-gradient(90deg, #f0b429, #f6e05e) !important; }
+  .project-card.rank-1:hover { border-color: rgba(240, 180, 41, 0.5); box-shadow: 0 8px 32px rgba(240, 180, 41, 0.08); }
+
+  .project-card.rank-2 { border-color: rgba(160, 174, 192, 0.2); }
+  .project-card.rank-2::before { background: linear-gradient(90deg, #a0aec0, #e2e8f0) !important; }
+  .project-card.rank-2:hover { border-color: rgba(160, 174, 192, 0.4); box-shadow: 0 8px 32px rgba(160, 174, 192, 0.06); }
+
+  .project-card.rank-3 { border-color: rgba(214, 158, 46, 0.2); }
+  .project-card.rank-3::before { background: linear-gradient(90deg, #d69e2e, #ed8936) !important; }
+  .project-card.rank-3:hover { border-color: rgba(214, 158, 46, 0.4); box-shadow: 0 8px 32px rgba(214, 158, 46, 0.06); }
+
+  .rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  .rank-1 .rank-badge { background: linear-gradient(135deg, #f0b429, #f6e05e); color: #1a1a1a; }
+  .rank-2 .rank-badge { background: linear-gradient(135deg, #a0aec0, #e2e8f0); color: #1a1a1a; }
+  .rank-3 .rank-badge { background: linear-gradient(135deg, #d69e2e, #ed8936); color: #1a1a1a; }
+
+  .card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .card-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent-blue);
+    text-decoration: none;
+    word-break: break-all;
+    line-height: 1.4;
+    transition: color 0.2s;
+  }
+
+  .card-name:hover { color: #79c0ff; text-decoration: underline; }
+
+  .star-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent-orange);
+    white-space: nowrap;
+    flex-shrink: 0;
+    text-shadow: 0 0 20px rgba(249, 115, 22, 0.2);
+  }
+
+  .star-count .star-icon {
+    font-size: 16px;
+    margin-right: 2px;
+  }
+
+  .card-desc {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .lang-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    padding: 3px 10px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .lang-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .lang-dot.python { background: var(--lang-python); box-shadow: 0 0 6px rgba(53, 114, 165, 0.5); }
+  .lang-dot.typescript { background: var(--lang-typescript); box-shadow: 0 0 6px rgba(49, 120, 198, 0.5); }
+  .lang-dot.jupyter { background: var(--lang-jupyter); box-shadow: 0 0 6px rgba(243, 118, 38, 0.5); }
+  .lang-dot.markdown { background: var(--lang-markdown); box-shadow: 0 0 6px rgba(8, 63, 161, 0.5); }
+
+  .topic-tag {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    padding: 3px 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Trends Section */
+  .trends-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  @media (max-width: 768px) {
+    .trends-grid { grid-template-columns: 1fr; }
+  }
+
+  .trend-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .trend-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-hover);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .trend-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .trend-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  .trend-fire {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent-orange);
+    background: rgba(249, 115, 22, 0.1);
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(249, 115, 22, 0.15);
+  }
+
+  .trend-desc {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .trend-projects {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .trend-proj-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-blue);
+    background: rgba(88, 166, 255, 0.08);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(88, 166, 255, 0.12);
+  }
+
+  /* Language Distribution */
+  .lang-section {
+    margin-bottom: 48px;
+  }
+
+  .lang-bar-container {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .lang-bar-item {
+    margin-bottom: 18px;
+  }
+
+  .lang-bar-item:last-child { margin-bottom: 0; }
+
+  .lang-bar-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .lang-bar-name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .lang-bar-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .lang-bar-track {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .lang-bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    width: 0;
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .lang-bar-fill.python { background: linear-gradient(90deg, #3572A5, #4a90d9); }
+  .lang-bar-fill.typescript { background: linear-gradient(90deg, #3178C6, #5a9bd5); }
+  .lang-bar-fill.jupyter { background: linear-gradient(90deg, #F37626, #f5a623); }
+  .lang-bar-fill.markdown { background: linear-gradient(90deg, #083fa1, #2b6cb0); }
+
+  /* Strategy Section */
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  @media (max-width: 768px) {
+    .strategy-grid { grid-template-columns: 1fr; }
+  }
+
+  .strategy-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  .strategy-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-hover);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .strategy-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent-green);
+    background: rgba(63, 185, 80, 0.1);
+    padding: 2px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  .strategy-title {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .strategy-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* Agent Badges */
+  .agent-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+
+  .agent-badge.researcher { background: rgba(88, 166, 255, 0.12); color: var(--accent-blue); border: 1px solid rgba(88, 166, 255, 0.2); }
+  .agent-badge.editor { background: rgba(188, 140, 255, 0.12); color: var(--accent-purple); border: 1px solid rgba(188, 140, 255, 0.2); }
+  .agent-badge.analyst { background: rgba(63, 185, 80, 0.12); color: var(--accent-green); border: 1px solid rgba(63, 185, 80, 0.2); }
+  .agent-badge.designer { background: rgba(247, 120, 186, 0.12); color: var(--accent-pink); border: 1px solid rgba(247, 120, 186, 0.2); }
+  .agent-badge.reviewer { background: rgba(249, 115, 22, 0.12); color: var(--accent-orange); border: 1px solid rgba(249, 115, 22, 0.2); }
+
+  /* Footer */
+  .footer {
+    border-top: 1px solid var(--border-default);
+    padding: 24px;
+    text-align: center;
+    color: var(--text-tertiary);
+    font-size: 12px;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-agents {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-in {
+    opacity: 0;
+    animation: fadeInUp 0.5s ease forwards;
+  }
+
+  .delay-1 { animation-delay: 0.05s; }
+  .delay-2 { animation-delay: 0.1s; }
+  .delay-3 { animation-delay: 0.15s; }
+  .delay-4 { animation-delay: 0.2s; }
+  .delay-5 { animation-delay: 0.25s; }
+  .delay-6 { animation-delay: 0.3s; }
+  .delay-7 { animation-delay: 0.35s; }
+  .delay-8 { animation-delay: 0.4s; }
+  .delay-9 { animation-delay: 0.45s; }
+  .delay-10 { animation-delay: 0.5s; }
+  .delay-11 { animation-delay: 0.55s; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+
+  /* Divider */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-default), transparent);
+    margin: 8px 0 32px;
+  }
+
+  /* Insight text block */
+  .insight-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 48px;
+  }
+
+  .insight-block h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  .insight-block ol {
+    padding-left: 20px;
+  }
+
+  .insight-block ol li {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 10px;
+  }
+
+  .insight-block ol li:last-child { margin-bottom: 0; }
+
+  .insight-block ol li strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .insight-block ol li code {
+    background: rgba(188, 140, 255, 0.1);
+    color: var(--accent-purple);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+  }
+
+  .sub-section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 14px;
+    padding-left: 12px;
+    border-left: 3px solid var(--accent-purple);
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-top">
+      <span class="header-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+        开发者日报
+      </span>
+      <span class="header-date">2026-07-19</span>
+      <span class="agent-badge editor">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        编辑
+      </span>
+    </div>
+    <h1>AI 工程化与本地化浪潮<br>席卷开源社区</h1>
+    <div class="editors-note">
+      今日榜单呈现出极其鲜明的"AI工程化与本地化"趋势。在编程学习领域，<code>build-your-own-x</code> 以超 52 万星稳居神坛，而 <code>ai-engineering-from-scratch</code> 紧随其后，印证了"从零构建"在 AI 时代的硬核学习路径。最值得关注的是，榜单中涌现出大量围绕 <strong>MCP（Model Context Protocol）</strong> 和 <strong>Local-first（本地优先）</strong> 架构的项目：无论是代码审查图谱、AI 编程代理，还是零成本的网页抓取工具，都在试图通过构建"本地上下文"来解决大模型在大型代码库和复杂任务中的幻觉与成本问题。此外，Apache 基金会孵化的语义元数据交换标准 <code>ossie</code>，也暗示着底层 AI 数据基础设施正在走向规范化。
+    </div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<main class="container">
+
+  <!-- Projects Section -->
+  <div class="section-title">
+    <span class="icon">🏆</span> 项目速览
+  </div>
+
+  <div class="projects-grid">
+
+    <!-- #1 -->
+    <div class="project-card rank-1 animate-in delay-1">
+      <div class="rank-badge">1</div>
+      <div class="card-header">
+        <a href="https://github.com/rohitg00/ai-engineering-from-scratch" class="card-name" target="_blank">rohitg00/ai-engineering-from-scratch</a>
+        <div class="star-count"><span class="star-icon">★</span>39,092</div>
+      </div>
+      <div class="card-desc">Learn it. Build it. Ship it for others. 从零开始学习 AI 工程，构建并交付给他人。</div>
+      <div class="card-footer">
+        <span class="lang-tag"><span class="lang-dot python"></span>Python</span>
+        <span class="topic-tag">AI工程教育</span>
+      </div>
+    </div>
+
+    <!-- #2 -->
+    <div class="project-card rank-2 animate-in delay-2">
+      <div class="rank-badge">2</div>
+      <div class="card-header">
+        <a href="https://github.com/codecrafters-io/build-your-own-x" class="card-name" target="_blank">codecrafters-io/build-your-own-x</a>
+        <div class="star-count"><span class="star-icon">★</span>528,240</div>
+      </div>
+      <div class="card-desc">Master programming by recreating your favorite technologies from scratch. 通过从零重建你喜爱的技术来掌握编程。</div>
+      <div class="card-footer">
+        <span class="lang-tag"><span class="lang-dot markdown"></span>Markdown</span>
+        <span class="topic-tag">编程学习</span>
+      </div>
+    </div>
+
+    <!-- #3 -->
+    <div class="project-card rank-3 animate-in delay-3">
+      <div class="rank-badge">3</div>
+      <div class="card-header">
+        <a href="https://github.com/PostHog/posthog" class="card-name" target="_blank">PostHog/posthog</a>
+        <div class="star-count"><span class="star-icon">★</span>36,582</div>
+      </div>
+      <div class="card-desc">🦔 构建自动驾驶产品的领先平台，集成 AI 可观测性、分析、会话回放、Feature Flags 等开发者工具，支持从 Slack/Web/桌面或 MCP 进行控制。</div>
+      <div class="card-footer">
+        <span class="lang-tag"><span class="lang-dot python"></span>Python</span>
+        <span class="topic-tag">产品分析/开发者工具</span>
+      </div>
+    </div>
+
+    <!-- #4 -->
+    <div class="project-card animate-in delay-4">
+      <div class="card-header">
+        <a href="https://github.com/lyogavin/airllm" class="card-name" target="_blank">lyogavin/airllm</a>
+        <div class="star-count"><span class="star-icon">★</span>23,321</div>
+      </div>
+      <div class="card-desc">AirLLM：在单张 4GB 显卡上实现 70B 大模型推理，突破端侧部署硬件极限。</div>
+      <div class="card-footer">
+        <span class="lang-tag"><span class="lang-dot jupyter"></span>Jupyter Notebook</span>
+        <span class="topic-tag">AI推理优化</span>
+      </div>
+    </div>
+
+    <!-- #5 -->
+    <div class="project-card animate-in delay-5">
+      <div class="card-header">
+        <a href="https://github.com/tirth8205/code-review-graph" class="card-name" target="_blank">tirth8205/code-review-graph</a>
+        <div class="star-count"><span class="star-icon">★</span>20,150</div>
+      </div>
+      <div class="card-desc">面向 MCP 和 CLI 的本地优先代码智能图谱。构建代码库持久化映射，让 AI 编码工具只读取关键上下文，显著降低大型仓库工作流的上下文消耗。</div>
+      <div class="card-footer">
+        <span class="lang-tag"><span class="lang-dot python"></span>Python</span>
+        <span class="topic-tag">AI辅助编程</span>
+      </div>
+    </div>
+
+    <!-- #6 -->
+    <div class="project-card animate-in delay-6">
+      <div class="card-header">
+        <a href="https://github.com/Robbyant/lingbot-map" class="card-name" target="_blank">Robbyant/lingbot-map</a>
+        <div class="star-count"><span class="star-icon">★</span>12,915</div>
+      </div>
+      <div class="card-desc">用于从流式数据重建场景的前馈 3D 基础模型，探索空间智能新范式。</div>
+      <div class="card-footer">
+        <span class="lang-tag"><span class="lang-dot python"></span>Python</span>
+        <span class="topic-tag">3D视觉/空间智能</span>
+      </div>
+    </div>
+
+    <!-- #7 -->
+    <div class="project-card animate-in delay-7">
+      <div class="card-header">
+        <a href="https://github.com/G0DM0D3" class="card-name" target="_blank">G0DM0D3</a>
+        <div class="star-count"><span class="star-icon">★</span>9,499</div>
+      </div>
+      <div class="card-desc">LIBERATED AI CHAT — 解放式 AI 对话应用。</div>
+      <div class="card-footer">
+        <span class="lang-tag"><span class="lang-dot typescript"></span>TypeScript</span>
+        <span class="topic-tag">AI对话应用</span>
+      </div>
+    </div>
+
+    <!-- #8 -->
+    <div class="project-card animate-in delay-8">
+      <div class="card-header">
+        <a href="https://github.com/MoonshotAI/kimi-cli" class="card-name" target="_blank">MoonshotAI/kimi-cli</a>
+        <div class="star-count"><span class="star-icon">★</span>9,467</div>
+      </div>
+      <div class="card-desc">Kimi Code CLI：你的下一代命令行 AI 代理，将 AI 能力直接嵌入终端工作流。</div>
+      <div class="card-footer">
+        <span class="lang-tag"><span class="lang-dot python"></span>Python</span>
+        <span class="topic-tag">AI编程代理</span>
+      </div>
+    </div>
+
+    <!-- #9 -->
+    <div class="project-card animate-in delay-9">
+      <div class="card-header">
+        <a href="https://github.com/ibelick/ui-skills" class="card-name" target="_blank">ibelick/ui-skills</a>
+        <div class="star-count"><span class="star-icon">★</span>4,993</div>
+      </div>
+      <div class="card-desc">面向设计工程师的技能库，连接设计与工程的桥梁。</div>
+      <div class="card-footer">
+        <span class="lang-tag"><span class="lang-dot typescript"></span>TypeScript</span>
+        <span class="topic-tag">前端/设计工程</span>
+      </div>
+    </div>
+
+    <!-- #10 -->
+    <div class="project-card animate-in delay-10">
+      <div class="card-header">
+        <a href="https://github.com/apache/ossie" class="card-name" target="_blank">apache/ossie</a>
+        <div class="star-count"><span class="star-icon">★</span>1,266</div>
+      </div>
+      <div class="card-desc">Apache Ossie：行业级规范，旨在标准化跨分析、AI 和 BI 平台的语义元数据交换，提供供应商中立的语义数据单一事实来源。</div>
+      <div class="card-footer">
+        <span class="lang-tag"><span class="lang-dot python"></span>Python</span>
+        <span class="topic-tag">数据语义标准</span>
+      </div>
+    </div>
+
+    <!-- #11 -->
+    <div class="project-card animate-in delay-11">
+      <div class="card-header">
+        <a href="https://github.com/KnockOutEZ/wigolo" class="card-name" target="_blank">KnockOutEZ/wigolo</a>
+        <div class="star-count"><span class="star-icon">★</span>1,219</div>
+      </div>
+      <div class="card-desc">AI 编程代理的首选 Web 工具——基于 MCP 的本地优先搜索、获取、爬取与研究。无需 API Key，无云端依赖，单次查询 $0 成本。</div>
+      <div class="card-footer">
+        <span class="lang-tag"><span class="lang-dot typescript"></span>TypeScript</span>
+        <span class="topic-tag">AI代理工具/MCP</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Trends Section -->
+  <div class="section-title">
+    <span class="icon">🔥</span> 核心趋势
+    <span class="agent-badge analyst">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      分析师
+    </span>
+  </div>
+
+  <div class="trends-grid">
+    <div class="trend-card animate-in delay-1">
+      <div class="trend-header">
+        <div class="trend-title">架构范式"本地优先"</div>
+        <div class="trend-fire">🔥🔥🔥🔥🔥</div>
+      </div>
+      <div class="trend-desc">以 MCP 协议为抓手，通过构建本地代码图谱和本地爬取工具，将上下文计算从云端下放至本地，直击 API 成本高、上下文窗口受限及数据隐私三大痛点。</div>
+      <div class="trend-projects">
+        <span class="trend-proj-tag">code-review-graph</span>
+        <span class="trend-proj-tag">wigolo</span>
+        <span class="trend-proj-tag">posthog</span>
+      </div>
+    </div>
+
+    <div class="trend-card animate-in delay-2">
+      <div class="trend-header">
+        <div class="trend-title">AI 交互"CLI 化"回归</div>
+        <div class="trend-fire">🔥🔥🔥🔥</div>
+      </div>
+      <div class="trend-desc">继 GUI 类工具后，命令行 AI 代理崛起，表明 AI 编程工具正从"辅助面板"向"原生终端工作流"渗透，更契合开发者习惯。</div>
+      <div class="trend-projects">
+        <span class="trend-proj-tag">kimi-cli</span>
+        <span class="trend-proj-tag">code-review-graph</span>
+      </div>
+    </div>
+
+    <div class="trend-card animate-in delay-3">
+      <div class="trend-header">
+        <div class="trend-title">端侧推理"极限压缩"</div>
+        <div class="trend-fire">🔥🔥🔥🔥</div>
+      </div>
+      <div class="trend-desc">单卡 4GB 运行 70B 模型，反映社区对突破硬件门槛、实现去中心化模型部署的强烈诉求，端侧 AI 正在从概念走向实用。</div>
+      <div class="trend-projects">
+        <span class="trend-proj-tag">airllm</span>
+      </div>
+    </div>
+
+    <div class="trend-card animate-in delay-4">
+      <div class="trend-header">
+        <div class="trend-title">数据基础设施"语义标准化"</div>
+        <div class="trend-fire">🔥🔥🔥</div>
+      </div>
+      <div class="trend-desc">进入 Apache 孵化器，标志 AI 工程从"模型训练"向"跨平台语义元数据打通"演进，旨在解决 AI 与 BI/数据分析的语义孤岛。</div>
+      <div class="trend-projects">
+        <span class="trend-proj-tag">ossie</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Language Distribution -->
+  <div class="lang-section">
+    <div class="section-title">
+      <span class="icon">📊</span> 语言分布
+      <span class="agent-badge researcher">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        研究员
+      </span>
+    </div>
+
+    <div class="lang-bar-container">
+      <div class="lang-bar-item">
+        <div class="lang-bar-label">
+          <span class="lang-bar-name"><span class="lang-dot python"></span> Python</span>
+          <span class="lang-bar-pct">63.6%</span>
+        </div>
+        <div class="lang-bar-track">
+          <div class="lang-bar-fill python" data-width="63.6"></div>
+        </div>
+      </div>
+      <div class="lang-bar-item">
+        <div class="lang-bar-label">
+          <span class="lang-bar-name"><span class="lang-dot typescript"></span> TypeScript</span>
+          <span class="lang-bar-pct">27.3%</span>
+        </div>
+        <div class="lang-bar-track">
+          <div class="lang-bar-fill typescript" data-width="27.3"></div>
+        </div>
+      </div>
+      <div class="lang-bar-item">
+        <div class="lang-bar-label">
+          <span class="lang-bar-name"><span class="lang-dot jupyter"></span> Jupyter Notebook</span>
+          <span class="lang-bar-pct">9.1%</span>
+        </div>
+        <div class="lang-bar-track">
+          <div class="lang-bar-fill jupyter" data-width="9.1"></div>
+        </div>
+      </div>
+      <div class="lang-bar-item">
+        <div class="lang-bar-label">
+          <span class="lang-bar-name"><span class="lang-dot markdown"></span> Markdown</span>
+          <span class="lang-bar-pct">9.1%</span>
+        </div>
+        <div class="lang-bar-track">
+          <div class="lang-bar-fill markdown" data-width="9.1"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Strategy Section -->
+  <div class="section-title">
+    <span class="icon">💡</span> 战略建议
+    <span class="agent-badge reviewer">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      审查员
+    </span>
+  </div>
+
+  <div class="strategy-grid">
+    <div class="strategy-card animate-in delay-1">
+      <div class="strategy-num">#01</div>
+      <div class="strategy-title">全面拥抱 MCP 生态</div>
+      <div class="strategy-desc">将 MCP 协议纳入企业 AI 工具链标准，优先开发或接入本地上下文索引工具，以大幅降低大型代码库场景下的 Token 消耗与 API 成本。</div>
+    </div>
+    <div class="strategy-card animate-in delay-2">
+      <div class="strategy-num">#02</div>
+      <div class="strategy-title">布局 CLI 与 Agent 双模交互</div>
+      <div class="strategy-desc">在现有图形化 AI 工具基础上，加速推出轻量级 CLI 代理，以无缝嵌入开发者的 Git/CI/CD 原生工作流。</div>
+    </div>
+    <div class="strategy-card animate-in delay-3">
+      <div class="strategy-num">#03</div>
+      <div class="strategy-title">前瞻接入语义元数据标准</div>
+      <div class="strategy-desc">密切跟踪 Apache Ossie 等标准进展，在企业内部数据管道建设中提前规划语义层，避免未来 AI 应用与传统数据资产间的"语义孤岛"。</div>
+    </div>
+    <div class="strategy-card animate-in delay-4">
+      <div class="strategy-num">#04</div>
+      <div class="strategy-title">推广"造轮子"式 AI 内训</div>
+      <div class="strategy-desc">参考榜单学习路径，将"从零构建 AI 组件"纳入技术团队培养体系，提升团队对 AI 底层逻辑的掌控力与排障能力。</div>
+    </div>
+    <div class="strategy-card animate-in delay-5" style="grid-column: 1 / -1;">
+      <div class="strategy-num">#05</div>
+      <div class="strategy-title">探索端侧/轻量化推理方案</div>
+      <div class="strategy-desc">针对数据敏感或离线业务场景，评估并储备类似 AirLLM 的极限压缩推理方案，降低对云端算力的绝对依赖，为去中心化 AI 部署做好架构储备。</div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Detailed Insights -->
+  <div class="section-title">
+    <span class="icon">🔬</span> 深度洞察
+  </div>
+
+  <div class="insight-block animate-in">
+    <div class="sub-section-title">语言分布分析</div>
+    <ol>
+      <li><strong>Python（绝对主导，占比约 63.6%）</strong>：作为 AI 基础设施、数据管道及后端服务的核心语言，在 AI 工程教育、推理优化、代码图谱、3D 视觉及标准化协议中占据统治地位。</li>
+      <li><strong>TypeScript（次主力，占比约 27.3%）</strong>：集中在"本地优先"的 AI 应用层与前端交互层，如无依赖的 Web 爬取工具、AI 对话界面及设计工程技能库。</li>
+      <li><strong>Jupyter Notebook（特定场景，占比约 9.1%）</strong>：专用于 AI 算法验证与极限推理优化的原型展示。</li>
+      <li><strong>Markdown（非执行语言，占比约 9.1%）</strong>：代表纯知识沉淀与学习路径规划。</li>
+    </ol>
+  </div>
+
+  <div class="insight-block animate-in">
+    <div class="sub-section-title">学习路径"硬核重构"</div>
+    <ol>
+      <li><code>build-your-own-x</code> 与 <code>ai-engineering-from-scratch</code> 的高星，印证在 AI 黑盒化趋势下，开发者正通过"从零手搓"来构建底层技术壁垒。</li>
+      <li>这种趋势反映了社区对"理解原理"而非"调用 API"的深层需求，也预示着 AI 教育市场正在从"工具使用"向"原理构建"转型。</li>
+    </ol>
+  </div>
+
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <span>© 2026 开发者日报 · 每日精选开源项目与趋势洞察</span>
+    <div class="footer-agents">
+      <span class="agent-badge researcher">研究员</span>
+      <span class="agent-badge editor">编辑</span>
+      <span class="agent-badge analyst">分析师</span>
+      <span class="agent-badge designer">设计师</span>
+      <span class="agent-badge reviewer">审查员</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Animate language bars on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const bars = entry.target.querySelectorAll('.lang-bar-fill');
+        bars.forEach((bar, i) => {
+          setTimeout(() => {
+            bar.style.width = bar.dataset.width + '%';
+          }, i * 150);
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const langContainer = document.querySelector('.lang-bar-container');
+  if (langContainer) observer.observe(langContainer);
+
+  // Animate cards on scroll
+  const cardObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+        cardObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.animate-in').forEach(el => {
+    el.style.animationPlayState = 'paused';
+    cardObserver.observe(el);
+  });
+
+  // Re-trigger animations for elements already in viewport
+  setTimeout(() => {
+    document.querySelectorAll('.animate-in').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) {
+        el.style.animationPlayState = 'running';
+      }
+    });
+  }, 100);
+</script>
+
+</body>
+</html>
