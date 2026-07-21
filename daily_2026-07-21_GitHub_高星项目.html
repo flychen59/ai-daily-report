@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub 热门项目日报 · 2026-07-21</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#0d1117;--bg-card:#161b22;--bg-card-hover:#1c2333;
+--border:#30363d;--border-hover:#58a6ff;
+--text-primary:#e6edf3;--text-secondary:#8b949e;--text-muted:#484f58;
+--accent-blue:#58a6ff;--accent-purple:#bc8cff;--accent-green:#3fb950;
+--accent-pink:#f778ba;--accent-orange:#f0883e;
+--gold-start:#ffd700;--gold-end:#ff8c00;
+--silver-start:#c0c0c0;--silver-end:#808080;
+--bronze-start:#cd7f32;--bronze-end:#8b4513;
+--star-orange:#ff8c00;
+--lang-python:#3572A5;--lang-typescript:#3178C6;--lang-cpp:#f34b7d;
+--lang-rust:#dea584;--lang-shell:#89e051;
+}
+html{scroll-behavior:smooth}
+body{
+font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+background:var(--bg);color:var(--text-primary);
+line-height:1.6;overflow-x:hidden;
+-webkit-font-smoothing:antialiased;
+}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* Header */
+.header{
+position:relative;overflow:hidden;
+background:linear-gradient(135deg,#0a1628 0%,#1a1040 40%,#2d1b69 70%,#1a1040 100%);
+padding:60px 24px 50px;
+}
+.header::before{
+content:'';position:absolute;inset:0;
+background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(88,166,255,0.12) 0%,transparent 60%),
+radial-gradient(ellipse 60% 50% at 80% 20%,rgba(188,140,255,0.08) 0%,transparent 50%);
+pointer-events:none;
+}
+.header::after{
+content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+background:linear-gradient(90deg,transparent,rgba(88,166,255,0.3),rgba(188,140,255,0.3),transparent);
+}
+.header-inner{max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.header-badge{
+display:inline-flex;align-items:center;gap:6px;
+background:rgba(88,166,255,0.1);border:1px solid rgba(88,166,255,0.2);
+border-radius:20px;padding:6px 16px;font-size:12px;font-weight:500;
+color:var(--accent-blue);margin-bottom:20px;letter-spacing:0.5px;
+}
+.header-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--accent-blue);animation:pulse-dot 2s infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:0.3}}
+.header h1{
+font-size:clamp(28px,5vw,48px);font-weight:800;
+letter-spacing:-1.5px;line-height:1.15;margin-bottom:8px;
+background:linear-gradient(135deg,#fff 0%,#e6edf3 50%,#8b949e 100%);
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+background-clip:text;
+}
+.header .date{font-size:15px;color:var(--text-secondary);margin-bottom:28px;font-weight:400}
+.editor-note{
+background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);
+border-radius:12px;padding:24px 28px;
+font-size:14.5px;line-height:1.85;color:var(--text-secondary);
+backdrop-filter:blur(10px);max-width:900px;
+}
+.editor-note strong{color:var(--text-primary);font-weight:600}
+.editor-note .agent-badge{
+display:inline-flex;align-items:center;gap:4px;
+padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600;
+margin-left:4px;vertical-align:middle;
+}
+.badge-editor{background:rgba(188,140,255,0.15);color:var(--accent-purple);border:1px solid rgba(188,140,255,0.25)}
+
+/* Container */
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* Section */
+.section{padding:48px 0}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.section-icon{
+width:36px;height:36px;border-radius:10px;
+display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+.section-title{font-size:22px;font-weight:700;letter-spacing:-0.5px}
+.section-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent)}
+
+/* Rank Cards Grid */
+.rank-grid{
+display:grid;grid-template-columns:repeat(2,1fr);gap:16px;
+}
+@media(max-width:768px){.rank-grid{grid-template-columns:1fr}}
+
+/* Project Card */
+.project-card{
+position:relative;background:var(--bg-card);
+border:1px solid var(--border);border-radius:14px;
+padding:24px;transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+cursor:default;overflow:hidden;
+}
+.project-card::before{
+content:'';position:absolute;top:0;left:0;right:0;height:2px;
+background:transparent;transition:background 0.35s ease;
+}
+.project-card:hover{
+transform:translateY(-4px);
+border-color:var(--border-hover);
+background:var(--bg-card-hover);
+box-shadow:0 12px 40px rgba(0,0,0,0.4),0 0 0 1px rgba(88,166,255,0.1);
+}
+.project-card:hover::before{
+background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple));
+}
+.project-card.rank-1{border-color:rgba(255,215,0,0.25)}
+.project-card.rank-1:hover{border-color:rgba(255,215,0,0.5);box-shadow:0 12px 40px rgba(255,215,0,0.08),0 0 0 1px rgba(255,215,0,0.15)}
+.project-card.rank-1::before{background:linear-gradient(90deg,var(--gold-start),var(--gold-end))!important}
+.project-card.rank-2{border-color:rgba(192,192,192,0.2)}
+.project-card.rank-2:hover{border-color:rgba(192,192,192,0.4);box-shadow:0 12px 40px rgba(192,192,192,0.06)}
+.project-card.rank-2::before{background:linear-gradient(90deg,var(--silver-start),var(--silver-end))!important}
+.project-card.rank-3{border-color:rgba(205,127,50,0.2)}
+.project-card.rank-3:hover{border-color:rgba(205,127,50,0.4);box-shadow:0 12px 40px rgba(205,127,50,0.06)}
+.project-card.rank-3::before{background:linear-gradient(90deg,var(--bronze-start),var(--bronze-end))!important}
+
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}
+.rank-badge{
+flex-shrink:0;width:32px;height:32px;border-radius:8px;
+display:flex;align-items:center;justify-content:center;
+font-size:14px;font-weight:800;color:#fff;
+}
+.rank-1 .rank-badge{background:linear-gradient(135deg,var(--gold-start),var(--gold-end));box-shadow:0 2px 12px rgba(255,215,0,0.3)}
+.rank-2 .rank-badge{background:linear-gradient(135deg,var(--silver-start),var(--silver-end));box-shadow:0 2px 12px rgba(192,192,192,0.2)}
+.rank-3 .rank-badge{background:linear-gradient(135deg,var(--bronze-start),var(--bronze-end));box-shadow:0 2px 12px rgba(205,127,50,0.2)}
+.rank-other .rank-badge{background:var(--border);color:var(--text-secondary)}
+
+.card-name{
+font-size:16px;font-weight:700;letter-spacing:-0.3px;
+color:var(--text-primary);word-break:break-all;
+line-height:1.3;flex:1;
+}
+.card-desc{
+font-size:13px;color:var(--text-secondary);line-height:1.7;
+margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:2;
+-webkit-box-orient:vertical;overflow:hidden;
+}
+.card-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.card-meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.lang-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.lang-name{font-size:12px;color:var(--text-secondary);font-weight:500}
+.tag{
+font-size:11px;font-weight:600;padding:3px 10px;border-radius:6px;
+background:rgba(88,166,255,0.08);color:var(--accent-blue);
+border:1px solid rgba(88,166,255,0.15);white-space:nowrap;
+}
+.star-count{
+display:flex;align-items:center;gap:5px;
+font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;
+color:var(--star-orange);flex-shrink:0;
+}
+.star-count svg{width:20px;height:20px;fill:var(--star-orange)}
+
+/* Language Distribution */
+.lang-bars{display:flex;flex-direction:column;gap:18px}
+.lang-bar-item{}
+.lang-bar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.lang-bar-label{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600}
+.lang-bar-value{font-size:13px;color:var(--text-secondary);font-weight:500}
+.lang-bar-track{
+height:10px;background:rgba(255,255,255,0.05);border-radius:5px;overflow:hidden;
+}
+.lang-bar-fill{
+height:100%;border-radius:5px;
+width:0;transition:width 1.2s cubic-bezier(0.4,0,0.2,1);
+position:relative;
+}
+.lang-bar-fill::after{
+content:'';position:absolute;inset:0;
+background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.15) 50%,transparent 100%);
+animation:shimmer 2.5s infinite;
+}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+
+/* Trend Cards */
+.trend-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media(max-width:768px){.trend-grid{grid-template-columns:1fr}}
+.trend-card{
+background:var(--bg-card);border:1px solid var(--border);border-radius:14px;
+padding:24px;transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+cursor:default;position:relative;overflow:hidden;
+}
+.trend-card:hover{
+transform:translateY(-4px);border-color:var(--accent-orange);
+box-shadow:0 12px 40px rgba(240,136,62,0.08);
+}
+.trend-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.trend-card-title{font-size:15px;font-weight:700;letter-spacing:-0.3px}
+.trend-fire{display:flex;align-items:center;gap:2px;font-size:18px;line-height:1}
+.trend-card-desc{font-size:13px;color:var(--text-secondary);line-height:1.75}
+
+/* Insight Section */
+.insight-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media(max-width:768px){.insight-grid{grid-template-columns:1fr}}
+.insight-card{
+background:var(--bg-card);border:1px solid var(--border);border-radius:14px;
+padding:24px;transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.insight-card:hover{transform:translateY(-3px);border-color:rgba(88,166,255,0.3)}
+.insight-card h3{
+font-size:15px;font-weight:700;margin-bottom:12px;
+display:flex;align-items:center;gap:8px;
+}
+.insight-card h3 .num{
+display:inline-flex;align-items:center;justify-content:center;
+width:24px;height:24px;border-radius:6px;font-size:12px;font-weight:700;
+background:rgba(88,166,255,0.1);color:var(--accent-blue);border:1px solid rgba(88,166,255,0.2);
+}
+.insight-card p{font-size:13px;color:var(--text-secondary);line-height:1.8}
+.insight-card strong{color:var(--text-primary)}
+
+/* Strategy Section */
+.strategy-list{display:flex;flex-direction:column;gap:16px}
+.strategy-item{
+background:var(--bg-card);border:1px solid var(--border);border-radius:14px;
+padding:24px 28px;transition:all 0.35s ease;
+}
+.strategy-item:hover{border-color:rgba(63,185,80,0.3);transform:translateY(-2px)}
+.strategy-item h3{font-size:15px;font-weight:700;margin-bottom:14px;color:var(--accent-green)}
+.strategy-item ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.strategy-item li{
+font-size:13px;color:var(--text-secondary);line-height:1.75;
+padding-left:16px;position:relative;
+}
+.strategy-item li::before{
+content:'';position:absolute;left:0;top:9px;
+width:6px;height:6px;border-radius:50%;background:var(--accent-green);opacity:0.6;
+}
+.strategy-item li strong{color:var(--text-primary)}
+
+/* Agent Badges */
+.agent-badge{
+display:inline-flex;align-items:center;gap:4px;
+padding:2px 10px;border-radius:10px;font-size:11px;font-weight:600;
+vertical-align:middle;
+}
+.badge-analyst{background:rgba(63,185,80,0.12);color:var(--accent-green);border:1px solid rgba(63,185,80,0.2)}
+
+/* Footer */
+.footer{
+text-align:center;padding:40px 24px 48px;
+border-top:1px solid var(--border);margin-top:20px;
+}
+.footer p{font-size:12px;color:var(--text-muted);line-height:1.8}
+
+/* Animations */
+.fade-in{opacity:0;transform:translateY(20px);transition:all 0.6s cubic-bezier(0.4,0,0.2,1)}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--text-muted)}
+
+/* Dynamic News */
+.news-list{display:flex;flex-direction:column;gap:14px}
+.news-item{
+display:flex;gap:14px;padding:18px 22px;
+background:var(--bg-card);border:1px solid var(--border);border-radius:12px;
+transition:all 0.3s ease;
+}
+.news-item:hover{border-color:rgba(188,140,255,0.3);transform:translateX(4px)}
+.news-icon{flex-shrink:0;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;background:rgba(188,140,255,0.1);border:1px solid rgba(188,140,255,0.15)}
+.news-content{flex:1}
+.news-content strong{color:var(--text-primary);font-size:14px;font-weight:600;display:block;margin-bottom:4px}
+.news-content p{font-size:13px;color:var(--text-secondary);line-height:1.75}
+
+/* Responsive tweaks */
+@media(max-width:640px){
+.header{padding:40px 16px 36px}
+.container{padding:0 16px}
+.section{padding:36px 0}
+.project-card{padding:18px}
+.star-count{font-size:17px}
+.star-count svg{width:17px;height:17px}
+.card-desc{-webkit-line-clamp:3}
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+<div class="header-inner">
+<div class="header-badge"><span class="dot"></span> DAILY TRENDING REPORT</div>
+<h1>GitHub 热门项目日报</h1>
+<div class="date mono">2026-07-21 · 星期二</div>
+<div class="editor-note">
+<strong>编者按</strong>
+<span class="agent-badge badge-editor">✦ 编辑</span><br><br>
+今日榜单呈现出极其鲜明的"AI Agent 与基础设施化"趋势。榜单前五名中有三个直接与 AI Agent 相关，其中 <span class="mono" style="color:var(--accent-blue);font-size:13px">agency-agents</span> 以超 13 万 Star 登顶，印证了"多智能体协作"已成为开发者最关注的范式。与此同时，MCP 协议生态持续爆发，<span class="mono" style="color:var(--accent-blue);font-size:13px">fastmcp</span>、<span class="mono" style="color:var(--accent-blue);font-size:13px">code-review-graph</span> 与 <span class="mono" style="color:var(--accent-blue);font-size:13px">wigolo</span> 共同构建了从服务端构建、代码上下文优化到本地网页抓取的完整工具链。在 AI 编程领域，<span class="mono" style="color:var(--accent-blue);font-size:13px">OmniRoute</span> 这类 AI 网关项目揭示了开发者对"多模型自由切换与降本增效"的强烈需求。此外，底层推理优化、极低延迟语音交互以及 3D 前沿视觉等硬核项目也占据了重要位置，表明 AI 技术正在向更深层次的底层性能与多模态场景突破。
+</div>
+</div>
+</div>
+
+<div class="container">
+
+<!-- Projects Section -->
+<div class="section">
+<div class="section-header">
+<div class="section-icon" style="background:rgba(255,140,0,0.1);border:1px solid rgba(255,140,0,0.15)">⭐</div>
+<div class="section-title">热门项目排行</div>
+<div class="section-line"></div>
+</div>
+<div class="rank-grid" id="rankGrid"></div>
+</div>
+
+<!-- Language Distribution -->
+<div class="section">
+<div class="section-header">
+<div class="section-icon" style="background:rgba(88,166,255,0.1);border:1px solid rgba(88,166,255,0.15)">📊</div>
+<div class="section-title">语言分布分析 <span class="agent-badge badge-analyst">◆ 分析师</span></div>
+<div class="section-line"></div>
+</div>
+<div class="lang-bars" id="langBars"></div>
+</div>
+
+<!-- Trends -->
+<div class="section">
+<div class="section-header">
+<div class="section-icon" style="background:rgba(240,136,62,0.1);border:1px solid rgba(240,136,62,0.15)">🔥</div>
+<div class="section-title">核心趋势</div>
+<div class="section-line"></div>
+</div>
+<div class="trend-grid" id="trendGrid"></div>
+</div>
+
+<!-- News -->
+<div class="section">
+<div class="section-header">
+<div class="section-icon" style="background:rgba(188,140,255,0.1);border:1px solid rgba(188,140,255,0.15)">📡</div>
+<div class="section-title">相关动态</div>
+<div class="section-line"></div>
+</div>
+<div class="news-list" id="newsList"></div>
+</div>
+
+<!-- Insights -->
+<div class="section">
+<div class="section-header">
+<div class="section-icon" style="background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.15)">💡</div>
+<div class="section-title">深度洞察 <span class="agent-badge badge-analyst">◆ 分析师</span></div>
+<div class="section-line"></div>
+</div>
+<div class="insight-grid" id="insightGrid"></div>
+</div>
+
+<!-- Strategy -->
+<div class="section">
+<div class="section-header">
+<div class="section-icon" style="background:rgba(63,185,80,0.1);border:1px solid rgba(63,185,80,0.15)">🎯</div>
+<div class="section-title">战略建议</div>
+<div class="section-line"></div>
+</div>
+<div class="strategy-list" id="strategyList"></div>
+</div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+<p>GitHub Trending Daily Report · 数据来源于 GitHub 公开数据<br>由 AI 编辑团队自动生成 · 2026-07-21</p>
+</div>
+
+<script>
+const projects = [
+{name:"agency-agents",desc:"触手可及的完整 AI 机构——从前端大师到 Reddit 社区忍者，从脑洞注入者到现实检验员，每个 Agent 都具备独特个性、流程和交付物。",lang:"Shell",langColor:"var(--lang-shell)",stars:134688,tag:"AI Agent"},
+{name:"iptv",desc:"来自全球各地的公开 IPTV 频道合集。",lang:"TypeScript",langColor:"var(--lang-typescript)",stars:133766,tag:"媒体与娱乐"},
+{name:"voicebox",desc:"开源 AI 语音工作室：支持声音克隆、听写与创作。",lang:"TypeScript",langColor:"var(--lang-typescript)",stars:44141,tag:"AI语音"},
+{name:"ai-engineering-from-scratch",desc:"从零开始学习、构建并交付 AI 工程。",lang:"Python",langColor:"var(--lang-python)",stars:40500,tag:"AI教育"},
+{name:"AstrBot",desc:"集成多平台 IM、大模型、插件及 AI 功能的智能体助手与开发框架，可作为 OpenClaw 替代方案。",lang:"Python",langColor:"var(--lang-python)",stars:37073,tag:"AI Agent"},
+{name:"cognee",desc:"面向智能体的开源 AI 记忆平台，通过自托管知识图谱引擎为 AI 提供跨会话的持久长期记忆。",lang:"Python",langColor:"var(--lang-python)",stars:28774,tag:"AI基础设施"},
+{name:"fastmcp",desc:"🚀 构建 MCP 服务器与客户端的快速、Pythonic 方式。",lang:"Python",langColor:"var(--lang-python)",stars:26525,tag:"MCP协议"},
+{name:"code-review-graph",desc:"面向 MCP 和 CLI 的本地优先代码智能图谱，构建代码库持久映射，让 AI 编码工具只读取关键信息，大幅减少上下文消耗。",lang:"Python",langColor:"var(--lang-python)",stars:23099,tag:"MCP协议"},
+{name:"OmniRoute",desc:"免费 MIT AI 网关：单一端点接入 268+ 供应商（50+免费）、500+ 模型。支持配额感知自动故障转移与 RTK+Caveman 压缩（节省 15-95% Token）。",lang:"TypeScript",langColor:"var(--lang-typescript)",stars:21754,tag:"AI网关"},
+{name:"ktransformers",desc:"用于体验异构 LLM 推理/微调优化的灵活框架。",lang:"Python",langColor:"var(--lang-python)",stars:18727,tag:"LLM推理"},
+{name:"lingbot-map",desc:"用于从流数据重建场景的前馈 3D 基础模型。",lang:"Python",langColor:"var(--lang-python)",stars:14208,tag:"3D视觉"},
+{name:"moonshine",desc:"极低延迟的语音转文本、意图识别和文本转语音工具，专为构建语音智能体和交互界面设计。",lang:"C++",langColor:"var(--lang-cpp)",stars:9812,tag:"AI语音"},
+{name:"kimi-cli",desc:"你的下一代 CLI 智能体。",lang:"Python",langColor:"var(--lang-python)",stars:10225,tag:"AI编程"},
+{name:"jcode",desc:"最智能的代码 Agent 框架。",lang:"Rust",langColor:"var(--lang-rust)",stars:9612,tag:"AI编程"},
+{name:"open-seo",desc:"Semrush 和 Ahrefs 的开源替代方案。",lang:"TypeScript",langColor:"var(--lang-typescript)",stars:5831,tag:"SEO工具"},
+{name:"openship",desc:"自托管部署平台。",lang:"TypeScript",langColor:"var(--lang-typescript)",stars:4765,tag:"DevOps"},
+{name:"wigolo",desc:"AI 编程 Agent 的专属 Web 工具——基于 MCP 的本地优先搜索、抓取与研究。无需 API Key、无云端依赖、零成本查询。",lang:"TypeScript",langColor:"var(--lang-typescript)",stars:2523,tag:"MCP协议"},
+{name:"Ontology-Playground",desc:"用于学习本体论和 Microsoft Fabric IQ 的免费开源 Web 应用。支持可视化设计、RDF/XML 导出及交互式图表分享。",lang:"TypeScript",langColor:"var(--lang-typescript)",stars:1716,tag:"知识图谱"},
+{name:"topcoat",desc:"开箱即用的 Web 应用构建框架。",lang:"Rust",langColor:"var(--lang-rust)",stars:1528,tag:"Web框架"},
+{name:"transcribe.cpp",desc:"支持 16+ 模型系列的 ggml 语音转文本推理引擎。",lang:"C++",langColor:"var(--lang-cpp)",stars:1235,tag:"AI语音"},
+];
+
+function formatStars(n){
+if(n>=100000)return (n/10000).toFixed(1)+'万';
+if(n>=10000)return (n/10000).toFixed(1)+'万';
+return n.toLocaleString();
+}
+
+const rankGrid=document.getElementById('rankGrid');
+projects.forEach((p,i)=>{
+const rank=i+1;
+let rankClass='rank-other';
+if(rank===1)rankClass='rank-1';
+else if(rank===2)rankClass='rank-2';
+else if(rank===3)rankClass='rank-3';
+const card=document.createElement('div');
+card.className=`project-card ${rankClass} fade-in`;
+card.innerHTML=`
+<div class="card-top">
+<div class="rank-badge">${rank}</div>
+<div class="card-name mono">${p.name}</div>
+</div>
+<div class="card-desc">${p.desc}</div>
+<div class="card-bottom">
+<div class="card-meta">
+<span class="lang-dot" style="background:${p.langColor}"></span>
+<span class="lang-name">${p.lang}</span>
+<span class="tag">${p.tag}</span>
+</div>
+<div class="star-count">
+<svg viewBox="0 0 16 16"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>
+${formatStars(p.stars)}
+</div>
+</div>`;
+rankGrid.appendChild(card);
+});
+
+// Language bars
+const langs=[
+{name:"Python",count:9,pct:40.9,color:"var(--lang-python)",desc:"9 个项目 · AI 核心层主导"},
+{name:"TypeScript",count:6,pct:27.3,color:"var(--lang-typescript)",desc:"6 个项目 · 应用层与工具链"},
+{name:"C++",count:2,pct:9.1,color:"var(--lang-cpp)",desc:"2 个项目 · 极致性能底层"},
+{name:"Rust",count:2,pct:9.1,color:"var(--lang-rust)",desc:"2 个项目 · 系统级基建"},
+{name:"Shell",count:1,pct:4.5,color:"var(--lang-shell)",desc:"1 个项目 · 脚本编排"},
+];
+const langBars=document.getElementById('langBars');
+langs.forEach(l=>{
+const item=document.createElement('div');
+item.className='lang-bar-item fade-in';
+item.innerHTML=`
+<div class="lang-bar-header">
+<div class="lang-bar-label">
+<span class="lang-dot" style="background:${l.color}"></span>
+${l.name}
+</div>
+<div class="lang-bar-value">${l.desc}</div>
+</div>
+<div class="lang-bar-track">
+<div class="lang-bar-fill" data-width="${l.pct}" style="background:${l.color}"></div>
+</div>`;
+langBars.appendChild(item);
+});
+
+// Trends
+const trends=[
+{title:"AI Agent 范式确立与"机构化"",fire:5,desc:"多智能体协作从概念走向成熟（agency-agents 登顶），Agent 开始具备特定人设、工作流和交付物，从"单一对话工具"演变为"完整虚拟机构"。"},
+{title:"MCP 协议生态爆发",fire:4,desc:"MCP 已度过概念期，快速形成"服务端构建— 上下文优化— 本地执行"的完整闭环，成为 AI 编程工具的标准配置。"},
+{title:"AI 网关成为新基建",fire:4,desc:"面对模型碎片化，开发者通过统一网关实现多模型路由、故障转移与 Token 压缩，"降本增效"成为 AI 编程场景的强诉求。"},
+{title:"语音交互"低延迟+本地化"双轨并行",fire:3,desc:"语音技术分化明显，TypeScript/Python 承载高阶云端能力，C++ 承载极低延迟的端侧推理，共同指向语音 Agent 的落地。"},
+];
+const trendGrid=document.getElementById('trendGrid');
+trends.forEach(t=>{
+const card=document.createElement('div');
+card.className='trend-card fade-in';
+card.innerHTML=`
+<div class="trend-card-header">
+<div class="trend-card-title">${t.title}</div>
+<div class="trend-fire">${'🔥'.repeat(t.fire)}</div>
+</div>
+<div class="trend-card-desc">${t.desc}</div>`;
+trendGrid.appendChild(card);
+});
+
+// News
+const news=[
+{icon:"🔗",title:"MCP 生态加速落地",desc:"继 fastmcp 简化服务端开发后，code-review-graph 证明了 MCP 在"精准代码上下文提取"上的巨大潜力，而 wigolo 则补齐了 Agent 联网搜索与研究的本地化能力，MCP 正从协议走向实质性的生产力工具。"},
+{icon:"🚀",title:"AI 编程工具链趋于网关化",desc:"随着 OmniRoute 等项目的崛起，开发者不再局限于单一模型，通过统一网关实现多供应商调度与 Token 压缩，已成为提升 AI 编程工具（如 Cursor, Claude Code）使用效率的主流解法。"},
+{icon:"🎙️",title:"端侧与底层语音方案受追捧",desc:"moonshine 主打极低延迟意图识别，transcribe.cpp 以 C++ 和 ggml 实现轻量化推理，结合 voicebox 的高阶克隆能力，语音 Agent 的技术栈正明显向"低延迟+本地化+高保真"演进。"},
+{icon:"🧊",title:"多模态与 3D 视觉突破",desc:"lingbot-map 作为基于流数据的前馈 3D 基础模型入选，表明开源社区在空间计算与 3D 场景重建领域的探索正在加速。"},
+];
+const newsList=document.getElementById('newsList');
+news.forEach(n=>{
+const item=document.createElement('div');
+item.className='news-item fade-in';
+item.innerHTML=`
+<div class="news-icon">${n.icon}</div>
+<div class="news-content">
+<strong>${n.title}</strong>
+<p>${n.desc}</p>
+</div>`;
+newsList.appendChild(item);
+});
+
+// Insights
+const insights=[
+{title:"Python 绝对主导",desc:"<strong>Python（40.9%）</strong>深度绑定 AI 核心层——Agent 框架、MCP 协议、LLM 推理、3D 视觉，是当前 AI 基础设施与算法研究的首选语言。"},
+{title:"TypeScript 渗透应用层",desc:"<strong>TypeScript（27.3%）</strong>主要分布在应用层与工具链——AI 语音工作室、AI 网关、SEO、DevOps、MCP 前端工具，印证了 AI 技术向 Web 端和开发者体验侧的广泛渗透。"},
+{title:"C++/Rust 攻坚底层",desc:"<strong>C++（9.1%）</strong>聚焦极致性能的底层场景（极低延迟语音、ggml 推理）；<strong>Rust（9.1%）</strong>出现在高并发/高安全基建领域，作为系统级语言的替代方案正在崛起。"},
+{title:"多模态向空间计算延伸",desc:"3D 视觉进入榜单，标志着开源 AI 的竞争焦点从 <strong>2D 文本/图像向 3D 场景重建与物理世界建模</strong>拓展，空间计算成为新前沿。"},
+];
+const insightGrid=document.getElementById('insightGrid');
+insights.forEach((ins,i)=>{
+const card=document.createElement('div');
+card.className='insight-card fade-in';
+card.innerHTML=`<h3><span class="num">${i+1}</span>${ins.title}</h3><p>${ins.desc}</p>`;
+insightGrid.appendChild(card);
+});
+
+// Strategy
+const strategies=[
+{title:"技术栈布局",items:[
+"<strong>AI 算法/后端团队</strong>：持续深耕 Python 生态，重点投入 Agent 编排架构与 MCP 协议集成能力的建设。",
+"<strong>前端/全栈团队</strong>：全面拥抱 TypeScript，将 AI 能力（如网关接入、语音交互界面）作为 Web 产品的标准化模块。",
+"<strong>基础设施团队</strong>：针对高并发 AI 网关、端侧推理等场景，可引入 Rust/C++ 进行性能兜底与改造。",
+]},
+{title:"产品架构演进",items:[
+"<strong>接入层</strong>：避免绑定单一大模型供应商，建议引入或自研类似 OmniRoute 的 AI 网关，实现 Token 成本管控与弹性调度。",
+"<strong>记忆与上下文层</strong>：借鉴 cognee 和 code-review-graph 的思路，构建基于知识图谱的长期记忆与精准 RAG 机制，解决大模型上下文窗口浪费问题。",
+"<strong>交互层</strong>：对于有语音需求的产品，必须将"响应延迟"作为核心指标，考虑"云端高保真+端侧低延迟"的混合部署架构。",
+]},
+{title:"商业化与开源策略",items:[
+"优先在 <strong>MCP 协议生态</strong>中布局开源工具，以"轻量级、开发者友好"的工具抢占生态位，进而通过高级功能或企业级网关实现商业化变现。",
+"关注 <strong>3D 视觉与空间计算</strong>的前沿探索，提前进行技术储备，以待 XR 设备普及后的应用爆发。",
+]},
+];
+const strategyList=document.getElementById('strategyList');
+strategies.forEach(s=>{
+const item=document.createElement('div');
+item.className='strategy-item fade-in';
+item.innerHTML=`<h3>${s.title}</h3><ul>${s.items.map(li=>`<li>${li}</li>`).join('')}</ul>`;
+strategyList.appendChild(item);
+});
+
+// Intersection Observer for animations
+const observer=new IntersectionObserver((entries)=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add('visible');
+// Animate lang bars
+const bar=entry.target.querySelector('.lang-bar-fill');
+if(bar){
+setTimeout(()=>{bar.style.width=bar.dataset.width+'%'},100);
+}
+observer.unobserve(entry.target);
+}
+});
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+
+document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
