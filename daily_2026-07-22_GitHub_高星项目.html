@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Trending 日报 · 2026-07-22</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0d1117;
+    --bg-card: #161b22;
+    --bg-card-hover: #1c2333;
+    --border: #30363d;
+    --border-hover: #58a6ff;
+    --fg: #e6edf3;
+    --fg-muted: #8b949e;
+    --fg-dim: #484f58;
+    --accent-blue: #58a6ff;
+    --accent-purple: #bc8cff;
+    --accent-green: #3fb950;
+    --accent-pink: #f778ba;
+    --accent-orange: #f0883e;
+    --accent-gold: #ffd700;
+    --accent-silver: #c0c0c0;
+    --accent-bronze: #cd7f32;
+    --star-orange: #f0883e;
+    --danger: #f85149;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* === HEADER === */
+  .header {
+    position: relative;
+    background: linear-gradient(135deg, #0a1628 0%, #1a1040 40%, #2d1b69 70%, #1a1040 100%);
+    padding: 3rem 1.5rem 2.5rem;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(88,166,255,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 30%, rgba(188,140,255,0.06) 0%, transparent 50%);
+    animation: headerGlow 12s ease-in-out infinite alternate;
+  }
+  @keyframes headerGlow {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-3%, 2%) scale(1.05); }
+  }
+  .header-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .header-logo {
+    width: 36px;
+    height: 36px;
+    background: var(--fg);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .header-logo svg { width: 22px; height: 22px; fill: var(--bg); }
+  .header-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #fff 0%, #c9d1d9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .header-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent-blue);
+    opacity: 0.8;
+    margin-left: auto;
+  }
+  .editor-note {
+    background: rgba(88,166,255,0.06);
+    border: 1px solid rgba(88,166,255,0.15);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-top: 0.5rem;
+  }
+  .editor-note-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-purple);
+    margin-bottom: 0.6rem;
+  }
+  .editor-note-label .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-purple);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+  .editor-note p {
+    font-size: 0.9rem;
+    color: #c9d1d9;
+    line-height: 1.8;
+  }
+
+  /* === BADGES === */
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border: 1px solid transparent;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .badge:hover { transform: translateY(-1px); }
+  .badge-blue { background: rgba(88,166,255,0.12); color: var(--accent-blue); border-color: rgba(88,166,255,0.2); }
+  .badge-purple { background: rgba(188,140,255,0.12); color: var(--accent-purple); border-color: rgba(188,140,255,0.2); }
+  .badge-green { background: rgba(63,185,80,0.12); color: var(--accent-green); border-color: rgba(63,185,80,0.2); }
+  .badge-pink { background: rgba(247,120,186,0.12); color: var(--accent-pink); border-color: rgba(247,120,186,0.2); }
+  .badge-orange { background: rgba(240,136,62,0.12); color: var(--accent-orange); border-color: rgba(240,136,62,0.2); }
+  .badge svg { width: 12px; height: 12px; }
+
+  /* === MAIN === */
+  .main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* === SECTION TITLE === */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    color: var(--fg);
+  }
+  .section-title .icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+  .section-title .line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  /* === EMPTY STATE === */
+  .empty-state {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 3.5rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease-out;
+  }
+  .empty-state::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--danger), var(--accent-orange), var(--danger));
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+  }
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  .empty-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    background: rgba(248,81,73,0.08);
+    border: 1px solid rgba(248,81,73,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    animation: breathe 3s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(248,81,73,0.1); }
+    50% { transform: scale(1.05); box-shadow: 0 0 30px 5px rgba(248,81,73,0.08); }
+  }
+  .empty-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--fg);
+    margin-bottom: 0.5rem;
+  }
+  .empty-desc {
+    font-size: 0.88rem;
+    color: var(--fg-muted);
+    max-width: 420px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+  .empty-code {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--danger);
+    background: rgba(248,81,73,0.08);
+    border: 1px solid rgba(248,81,73,0.15);
+    padding: 0.3rem 0.75rem;
+    border-radius: 6px;
+    margin-top: 1.25rem;
+  }
+
+  /* === GRID === */
+  .grid-2x2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  @media (max-width: 680px) {
+    .grid-2x2 { grid-template-columns: 1fr; }
+  }
+
+  /* === CARD === */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 0.3s ease,
+                box-shadow 0.3s ease,
+                background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease-out both;
+  }
+  .card:nth-child(1) { animation-delay: 0.05s; }
+  .card:nth-child(2) { animation-delay: 0.12s; }
+  .card:nth-child(3) { animation-delay: 0.19s; }
+  .card:nth-child(4) { animation-delay: 0.26s; }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-hover);
+    background: var(--bg-card-hover);
+    box-shadow: 0 8px 32px rgba(88,166,255,0.06), 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .card-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.85rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+  }
+  .card-label-green { background: rgba(63,185,80,0.1); color: var(--accent-green); }
+  .card-label-orange { background: rgba(240,136,62,0.1); color: var(--accent-orange); }
+  .card-label-blue { background: rgba(88,166,255,0.1); color: var(--accent-blue); }
+  .card-label-pink { background: rgba(247,120,186,0.1); color: var(--accent-pink); }
+  .card h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--fg);
+  }
+  .card p, .card li {
+    font-size: 0.85rem;
+    color: var(--fg-muted);
+    line-height: 1.75;
+  }
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .card ul li {
+    position: relative;
+    padding-left: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  .card ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--fg-dim);
+  }
+  .card ul li strong {
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  /* === LANGUAGE BARS === */
+  .lang-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    margin-top: 0.5rem;
+  }
+  .lang-bar-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .lang-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .lang-name {
+    font-size: 0.78rem;
+    color: var(--fg-muted);
+    width: 70px;
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .lang-track {
+    flex: 1;
+    height: 6px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .lang-fill {
+    height: 100%;
+    border-radius: 999px;
+    width: 0;
+    transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .lang-fill.animated { /* width set inline */ }
+  .lang-pct {
+    font-size: 0.72rem;
+    color: var(--fg-dim);
+    width: 36px;
+    text-align: right;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .no-data-text {
+    font-size: 0.85rem;
+    color: var(--fg-dim);
+    font-style: italic;
+    padding: 1rem 0;
+  }
+
+  /* === TREND FIRE === */
+  .trend-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 0;
+    gap: 0.5rem;
+  }
+  .trend-empty-icon {
+    font-size: 2rem;
+    opacity: 0.3;
+    animation: flicker 2s ease-in-out infinite;
+  }
+  @keyframes flicker {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.15; }
+  }
+  .trend-empty-text {
+    font-size: 0.82rem;
+    color: var(--fg-dim);
+  }
+
+  /* === DIVIDER === */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 2rem 0;
+  }
+
+  /* === FOOTER === */
+  .footer {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .footer p {
+    font-size: 0.78rem;
+    color: var(--fg-dim);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 680px) {
+    .header { padding: 2rem 1rem 1.5rem; }
+    .header-title { font-size: 1.2rem; }
+    .header-date { display: none; }
+    .main { padding: 1.5rem 1rem 3rem; }
+    .card { padding: 1.25rem; }
+    .empty-state { padding: 2.5rem 1.5rem; }
+    .badges { gap: 0.35rem; }
+    .badge { font-size: 0.65rem; padding: 0.2rem 0.55rem; }
+  }
+
+  /* === SCROLLBAR === */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--fg-dim); }
+
+  /* === SELECTION === */
+  ::selection { background: rgba(88,166,255,0.25); color: #fff; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="header-logo">
+        <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      </div>
+      <span class="header-title">GitHub Trending 日报</span>
+      <span class="header-date">2026-07-22</span>
+    </div>
+
+    <div class="editor-note">
+      <div class="editor-note-label"><span class="dot"></span>编者按</div>
+      <p>今日在抓取 GitHub Trending 数据时，遭遇 SSL 连接异常，导致未能成功获取任何项目信息。因此，本期日报暂无项目排行与相关动态更新。对于此次数据中断给各位读者带来的不便，我们深表歉意。技术团队已在排查网络连接及证书状态，争取在下一期恢复正常的数据推送。感谢您的持续关注与理解。</p>
+    </div>
+
+    <div class="badges">
+      <span class="badge badge-blue">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 8a6.5 6.5 0 0 1 10.65-5.003.75.75 0 0 0 .959-1.153 8 8 0 1 0 2.592 8.33.75.75 0 1 0-1.444-.407A6.5 6.5 0 0 1 1.5 8Z"/><path d="m8.898 2.502-2.598 5.75a.75.75 0 0 0 .546 1.022l6.366.563-2.598 5.75a.75.75 0 0 0 1.372.618l3-6.65a.75.75 0 0 0-.546-1.022l-6.366-.563 2.598-5.75a.75.75 0 1 0-1.372-.618Z"/></svg>
+        研究员
+      </span>
+      <span class="badge badge-purple">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M13.5 2h-12A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h12a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 13.5 2ZM1 3.5a.5.5 0 0 1 .5-.5h12a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-12a.5.5 0 0 1-.5-.5v-9ZM4 6h8v1.5H4V6Zm0 3h6v1.5H4V9Z"/></svg>
+        编辑
+      </span>
+      <span class="badge badge-green">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 1h13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5Zm0 5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5Zm0 4h13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5Z"/></svg>
+        分析师
+      </span>
+      <span class="badge badge-pink">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Zm4.879-2.773.05-.05a.75.75 0 0 1 1.06 0l2.122 2.122a.75.75 0 0 1 0 1.06l-2.122 2.122a.75.75 0 1 1-1.06-1.06L7.94 8 6.38 6.44l-.05-.05a.75.75 0 0 1 .049-1.163Z"/></svg>
+        设计师
+      </span>
+      <span class="badge badge-orange">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm6.5-.25A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/></svg>
+        审查员
+      </span>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- 项目排行 -->
+  <div class="section-title">
+    <span class="icon" style="background:rgba(240,136,62,0.12);color:var(--accent-orange);">★</span>
+    项目排行
+    <span class="line"></span>
+  </div>
+
+  <div class="empty-state">
+    <div class="empty-icon">⚠</div>
+    <div class="empty-title">数据获取中断</div>
+    <div class="empty-desc">抓取失败：SSL 连接异常，无法获取 GitHub Trending 数据。技术团队正在紧急排查中。</div>
+    <div class="empty-code">SSL_ERROR_SYSCALL · errno=0 · Connection Reset</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 分析师洞察 2x2 Grid -->
+  <div class="section-title">
+    <span class="icon" style="background:rgba(63,185,80,0.12);color:var(--accent-green);">◆</span>
+    分析师洞察
+    <span class="line"></span>
+  </div>
+
+  <div class="grid-2x2">
+
+    <!-- 卡片1: 语言分布 -->
+    <div class="card">
+      <span class="card-label card-label-green">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M1.5 1h13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5Zm0 5h13a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5Zm0 4h13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5Z"/></svg>
+        语言分布
+      </span>
+      <h3>编程语言占比</h3>
+      <div class="no-data-text">因 SSL 连接异常，无法统计 Python、JavaScript、Rust 等语言在 Trending 中的分布。</div>
+      <div class="lang-bars" style="opacity:0.3;">
+        <div class="lang-bar-item">
+          <span class="lang-dot" style="background:#3572A5;"></span>
+          <span class="lang-name">Python</span>
+          <div class="lang-track"><div class="lang-fill" data-width="0%" style="background:linear-gradient(90deg,#3572A5,#4B8BBE);"></div></div>
+          <span class="lang-pct">—</span>
+        </div>
+        <div class="lang-bar-item">
+          <span class="lang-dot" style="background:#f1e05a;"></span>
+          <span class="lang-name">JS</span>
+          <div class="lang-track"><div class="lang-fill" data-width="0%" style="background:linear-gradient(90deg,#f1e05a,#f7df1e);"></div></div>
+          <span class="lang-pct">—</span>
+        </div>
+        <div class="lang-bar-item">
+          <span class="lang-dot" style="background:#dea584;"></span>
+          <span class="lang-name">Rust</span>
+          <div class="lang-track"><div class="lang-fill" data-width="0%" style="background:linear-gradient(90deg,#dea584,#ce422b);"></div></div>
+          <span class="lang-pct">—</span>
+        </div>
+        <div class="lang-bar-item">
+          <span class="lang-dot" style="background:#3178c6;"></span>
+          <span class="lang-name">TS</span>
+          <div class="lang-track"><div class="lang-fill" data-width="0%" style="background:linear-gradient(90deg,#3178c6,#235a97);"></div></div>
+          <span class="lang-pct">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 卡片2: 趋势分析 -->
+    <div class="card">
+      <span class="card-label card-label-orange">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25ZM6.5 6.5v8h7.75a.25.25 0 0 0 .25-.25V6.5Zm8-1.5V1.75a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25V5Zm-8 10V8.5H1.75a.25.25 0 0 0-.25.25v6.5c0 .138.112.25.25.25Z"/></svg>
+        趋势分析
+      </span>
+      <h3>热度趋势</h3>
+      <div class="trend-empty">
+        <div class="trend-empty-icon">🔥</div>
+        <div class="trend-empty-text">趋势动态处于"真空"状态</div>
+      </div>
+      <ul style="margin-top:0.75rem;">
+        <li><strong>数据获取趋势</strong>：呈现"断崖式中断"，日常稳定数据流突然归零</li>
+        <li><strong>项目热度趋势</strong>：无法评估存量热门项目的星标增长延续性</li>
+      </ul>
+    </div>
+
+    <!-- 卡片3: 短期建议 -->
+    <div class="card">
+      <span class="card-label card-label-blue">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm9-3H7v3.293l2.354 2.353.707-.707L8 7.879V5Z"/></svg>
+        短期应急
+      </span>
+      <h3>恢复可见性</h3>
+      <ul>
+        <li>立即排查并更新 SSL 证书，检查代理节点与 GitHub 的连通性</li>
+        <li>补充"历史同期趋势回顾"作为兜底内容，降低空窗体验损耗</li>
+      </ul>
+    </div>
+
+    <!-- 卡片4: 中长期建议 -->
+    <div class="card">
+      <span class="card-label card-label-pink">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Zm0 2.445L6.615 5.5a.75.75 0 0 1-.564.41l-3.097.45 2.24 2.184a.75.75 0 0 1 .216.664l-.528 3.084 2.769-1.456a.75.75 0 0 1 .698 0l2.77 1.456-.53-3.084a.75.75 0 0 1 .216-.664l2.24-2.183-3.096-.45a.75.75 0 0 1-.564-.41L8 2.694Z"/></svg>
+        长期建设
+      </span>
+      <h3>增强鲁棒性</h3>
+      <ul>
+        <li><strong>降级策略</strong>：主链路失败时自动触发备用链路（切换代理 / 备用 Token / 缓存数据）</li>
+        <li><strong>重试机制</strong>：引入指数退避重试逻辑，避免偶发抖动导致数据缺失</li>
+        <li><strong>监控告警</strong>：部署 SSL 证书有效期及抓取任务状态的自动化监控</li>
+        <li><strong>多源融合</strong>：探索接入 GitLab Trending 等跨平台热度榜单</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 相关动态 -->
+  <div class="section-title">
+    <span class="icon" style="background:rgba(188,140,255,0.12);color:var(--accent-purple);">◎</span>
+    相关动态
+    <span class="line"></span>
+  </div>
+
+  <div class="empty-state" style="padding:2rem;">
+    <div class="empty-desc" style="margin:0;">暂无动态 — 受 SSL 连接异常影响，今日未抓取到相关项目动态。</div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>GitHub Trending Daily · Generated with ❤ by AI Agents · 2026-07-22</p>
+</footer>
+
+<script>
+  // Animate language bars on scroll into view
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const fills = entry.target.querySelectorAll('.lang-fill');
+        fills.forEach(fill => {
+          const w = fill.getAttribute('data-width');
+          if (w) {
+            setTimeout(() => { fill.style.width = w; }, 200);
+          }
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.lang-bars').forEach(bar => observer.observe(bar));
+
+  // Add subtle parallax to header glow
+  const header = document.querySelector('.header');
+  if (header) {
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 10;
+      const y = (e.clientY / window.innerHeight - 0.5) * 10;
+      header.style.setProperty('--mx', x + 'px');
+      header.style.setProperty('--my', y + 'px');
+    });
+  }
+</script>
+
+</body>
+</html>
