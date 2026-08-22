@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Trending 日报 · 2026-08-22</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #1c2333;
+    --bg-card: #151b25;
+    --border-default: #2a3140;
+    --border-hover: #4a5568;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #545d68;
+    --accent-gold: #f0b429;
+    --accent-silver: #a0aec0;
+    --accent-bronze: #d97756;
+    --accent-orange: #f97316;
+    --accent-blue: #58a6ff;
+    --accent-purple: #bc8cff;
+    --accent-green: #3fb950;
+    --accent-pink: #f778ba;
+    --accent-red: #f85149;
+    --gradient-header-start: #0c1a3a;
+    --gradient-header-mid: #1a1040;
+    --gradient-header-end: #2d1054;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: linear-gradient(135deg, var(--gradient-header-start) 0%, var(--gradient-header-mid) 50%, var(--gradient-header-end) 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 48px 24px 56px;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(88,166,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -40%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(188,140,255,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .header-logo {
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+  }
+
+  .header-logo svg {
+    width: 22px;
+    height: 22px;
+    fill: #fff;
+  }
+
+  .header-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+  }
+
+  .header-title {
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+
+  .header-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    color: rgba(255,255,255,0.45);
+    font-weight: 400;
+    margin-bottom: 28px;
+  }
+
+  .editors-note {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 20px 24px;
+    backdrop-filter: blur(12px);
+    position: relative;
+  }
+
+  .editors-note-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-purple);
+    margin-bottom: 10px;
+  }
+
+  .editors-note-label::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--accent-purple);
+    border-radius: 50%;
+    display: inline-block;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .editors-note p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.7;
+    font-weight: 400;
+  }
+
+  /* ===== BADGES ===== */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border: 1px solid transparent;
+  }
+
+  .badge-editor {
+    background: rgba(188,140,255,0.12);
+    color: var(--accent-purple);
+    border-color: rgba(188,140,255,0.2);
+  }
+
+  .badge-analyst {
+    background: rgba(63,185,80,0.12);
+    color: var(--accent-green);
+    border-color: rgba(63,185,80,0.2);
+  }
+
+  .badge-researcher {
+    background: rgba(88,166,255,0.12);
+    color: var(--accent-blue);
+    border-color: rgba(88,166,255,0.2);
+  }
+
+  .badge-designer {
+    background: rgba(247,120,186,0.12);
+    color: var(--accent-pink);
+    border-color: rgba(247,120,186,0.2);
+  }
+
+  .badge-reviewer {
+    background: rgba(249,115,22,0.12);
+    color: var(--accent-orange);
+    border-color: rgba(249,115,22,0.2);
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  .main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  .section {
+    margin-bottom: 40px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border-default);
+  }
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+  }
+
+  .section-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  /* ===== EMPTY STATE ===== */
+  .empty-state {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    border-radius: 16px;
+    padding: 60px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s ease;
+  }
+
+  .empty-state:hover {
+    border-color: var(--border-hover);
+  }
+
+  .empty-state::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(248,81,73,0.4), transparent);
+  }
+
+  .empty-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 20px;
+    background: rgba(248,81,73,0.08);
+    border: 1px solid rgba(248,81,73,0.15);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    animation: float-gentle 4s ease-in-out infinite;
+  }
+
+  @keyframes float-gentle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .empty-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .empty-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    max-width: 420px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .empty-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 16px;
+    padding: 5px 14px;
+    background: rgba(248,81,73,0.08);
+    border: 1px solid rgba(248,81,73,0.15);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent-red);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ===== 2x2 GRID ===== */
+  .grid-2x2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 640px) {
+    .grid-2x2 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .grid-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    border-radius: 14px;
+    padding: 24px;
+    transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .grid-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  .grid-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-hover);
+    box-shadow: 0 12px 40px -12px rgba(0,0,0,0.5);
+  }
+
+  .grid-card:hover::before {
+    opacity: 1;
+  }
+
+  .grid-card.card-blue::before { background: linear-gradient(90deg, var(--accent-blue), transparent); }
+  .grid-card.card-blue:hover { border-color: rgba(88,166,255,0.3); }
+
+  .grid-card.card-green::before { background: linear-gradient(90deg, var(--accent-green), transparent); }
+  .grid-card.card-green:hover { border-color: rgba(63,185,80,0.3); }
+
+  .grid-card.card-purple::before { background: linear-gradient(90deg, var(--accent-purple), transparent); }
+  .grid-card.card-purple:hover { border-color: rgba(188,140,255,0.3); }
+
+  .grid-card.card-orange::before { background: linear-gradient(90deg, var(--accent-orange), transparent); }
+  .grid-card.card-orange:hover { border-color: rgba(249,115,22,0.3); }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .card-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-label-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+
+  .card-blue .card-label-icon { background: rgba(88,166,255,0.12); }
+  .card-green .card-label-icon { background: rgba(63,185,80,0.12); }
+  .card-purple .card-label-icon { background: rgba(188,140,255,0.12); }
+  .card-orange .card-label-icon { background: rgba(249,115,22,0.12); }
+
+  .card-body {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .card-body strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  /* ===== SUGGESTIONS ===== */
+  .suggestion-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .suggestion-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    border-radius: 12px;
+    padding: 20px 24px;
+    transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .suggestion-item:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-hover);
+    box-shadow: 0 8px 30px -10px rgba(0,0,0,0.4);
+  }
+
+  .suggestion-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-default);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+  }
+
+  .suggestion-content {
+    flex: 1;
+  }
+
+  .suggestion-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .suggestion-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* ===== PROGRESS BARS (empty state) ===== */
+  .lang-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .lang-bar-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .lang-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    opacity: 0.3;
+  }
+
+  .lang-bar-track {
+    flex: 1;
+    height: 6px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .lang-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    width: 0%;
+    transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .lang-bar-fill.animate {
+    width: 0%;
+  }
+
+  .lang-name {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    width: 48px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* ===== TREND FIRE CARD ===== */
+  .trend-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 0;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .fire-icon {
+    font-size: 16px;
+    opacity: 0.3;
+  }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px 48px;
+  }
+
+  .footer-inner {
+    border-top: 1px solid var(--border-default);
+    padding-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-text {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .footer-badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  /* ===== ANIMATIONS ===== */
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .animate-in {
+    animation: fade-in-up 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    opacity: 0;
+  }
+
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.4s; }
+  .delay-5 { animation-delay: 0.5s; }
+  .delay-6 { animation-delay: 0.6s; }
+  .delay-7 { animation-delay: 0.7s; }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 640px) {
+    .header { padding: 32px 16px 40px; }
+    .main { padding: 24px 16px 60px; }
+    .footer { padding: 0 16px 40px; }
+    .empty-state { padding: 40px 20px; }
+    .grid-card { padding: 20px; }
+    .suggestion-item { padding: 16px; flex-direction: column; gap: 10px; }
+    .suggestion-num { width: 28px; height: 28px; font-size: 12px; }
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-top animate-in">
+      <div class="header-logo">
+        <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      </div>
+      <span class="header-label">Daily Trending Report</span>
+    </div>
+    <h1 class="header-title animate-in delay-1">GitHub Trending 日报</h1>
+    <div class="header-date animate-in delay-2">2026-08-22 · Saturday</div>
+    <div class="editors-note animate-in delay-3">
+      <div class="editors-note-label">编者按</div>
+      <p>今日数据抓取遭遇异常。由于目标站点 SSL 连接中断，本日报未能成功获取 GitHub Trending 的实时项目数据。以下项目列表及相关动态暂缺，敬请谅解。我们将在连接恢复后为您继续提供最新项目追踪。</p>
+    </div>
+  </div>
+</header>
+
+<!-- ===== MAIN ===== -->
+<main class="main">
+
+  <!-- 项目表格区域 -->
+  <section class="section animate-in delay-4">
+    <div class="section-header">
+      <div class="section-icon" style="background: rgba(88,166,255,0.1);">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 3h12a1 1 0 011 1v8a1 1 0 01-1 1H2a1 1 0 01-1-1V4a1 1 0 011-1z" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 5l7 4 7-4" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2 class="section-title">Trending 项目</h2>
+      <span class="badge badge-researcher">研究员</span>
+    </div>
+    <div class="empty-state">
+      <div class="empty-icon">⚠️</div>
+      <div class="empty-title">数据获取失败</div>
+      <div class="empty-desc">受 SSL 连接中断影响，今日未能抓取到任何 Trending 项目数据。项目排名、描述、语言及星标数均不可用。</div>
+      <div class="empty-tag">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z"/></svg>
+        SSL_ERROR · CONNECTION_REFUSED
+      </div>
+    </div>
+  </section>
+
+  <!-- 相关动态 -->
+  <section class="section animate-in delay-5">
+    <div class="section-header">
+      <div class="section-icon" style="background: rgba(249,115,22,0.1);">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.85 3.75 4.15.6-3 2.93.71 4.12L8 10.77l-3.71 2.13.71-4.12-3-2.93 4.15-.6L8 1.5z" stroke="#f97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2 class="section-title">相关动态</h2>
+      <span class="badge badge-reviewer">审查员</span>
+    </div>
+    <div class="empty-state" style="padding: 40px 32px;">
+      <div class="trend-empty">
+        <span class="fire-icon">🔥</span>
+        <span>暂无动态 — 受 SSL 连接异常影响，今日未抓取到相关项目动态信息</span>
+        <span class="fire-icon">🔥</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 分析师洞察 2x2 网格 -->
+  <section class="section animate-in delay-6">
+    <div class="section-header">
+      <div class="section-icon" style="background: rgba(63,185,80,0.1);">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 14V4a1 1 0 011-1h10a1 1 0 011 1v10" stroke="#3fb950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 14v-4h6v4M1 14h14" stroke="#3fb950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2 class="section-title">分析师洞察</h2>
+      <span class="badge badge-analyst">分析师</span>
+    </div>
+    <div class="grid-2x2">
+      <!-- 语言分布 -->
+      <div class="grid-card card-blue">
+        <div class="card-top">
+          <div class="card-label">
+            <div class="card-label-icon">📊</div>
+            语言分布
+          </div>
+        </div>
+        <div class="card-body">
+          <p style="margin-bottom: 14px;">无数据。受 SSL 连接中断影响，今日未能获取任何项目的编程语言分布情况。</p>
+          <div class="lang-bars">
+            <div class="lang-bar-item">
+              <span class="lang-name">—</span>
+              <div class="lang-bar-track"><div class="lang-bar-fill animate" style="background: #3572A5;"></div></div>
+            </div>
+            <div class="lang-bar-item">
+              <span class="lang-name">—</span>
+              <div class="lang-bar-track"><div class="lang-bar-fill animate" style="background: #f1e05a;"></div></div>
+            </div>
+            <div class="lang-bar-item">
+              <span class="lang-name">—</span>
+              <div class="lang-bar-track"><div class="lang-bar-fill animate" style="background: #3178c6;"></div></div>
+            </div>
+            <div class="lang-bar-item">
+              <span class="lang-name">—</span>
+              <div class="lang-bar-track"><div class="lang-bar-fill animate" style="background: #dea584;"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 趋势分析 -->
+      <div class="grid-card card-orange">
+        <div class="card-top">
+          <div class="card-label">
+            <div class="card-label-icon">🔥</div>
+            趋势分析
+          </div>
+        </div>
+        <div class="card-body">
+          <p>无数据。因数据抓取完全失败，无法识别新兴语言爆发、热门框架更迭或特定技术栈的星标增长趋势。</p>
+          <div style="margin-top: 14px; display: flex; gap: 6px; align-items: center;">
+            <span style="font-size: 11px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">趋势强度</span>
+            <span style="opacity: 0.2; font-size: 14px;">🔥🔥🔥🔥🔥</span>
+          </div>
+        </div>
+      </div>
+      <!-- 数据质量 -->
+      <div class="grid-card card-purple">
+        <div class="card-top">
+          <div class="card-label">
+            <div class="card-label-icon">🔍</div>
+            数据质量
+          </div>
+        </div>
+        <div class="card-body">
+          <p>当前处于<strong>数据监测断点</strong>，无法与前序日报形成连续的趋势曲线。时间序列分析存在断层风险。</p>
+          <div style="margin-top: 14px; display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: rgba(248,81,73,0.08); border-radius: 6px; font-size: 11px; color: var(--accent-red); font-weight: 600;">
+            <span style="width: 6px; height: 6px; background: var(--accent-red); border-radius: 50; display: inline-block; animation: pulse-dot 1.5s ease-in-out infinite; border-radius: 50%;"></span>
+            数据完整性: 0%
+          </div>
+        </div>
+      </div>
+      <!-- 连接状态 -->
+      <div class="grid-card card-green">
+        <div class="card-top">
+          <div class="card-label">
+            <div class="card-label-icon">🌐</div>
+            连接状态
+          </div>
+        </div>
+        <div class="card-body">
+          <p>目标站点 SSL 连接中断，可能原因包括证书过期、TLS 协议不兼容或网络代理节点异常。</p>
+          <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 6px;">
+            <div style="display: flex; justify-content: space-between; font-size: 11px; font-family: 'JetBrains Mono', monospace;">
+              <span style="color: var(--text-muted);">SSL Handshake</span>
+              <span style="color: var(--accent-red);">FAILED</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 11px; font-family: 'JetBrains Mono', monospace;">
+              <span style="color: var(--text-muted);">Data Fetch</span>
+              <span style="color: var(--accent-red);">ABORTED</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 11px; font-family: 'JetBrains Mono', monospace;">
+              <span style="color: var(--text-muted);">Cache Fallback</span>
+              <span style="color: var(--accent-orange);">MISS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 建议 -->
+  <section class="section animate-in delay-7">
+    <div class="section-header">
+      <div class="section-icon" style="background: rgba(188,140,255,0.1);">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 2.5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 018 3.5zM8 11a1 1 0 100-2 1 1 0 000 2z" fill="#bc8cff"/></svg>
+      </div>
+      <h2 class="section-title">改进建议</h2>
+      <span class="badge badge-editor">编辑</span>
+    </div>
+    <div class="suggestion-list">
+      <div class="suggestion-item">
+        <div class="suggestion-num">1</div>
+        <div class="suggestion-content">
+          <div class="suggestion-title">基础设施排查</div>
+          <div class="suggestion-desc">优先排查目标站点 SSL 证书过期、TLS 协议版本不兼容或网络代理节点异常等问题，必要时配置备用 IP 或重试机制。</div>
+        </div>
+      </div>
+      <div class="suggestion-item">
+        <div class="suggestion-num">2</div>
+        <div class="suggestion-content">
+          <div class="suggestion-title">容灾策略优化</div>
+          <div class="suggestion-desc">引入多源数据获取方案（如 GitHub REST API 替代页面抓取），并设置数据缓存兜底逻辑，避免单点故障导致日报完全空白。</div>
+        </div>
+      </div>
+      <div class="suggestion-item">
+        <div class="suggestion-num">3</div>
+        <div class="suggestion-content">
+          <div class="suggestion-title">异常状态标识</div>
+          <div class="suggestion-desc">在无数据状态下，建议在历史趋势图表中明确标注"数据缺失"节点，防止后续进行时间序列分析时出现断崖式下跌的误判。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-text">GitHub Trending Daily · 2026-08-22</div>
+    <div class="footer-badges">
+      <span class="badge badge-researcher">研究员</span>
+      <span class="badge badge-editor">编辑</span>
+      <span class="badge badge-analyst">分析师</span>
+      <span class="badge badge-designer">设计师</span>
+      <span class="badge badge-reviewer">审查员</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Intersection Observer for scroll-triggered animations
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.animate-in').forEach(el => {
+      el.style.animationPlayState = 'paused';
+      // Allow header elements to play immediately
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) {
+        el.style.animationPlayState = 'running';
+      } else {
+        observer.observe(el);
+      }
+    });
+
+    // Subtle parallax on header
+    const header = document.querySelector('.header');
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      if (scrollY < 600) {
+        header.style.transform = `translateY(${scrollY * 0.15}px)`;
+        header.style.opacity = Math.max(0, 1 - scrollY / 500);
+      }
+    }, { passive: true });
+  });
+</script>
+
+</body>
+</html>
